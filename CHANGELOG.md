@@ -27,7 +27,7 @@ First public release — the `/loop` sibling of [goalify](https://github.com/Abo
 - **Honest limits re-derived from the shipped Claude Code 2.1.252 binary**: no evaluator; 7-day
   expiry in both modes; session scope; `claude -p "/loop …"` fires zero times; the jitter
   docs-vs-binary disagreement; the cloud question is "may", not "will"; `acceptEdits` auto-accepts
-  file edits only; #64744 quoted with its 2.1.160 caveat.
+  file edits plus a few filesystem commands, not arbitrary Bash; #64744 quoted with its 2.1.160 caveat.
 - **Evals + tests in CI**: `evals/check_skill.py` (static assertions on the skill; it printed `0/98`
   before the skill existed, where the 98 was an estimate in the not-found path rather than a count of
   assertions — see `evals/README.md`), `tests/test_manifests.py` (manifests, version parity across four

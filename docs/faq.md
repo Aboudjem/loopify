@@ -136,7 +136,7 @@ One line, because a crontab entry is one line.
 Each tick is a fresh process with no memory of the last one, so the state directory is the memory: the
 counter, the lessons and the queue are all it carries forward. The tick's mode check lands on the
 one-shot branch and exits without scheduling anything, because your cron entry is the schedule.
-`--permission-mode acceptEdits` covers file edits only, which is why every Bash command is named in
+`--permission-mode acceptEdits` covers file edits, a few filesystem commands (`mkdir`, `touch`, `mv`, `cp`) and read-only commands, and nothing else, which is why every Bash command is named in
 `--allowedTools`. When `STOPPED` appears in the state directory, remove the cron entry — nothing else
 will.
 

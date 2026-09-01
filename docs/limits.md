@@ -84,7 +84,7 @@ lands while the prompt is open is dropped rather than held.
 Pre-approve what a tick runs before you paste the line. loopify prints the list of commands it probed,
 so you can allowlist them or turn on auto mode first.
 
-Running headless changes the shape of this. `--permission-mode acceptEdits` auto-accepts file edits
+Running headless changes the shape of this. `--permission-mode acceptEdits` auto-accepts file edits, a few filesystem commands (`mkdir`, `touch`, `mv`, `cp`) and the read-only command set, and nothing else
 only; every Bash command a tick needs has to be named in `--allowedTools`, as in
 `--allowedTools "Bash(gh pr view:*),Bash(git commit:*)"`. `auto` is not a general answer either: it
 is gated by plan ("Auto mode is unavailable for your plan") and driven by a classifier.

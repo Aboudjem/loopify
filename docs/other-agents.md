@@ -310,7 +310,7 @@ Four things to know about running it this way:
    `QUEUE.md` holds what it could not do safely. This is branch (c) of the mode check, and the brief
    already tells the tick to run one cycle, log it, and exit.
 2. **Permissions have to be pre-approved on the command line.** `--permission-mode acceptEdits`
-   auto-accepts file edits and nothing else; every shell command the cycle runs needs naming in
+   auto-accepts file edits, a few filesystem commands (`mkdir`, `touch`, `mv`, `cp`) and read-only commands, and nothing else; every shell command the cycle runs needs naming in
    `--allowedTools`. loopify probes those commands during PREPARE and prints the list, so copy it
    from the handoff. A tick that hits a prompt with nobody there to answer sits until the process is
    killed.

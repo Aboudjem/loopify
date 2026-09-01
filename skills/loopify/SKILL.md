@@ -86,15 +86,18 @@ https://code.claude.com/docs/en/scheduled-tasks. These constraints shape both ar
    `Monitor` (persistent) — on later ticks list running tasks first and skip arming; cancel it on stop.
 5. **7-day expiry — both modes.** Docs: "The jitter rules don't apply to it, but the seven-day expiry
    does." Jitter (fixed mode only): the docs say up to 30 min late, or half the interval sub-hourly;
-   the binary's `CronCreate` text says 10 % of the period, max 15 min. Cite the docs; footnote the
-   binary.
+   the binary's `CronCreate` text says 10 % of the period, max 15 min — but the scheduler's own constants
+   (`recurringFrac: 0.5`, a 30-minute cap) implement the docs' rule. Cite the docs; footnote the binary
+   text.
 6. **Session-scoped.** Fires only while the session is open and idle; no catch-up; `/clear` wipes the
    schedule; `--resume`/`--continue` restore unexpired loops; backgrounding keeps them alive; 50 tasks
    max; `CLAUDE_CODE_DISABLE_CRON=1` disables. `claude -p "/loop …"` creates the job and exits — it
    **fires zero times**.
 7. **Permissions are inherited from the session.** A permission prompt blocks the tick until someone
    answers, and fixed fires are dropped while it waits. Under `claude -p`, `--permission-mode
-   acceptEdits` auto-accepts file edits only; Bash needs `--allowedTools "Bash(gh pr view:*),…"`. `auto`
+   acceptEdits` auto-accepts file edits, a few filesystem commands (`mkdir`, `touch`, `mv`, `cp`) and
+   the read-only command set — nothing else; every other command a tick runs needs `--allowedTools
+   "Bash(gh pr view:*),…"`. `auto`
    is plan-gated and classifier-driven; the binary string "Scheduling a /loop wakeup requires classifier
    review" exists and when it fires is uncertain.
 8. **`.claude/loop.md`** beats `~/.claude/loop.md`, is used ONLY for a bare or interval-only `/loop`,
