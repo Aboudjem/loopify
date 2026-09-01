@@ -9,10 +9,10 @@ written once and left to go stale.
 
 | Target | Action | Status | Link |
 |---|---|---|---|
-| ComposioHQ/awesome-claude-skills | Open a PR from the existing fork `Aboudjem/composio-awesome-claude-skills` (0 commits behind upstream `master`), one README row in category `Productivity & Organization` | queued — opens once v1.0.0 is public | opens after release |
-| anthropics/skills | Open a PR adding the skill | queued — opens once v1.0.0 is public; expect a slow review — 861 open PRs against that repo at last check (2026-09-01) | opens after release |
-| Anthropic plugin directory | Submit through the individual-author form (no Team/Enterprise org needed) | queued — opens once v1.0.0 is public and `claude plugin validate` passes | https://platform.claude.com/plugins/submit |
-| skills.sh | Seed the listing with one real install, `npx skills add Aboudjem/loopify` (the README already carries the skills.sh badge for this repo) | queued — opens once v1.0.0 is public | opens after release |
+| ComposioHQ/awesome-claude-skills | Open a PR from the existing fork `Aboudjem/composio-awesome-claude-skills` (0 commits behind upstream `master`), one README row in category `Productivity & Organization` | done 2026-09-01 — PR open, link-only row under Productivity & Organization | https://github.com/ComposioHQ/awesome-claude-skills/pull/1792 |
+| anthropics/skills | Open a PR adding the skill | done 2026-09-01 — PR open; expect a slow review — 861 open PRs against that repo at last check (2026-09-01) | https://github.com/anthropics/skills/pull/1702 |
+| Anthropic plugin directory | Submit through the individual-author form (no Team/Enterprise org needed) | manual for the user — the Console form sits behind a login, so nothing was entered; `claude plugin validate . --strict` and `claude plugin validate ./.claude-plugin/plugin.json --strict` both pass (2026-09-01) | https://platform.claude.com/plugins/submit |
+| skills.sh | Seed the listing with one real install, `npx skills add Aboudjem/loopify` (the README already carries the skills.sh badge for this repo) | done 2026-09-01 — one real install (`npx -y skills add Aboudjem/loopify -a claude-code -y` → "Installed 1 skill: loopify"); `npx skills find loopify` still lists two unrelated skills of the same name and not this repo — the index is telemetry-driven | https://skills.sh/Aboudjem/loopify |
 | hesreallyhim/awesome-claude-code | Web issue form only — their `CONTRIBUTING.md` says PRs aren't accepted here — category `Skills`, ready description below | queued for 2026-09-15 — the repo must be public and 14 days old | https://github.com/hesreallyhim/awesome-claude-code/issues/new?template=recommend-resource.yml |
 | skillsmp.com | None — the site auto-crawls listed skills, no submission form exists | auto-crawled — no action | https://skillsmp.com |
 | smithery.ai | `smithery mcp publish` or the site's "Publish MCP Server" flow exists, but both are framed around MCP servers, not Agent Skills | unverified — check before acting | https://smithery.ai |
@@ -185,6 +185,15 @@ Sibling of goalify, same idea for one-shot `/goal` runs. Happy to answer questio
 ---
 
 ## The goalify entry for awesome-claude-code
+
+**Submitted 2026-09-01 as [issue #2692](https://github.com/hesreallyhim/awesome-claude-code/issues/2692), category
+Skills — and auto-closed a minute later.** The validator's log says why: `INELIGIBLE: author has open
+submission(s). #1809`. Their workflow rejects any new recommendation while the same author has another
+open resource submission, and [#1809](https://github.com/hesreallyhim/awesome-claude-code/issues/1809)
+(Humanizer, opened 2026-05-13) is still open. goalify itself meets both written conditions (first commit
+2026-05-29, 26 commits since). What the user can do: wait for #1809 to be processed, or close #1809 and
+submit goalify again with the values below (a closed issue cannot be reopened by the submitter).
+
 
 Unlike loopify, goalify doesn't need to wait. It was created 2026-05-29 and pushed to as recently as
 2026-08-10, so it already clears the 14-day-old-with-active-development bar on its own, independent
