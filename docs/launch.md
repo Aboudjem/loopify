@@ -42,12 +42,12 @@ A Claude Code skill that writes a standing brief and one /loop line for jobs tha
 **Title** (77 chars, ≤ 80):
 
 ```
-Show HN: Loopify – a brief plus one /loop line for repeating Claude Code jobs
+Show HN: loopify – a brief plus one /loop line for repeating Claude Code jobs
 ```
 
 **Body:**
 
-Loopify is a Claude Code skill for jobs that never quite finish: keeping a release PR healthy while
+loopify is a Claude Code skill for jobs that never quite finish: keeping a release PR healthy while
 reviews trickle in, watching a deploy settle, sweeping new bug reports every hour, keeping a branch
 green overnight.
 
@@ -57,7 +57,7 @@ and one line for `/loop`, Claude Code's built-in repeat command. Each firing is 
 re-reads the brief, does one round, and logs what happened.
 
 Honest parts: nothing judges whether a tick did the right thing — the log is the only
-proof there is. Every `/loop` stops after 7 days. Loopify never starts the loop itself.
+proof there is. Every `/loop` stops after 7 days. loopify never starts the loop itself.
 
 One recorded run: cold, the release-PR scenario scored 1/7 against the skill's own rubric; with the
 skill, 7/7.
@@ -76,13 +76,13 @@ Check the subreddit rules, logged in, before posting.*
 
 **Post:**
 
-# Loopify: a brief plus one /loop line for jobs that repeat
+# loopify: a brief plus one /loop line for jobs that repeat
 
 If you've used `/loop` for a standing job — babysitting a release PR, watching a deploy, sweeping
 bug reports hourly — you've hit the gap: `/loop` re-runs a prompt, but a prompt doesn't remember the
 last run, doesn't know when to stop, and leaves no record of what happened.
 
-Loopify writes two things before the loop starts:
+loopify writes two things before the loop starts:
 
 - **A brief** — a standing file: what one round does, what it must never touch, a stop rule.
 - **One line for `/loop`**, with the brief's path inside it:
@@ -109,11 +109,11 @@ Check the subreddit rules, logged in, before posting.*
 
 **Post:**
 
-Loopify is a skill for Claude Code (the CLI) for jobs that repeat instead of finishing once —
+loopify is a skill for Claude Code (the CLI) for jobs that repeat instead of finishing once —
 keeping a pull request healthy while reviews come in, checking on a deploy, sweeping new bug reports
 every hour.
 
-You describe the job once. Loopify writes a **brief** (a file with what one round does, and when to
+You describe the job once. loopify writes a **brief** (a file with what one round does, and when to
 stop) and hands you **one line** to paste into `/loop`, Claude Code's built-in repeat command. Each
 firing is a "tick": Claude re-reads the brief, does one round, and logs what happened, so you get a
 record instead of a black box.
@@ -131,7 +131,7 @@ If you're on Claude Code: `claude plugin install loopify@10x` (after
 ```
 Claude Code's /loop re-runs a prompt on a schedule. It doesn't remember the last run, doesn't know when to stop, and doesn't log what happened.
 
-Loopify writes a standing brief and one /loop line so it does all three. #ClaudeCode
+loopify writes a standing brief and one /loop line so it does all three. #ClaudeCode
 ```
 
 **Tweet 2 (the line + what a tick does):**
@@ -162,7 +162,7 @@ A brief and one /loop line for jobs that repeat
 
 **Description:**
 
-Loopify is a skill for Claude Code that handles jobs which repeat instead of finishing once —
+loopify is a skill for Claude Code that handles jobs which repeat instead of finishing once —
 babysitting a release PR, watching a deploy, sweeping bug reports every hour. It writes a standing
 brief (what one round does, when to stop) and one line you paste into `/loop`, Claude Code's built-in
 repeat command. Every run re-reads the brief and logs what happened, so you come back to a record
@@ -170,10 +170,10 @@ instead of a guess.
 
 **First comment:**
 
-Loopify is a skill for Claude Code, the CLI, for jobs that never quite finish — keeping a release PR
+loopify is a skill for Claude Code, the CLI, for jobs that never quite finish — keeping a release PR
 healthy while reviews trickle in, watching a deploy settle, sweeping new bug reports every hour.
 
-You describe the job once. Loopify writes a brief — what one round does, when to stop — and one
+You describe the job once. loopify writes a brief — what one round does, when to stop — and one
 line to paste into `/loop`, Claude Code's built-in repeat command. Each run re-reads the brief and
 logs what happened, so you get a record instead of a loop you babysit.
 
