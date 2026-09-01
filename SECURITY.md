@@ -102,7 +102,7 @@ with credit to the reporter if wanted.
   autonomy level in particular.
 - **Pre-approve permissions deliberately.** A tick inherits the session's permissions. Pre-approving
   the exact commands the handoff lists is the right move — a permission prompt blocks the tick until
-  someone answers it, and fixed-interval fires are dropped while it waits. Approving broadly because
+  someone answers it, and on a fixed interval a fire that lands meanwhile is delivered once, late — extra fires behind it are not queued. Approving broadly because
   the prompts are annoying is not.
 - **Read `TICKS.md`.** A running loop is not proof it is doing the right thing. Nothing judges it, and
   a quiet loop's noop ticks collapse in the terminal, so the log is where to look.

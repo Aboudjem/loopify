@@ -94,7 +94,8 @@ https://code.claude.com/docs/en/scheduled-tasks. These constraints shape both ar
    max; `CLAUDE_CODE_DISABLE_CRON=1` disables. `claude -p "/loop …"` creates the job and exits — it
    **fires zero times**.
 7. **Permissions are inherited from the session.** A permission prompt blocks the tick until someone
-   answers, and fixed fires are dropped while it waits. Under `claude -p`, `--permission-mode
+   answers, and in fixed mode a fire that lands
+   meanwhile is delivered once, late, when the prompt is answered — extra fires behind it are not queued. Under `claude -p`, `--permission-mode
    acceptEdits` auto-accepts file edits, a few filesystem commands (`mkdir`, `touch`, `mv`, `cp`) and
    the read-only command set — nothing else; every other command a tick runs needs `--allowedTools
    "Bash(gh pr view:*),…"`. `auto`
@@ -368,7 +369,8 @@ Mode: fixed every 20m · stop: 30 ticks or the PR merges · autonomy: edit + com
 Brief:      <ABSOLUTE PATH>          standing — never archived; runs write only to the state directory
 State dir:  <ABSOLUTE STATE DIR>/     TICKS.md · LESSONS.md · QUEUE.md
 Permissions: a tick runs <gh pr view, gh pr checks, git commit>. Pre-approve them (allowlist or auto
-mode) — a permission prompt blocks the tick until you answer, and fixed fires are dropped while it waits.
+mode) — a permission prompt blocks the tick until you answer, and in fixed mode a fire that lands
+   meanwhile is delivered once, late, when the prompt is answered — extra fires behind it are not queued.
 
 Next — one step (in this session, or any session open in this project; /clear first if you want it light):
    /loop 20m Run one cycle of <ABSOLUTE PATH> — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.

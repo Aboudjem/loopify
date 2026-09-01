@@ -105,7 +105,7 @@ checklist and `TICKS.md` are the whole of the proof.
 **Pre-approve what the tick runs.** loopify prints a `Permissions:` line naming the commands one
 cycle needs — `gh pr view`, `gh pr checks`, `git commit`, whatever your job uses. Add them to your
 allowlist (or turn auto mode on) before you paste. A permission prompt stops the tick dead until
-someone answers it, and on a fixed schedule the fires that come due while it waits are dropped, not
+someone answers it, and on a fixed schedule a fire that comes due while it waits is delivered once, late — the others behind it are not
 queued.
 
 **Fixed or self-paced.** An interval at the front of the line (`/loop 20m …`) means a fixed schedule:

@@ -74,12 +74,13 @@ a different one; where the brief and the line disagree, the smaller number wins.
 predicts what a loop will cost in money or tokens — the caps are the honest control, and a guess
 dressed up as a figure is not.
 
-## A permission prompt stops the tick, and fixed fires are dropped while it waits
+## A permission prompt stops the tick, and fixed fires behind it collapse to one
 
 `/loop` inherits its permissions from the session it runs in: the docs table for it reads
 "Inherits from session". A tick that reaches a command nobody pre-approved stops and asks, then sits
 there waiting for an answer. In fixed mode the schedule keeps its own time regardless, so a fire that
-lands while the prompt is open is dropped rather than held.
+lands while the prompt is open is delivered once, late, when the prompt is answered — and any further
+fires that pile up behind it are collapsed into that one, not queued (docs: "No catch-up for missed fires").
 
 Pre-approve what a tick runs before you paste the line. loopify prints the list of commands it probed,
 so you can allowlist them or turn on auto mode first.
@@ -102,8 +103,8 @@ often than hourly. A 20-minute loop can therefore fire up to 10 minutes after th
 Write briefs that do not care. A cycle that has to happen at 09:00 exactly is not a `/loop` job.
 
 <sub>The 30-minute figure is the docs'. The binary's own `CronCreate` text gives a different rule —
-10 % of the period, up to 15 minutes — so the two disagree; the docs number is the published one, so
-plan for it. Jitter applies to fixed mode only; a self-paced loop sets its own delay.</sub>
+10 % of the period, up to 15 minutes — so the two disagree; the scheduler's own constants (`recurringFrac: 0.5`, a
+30-minute cap) implement the docs' rule, so that is the one to plan for. Jitter applies to fixed mode only; a self-paced loop sets its own delay.</sub>
 
 ## You may be asked about a cloud schedule. "May", not "will"
 
