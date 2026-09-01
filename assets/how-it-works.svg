@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300" role="img" aria-labelledby="hiw-t hiw-d">
+  <title id="hiw-t">One tick, five moves: state, work, log, improve, schedule or stop — then round again.</title>
+  <desc id="hiw-d">Five stations on a track. STATE, read the brief and the log. WORK, do one cycle of the job. LOG, append one row to TICKS.md. IMPROVE, note what to change next tick. SCHEDULE or STOP, wait 20 minutes, or stop if the rule says. A dashed return sweep closes the circuit below the track, labelled wait 20m, so the five moves form a loop. Each station lights in turn, and a tick counter at the top right climbs from 5 of 30. The loop stops at its stop rule: 30 ticks, the PR merges, or 7 days.</desc>
+  <style>
+  .sans{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+  .static{display:none}
+  @media (prefers-reduced-motion: reduce){.motion{display:none}.static{display:inline}}
+  </style>
+  <rect x="0" y="0" width="1200" height="300" rx="14" fill="#0C2A2B"/>
+  <rect x="0.5" y="0.5" width="1199" height="299" rx="13.5" fill="none" stroke="#7E9A9A" stroke-width="1"/>
+
+  <text class="sans" x="36" y="46" font-size="28" font-weight="700" fill="#E8F1EE">One tick, five moves.</text>
+  <g class="motion">
+    <text class="mono" x="1164" y="46" font-size="24" font-weight="700" fill="#C3ABF2" text-anchor="end" opacity="0">tick: 5/30<animate attributeName="opacity" values="1;0;0;0" keyTimes="0;0.25;0.5;0.75" calcMode="discrete" dur="24s" begin="0s" repeatCount="indefinite"/></text>
+    <text class="mono" x="1164" y="46" font-size="24" font-weight="700" fill="#C3ABF2" text-anchor="end" opacity="0">tick: 6/30<animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.25;0.5;0.75" calcMode="discrete" dur="24s" begin="0s" repeatCount="indefinite"/></text>
+    <text class="mono" x="1164" y="46" font-size="24" font-weight="700" fill="#C3ABF2" text-anchor="end" opacity="0">tick: 7/30<animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.25;0.5;0.75" calcMode="discrete" dur="24s" begin="0s" repeatCount="indefinite"/></text>
+    <text class="mono" x="1164" y="46" font-size="24" font-weight="700" fill="#C3ABF2" text-anchor="end" opacity="0">tick: 8/30<animate attributeName="opacity" values="0;0;0;1" keyTimes="0;0.25;0.5;0.75" calcMode="discrete" dur="24s" begin="0s" repeatCount="indefinite"/></text>
+  </g>
+  <g class="static"><text class="mono" x="1164" y="46" font-size="24" font-weight="700" fill="#C3ABF2" text-anchor="end">tick: 7/30</text></g>
+  <line x1="36" y1="64" x2="1164" y2="64" stroke="#7E9A9A" stroke-width="1"/>
+
+  <line x1="150" y1="180" x2="1050" y2="180" stroke="#7E9A9A" stroke-width="2"/>
+  <path d="M256.5 172 L268.5 180 L256.5 188" fill="none" stroke="#7E9A9A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M481.5 172 L493.5 180 L481.5 188" fill="none" stroke="#7E9A9A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M706.5 172 L718.5 180 L706.5 188" fill="none" stroke="#7E9A9A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M931.5 172 L943.5 180 L931.5 188" fill="none" stroke="#7E9A9A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M1050 194 C 1110 220 1110 250 1050 250 L 150 250 C 90 250 90 220 150 194" fill="none" stroke="#C3ABF2" stroke-width="2.5" stroke-dasharray="7 7" stroke-linecap="round"/>
+  <rect x="516" y="236" width="168" height="28" fill="#0C2A2B"/>
+  <text class="mono" x="600" y="257" font-size="22" fill="#C3ABF2" text-anchor="middle">wait 20m</text>
+
+  <text class="sans" x="150" y="100" font-size="24" font-weight="700" fill="#E8F1EE" text-anchor="middle">STATE</text>
+  <circle cx="150" cy="180" r="13" fill="#0C2A2B" stroke="#C3ABF2" stroke-width="3"/>
+  <text class="sans" x="150" y="124" font-size="19" fill="#A6BEBD" text-anchor="middle">read the brief</text>
+  <text class="sans" x="150" y="145" font-size="19" fill="#A6BEBD" text-anchor="middle">and the log</text>
+  <text class="sans" x="375" y="100" font-size="24" font-weight="700" fill="#E8F1EE" text-anchor="middle">WORK</text>
+  <circle cx="375" cy="180" r="13" fill="#0C2A2B" stroke="#C3ABF2" stroke-width="3"/>
+  <text class="sans" x="375" y="124" font-size="19" fill="#A6BEBD" text-anchor="middle">do one cycle</text>
+  <text class="sans" x="375" y="145" font-size="19" fill="#A6BEBD" text-anchor="middle">of the job</text>
+  <text class="sans" x="600" y="100" font-size="24" font-weight="700" fill="#E8F1EE" text-anchor="middle">LOG</text>
+  <circle cx="600" cy="180" r="13" fill="#0C2A2B" stroke="#C3ABF2" stroke-width="3"/>
+  <text class="sans" x="600" y="124" font-size="19" fill="#A6BEBD" text-anchor="middle">append one row</text>
+  <text class="sans" x="600" y="145" font-size="19" fill="#A6BEBD" text-anchor="middle">to TICKS.md</text>
+  <text class="sans" x="825" y="100" font-size="24" font-weight="700" fill="#E8F1EE" text-anchor="middle">IMPROVE</text>
+  <circle cx="825" cy="180" r="13" fill="#0C2A2B" stroke="#C3ABF2" stroke-width="3"/>
+  <text class="sans" x="825" y="124" font-size="19" fill="#A6BEBD" text-anchor="middle">note what to</text>
+  <text class="sans" x="825" y="145" font-size="19" fill="#A6BEBD" text-anchor="middle">change next tick</text>
+  <text class="sans" x="1050" y="100" font-size="24" font-weight="700" fill="#E8F1EE" text-anchor="middle">SCHEDULE / STOP</text>
+  <circle cx="1050" cy="180" r="13" fill="#0C2A2B" stroke="#C3ABF2" stroke-width="3"/>
+  <text class="sans" x="1050" y="124" font-size="19" fill="#A6BEBD" text-anchor="middle">wait 20m — or</text>
+  <text class="sans" x="1050" y="145" font-size="19" fill="#A6BEBD" text-anchor="middle">stop, if the rule says</text>
+  <g class="motion">
+    <circle cx="150" cy="180" r="13" fill="#C3ABF2" opacity="0"><animate attributeName="opacity" values="1;0;0;0;0" keyTimes="0;0.2;0.4;0.6;0.8" calcMode="discrete" dur="6s" begin="0s" repeatCount="indefinite"/></circle>
+    <circle cx="375" cy="180" r="13" fill="#C3ABF2" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0" keyTimes="0;0.2;0.4;0.6;0.8" calcMode="discrete" dur="6s" begin="0s" repeatCount="indefinite"/></circle>
+    <circle cx="600" cy="180" r="13" fill="#C3ABF2" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;0.2;0.4;0.6;0.8" calcMode="discrete" dur="6s" begin="0s" repeatCount="indefinite"/></circle>
+    <circle cx="825" cy="180" r="13" fill="#C3ABF2" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0" keyTimes="0;0.2;0.4;0.6;0.8" calcMode="discrete" dur="6s" begin="0s" repeatCount="indefinite"/></circle>
+    <circle cx="1050" cy="180" r="13" fill="#C3ABF2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1" keyTimes="0;0.2;0.4;0.6;0.8" calcMode="discrete" dur="6s" begin="0s" repeatCount="indefinite"/></circle>
+  </g>
+  <g class="static"><circle cx="600" cy="180" r="13" fill="#C3ABF2"/></g>
+
+  <text class="sans" x="36" y="290" font-size="19" fill="#A6BEBD">Stops at its stop rule — 30 ticks, the PR merges, or 7 days.</text>
+</svg>

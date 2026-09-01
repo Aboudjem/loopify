@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" width="1200" height="340" role="img" aria-labelledby="two-t two-d">
+  <title id="two-t">Two things, two lifespans: the brief is a file re-read every tick, the line is one string pasted once.</title>
+  <desc id="two-d">On the left, a pale record sheet clamped at the top: BRIEF, a file, pr-babysitter.md, holding Standing decisions, Hard safety rails, The cycle, Stop rule, Persistence gate. A read-pulse sweeps down it, because the loop re-reads the brief every tick. On the right, a violet capsule: LINE, one string, holding /loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick. The path sits on an inlaid fragment of the sheet: the brief's path rides inside the line. The line was pasted once and never moves.</desc>
+  <style>
+  .sans{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+  .static{display:none}
+  @media (prefers-reduced-motion: reduce){.motion{display:none}.static{display:inline}}
+  </style>
+  <rect x="0" y="0" width="1200" height="340" rx="14" fill="#0C2A2B"/>
+  <rect x="0.5" y="0.5" width="1199" height="339" rx="13.5" fill="none" stroke="#7E9A9A" stroke-width="1"/>
+
+  <text class="sans" x="36" y="46" font-size="28" font-weight="700" fill="#E8F1EE">Two things, two lifespans.</text>
+  <text class="mono" x="1164" y="46" font-size="19" fill="#A6BEBD" text-anchor="end">ONE FILE · ONE STRING</text>
+  <line x1="36" y1="64" x2="1164" y2="64" stroke="#7E9A9A" stroke-width="1"/>
+  <line x1="612" y1="84" x2="612" y2="300" stroke="#7E9A9A" stroke-width="1"/>
+
+  <rect x="36" y="84" width="544" height="210" rx="5" fill="#D7E3E0"/>
+  <rect x="36" y="84" width="544" height="14" fill="#C6D5D1"/>
+  <circle cx="76" cy="91" r="4" fill="#607876"/>
+  <circle cx="540" cy="91" r="4" fill="#607876"/>
+  <text class="sans" x="56" y="134" font-size="24" font-weight="800" fill="#54308C">BRIEF</text>
+  <text class="sans" x="560" y="134" font-size="16" font-weight="700" letter-spacing="1.2" fill="#3F585D" text-anchor="end">A FILE</text>
+  <text class="mono" x="56" y="162" font-size="20" fill="#0C2A2B">pr-babysitter.md</text>
+  <line x1="56" y1="174" x2="560" y2="174" stroke="#607876" stroke-width="1"/>
+  <rect x="58" y="194" width="4" height="4" fill="#54308C"/>
+  <text class="mono" x="74" y="198" font-size="17" fill="#3F585D">Standing decisions</text>
+  <rect x="58" y="215" width="4" height="4" fill="#54308C"/>
+  <text class="mono" x="74" y="219" font-size="17" fill="#3F585D">Hard safety rails</text>
+  <rect x="58" y="236" width="4" height="4" fill="#54308C"/>
+  <text class="mono" x="74" y="240" font-size="17" fill="#3F585D">The cycle</text>
+  <rect x="58" y="257" width="4" height="4" fill="#54308C"/>
+  <text class="mono" x="74" y="261" font-size="17" fill="#3F585D">Stop rule</text>
+  <rect x="58" y="278" width="4" height="4" fill="#54308C"/>
+  <text class="mono" x="74" y="282" font-size="17" fill="#3F585D">Persistence gate</text>
+  <g class="motion"><rect x="44" y="182" width="528" height="26" fill="#54308C" opacity="0"><animate attributeName="y" values="182;266;266" keyTimes="0;0.88;1" dur="5s" begin="0s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.13;0.13;0" keyTimes="0;0.06;0.88;1" dur="5s" begin="0s" repeatCount="indefinite"/></rect></g>
+  <text class="mono" x="36" y="316" font-size="17" fill="#A6BEBD">RE-READ EVERY TICK</text>
+
+  <path d="M256 156 C 380 116 500 150 630 182" fill="none" stroke="#7E9A9A" stroke-width="1.5" stroke-dasharray="5 5"/>
+  <path d="M628 176 L640 182 L628 188 Z" fill="#7E9A9A"/>
+
+  <text class="sans" x="640" y="118" font-size="24" font-weight="800" fill="#C3ABF2">LINE</text>
+  <text class="sans" x="1164" y="118" font-size="16" font-weight="700" letter-spacing="1.2" fill="#A6BEBD" text-anchor="end">ONE STRING</text>
+  <rect x="640" y="132" width="524" height="126" rx="30" fill="#54308C"/>
+  <text class="mono" x="672" y="166" font-size="17" fill="#E8F1EE">/loop 20m Run one cycle of</text>
+  <rect x="668" y="176" width="396" height="22" rx="4" fill="#D7E3E0"/>
+  <text class="mono" x="672" y="192" font-size="17" fill="#54308C">/Users/you/acme/.loop/pr-babysitter.md</text>
+  <text class="mono" x="1072" y="192" font-size="17" fill="#E8F1EE">—</text>
+  <text class="mono" x="672" y="218" font-size="17" fill="#E8F1EE">read it first, obey its stop rule (30 ticks</text>
+  <text class="mono" x="672" y="244" font-size="17" fill="#E8F1EE">or the PR merges), log the tick.</text>
+  <text class="sans" x="640" y="288" font-size="18" fill="#A6BEBD">the brief's path rides inside the line</text>
+  <text class="mono" x="1164" y="316" font-size="17" fill="#A6BEBD" text-anchor="end">PASTED ONCE</text>
+</svg>

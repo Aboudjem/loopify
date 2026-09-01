@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>loopify</title>
+<style>
+  :root{
+    --body:#0C2A2B; --panel:#16403F; --sheet:#D7E3E0; --shade:#C6D5D1;
+    --ink:#54308C; --ink-faded:#6F4FA8; --ink-light:#C3ABF2; --bone:#E8F1EE;
+    --dim:#A6BEBD; --sheet-dim:#3F585D; --rule-body:#7E9A9A; --rule-sheet:#607876;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1280px;height:640px;overflow:hidden}
+  body{background:var(--body);font-family:var(--sans);color:var(--bone);
+       border:1px solid var(--rule-body);border-radius:14px}
+  .card{width:100%;height:100%;padding:52px 64px;display:flex;flex-direction:column}
+
+  header{display:flex;align-items:baseline;justify-content:space-between;
+         padding-bottom:16px;border-bottom:1px solid var(--rule-body)}
+  .wordmark{font-family:var(--mono);font-size:30px;font-weight:700;letter-spacing:-.4px}
+  .kicker{font-size:16px;color:var(--dim)}
+
+  main{flex:1;display:flex;gap:44px;padding-top:34px;min-height:0}
+  .left{flex:1;display:flex;flex-direction:column;min-width:0}
+  h1{font-size:54px;font-weight:800;line-height:1.1;letter-spacing:-.6px}
+  .sub{font-size:25px;line-height:1.38;color:var(--dim);margin-top:16px;max-width:600px}
+
+  .capsule{margin-top:auto;background:var(--ink);border-radius:26px;padding:20px 28px;
+           font-family:var(--mono);font-size:13.5px;line-height:1.85;color:var(--bone)}
+  .chip{background:var(--sheet);color:var(--ink);border-radius:4px;padding:2px 5px}
+
+  .sheet{width:456px;background:var(--sheet);border-radius:4px;overflow:hidden;
+         align-self:flex-start}
+  .clamp{height:14px;background:var(--shade);display:flex;align-items:center;
+         justify-content:space-between;padding:0 32px}
+  .clamp u{display:block;width:8px;height:8px;border-radius:50%;background:var(--rule-sheet)}
+  .sheet-in{padding:16px 22px 20px}
+  .sheet-hd{display:flex;align-items:baseline;justify-content:space-between;
+            font-family:var(--mono);font-weight:700;color:var(--body);font-size:18px;
+            padding-bottom:9px;border-bottom:1px solid var(--rule-sheet)}
+  .sheet-hd em{font-style:normal;font-size:16px;color:var(--ink)}
+  .row{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
+       font-family:var(--mono);font-size:13px;color:var(--sheet-dim);
+       padding-bottom:6px;margin-top:12px;border-bottom:1px solid var(--rule-sheet)}
+  .row.live{color:var(--ink);font-weight:600}
+  .marks{display:flex;align-items:flex-end;gap:6.5px;height:14px;flex:none}
+  .marks i{display:block;width:2.5px;border-radius:1.25px;background:var(--ink-faded)}
+  .row.live .marks i{background:var(--ink)}
+  .marks b{display:block;width:2.5px;height:13px;background:var(--ink);
+           position:relative;margin-left:2px}
+  .marks b::before{content:"";position:absolute;top:-7px;left:-2.75px;
+                   width:8px;height:8px;border-radius:50%;background:var(--ink)}
+
+  footer{display:flex;align-items:baseline;justify-content:space-between;
+         padding-top:22px;font-size:17px;color:var(--dim)}
+  footer .repo{font-family:var(--mono);font-size:15px}
+</style>
+</head>
+<body>
+<div class="card">
+  <header>
+    <span class="wordmark">loopify</span>
+    <span class="kicker">every loop stops at 7 days</span>
+  </header>
+
+  <main>
+    <div class="left">
+      <h1>Hand Claude a job<br>that repeats.</h1>
+      <p class="sub">Come back to a log of what every tick did &mdash; not a loop you have to babysit.</p>
+      <div class="capsule">
+        /loop 20m Run one cycle of<br>
+        <span class="chip">/Users/you/acme/.loop/pr-babysitter.md</span> &mdash;<br>
+        read it first, obey its stop rule (30 ticks<br>
+        or the PR merges), log the tick.
+      </div>
+    </div>
+
+    <div class="sheet">
+      <div class="clamp"><u></u><u></u></div>
+      <div class="sheet-in">
+        <div class="sheet-hd"><span>TICKS.md</span><em>tick: 7/30</em></div>
+    <div class="row"><span>## tick 1 · 07:40 · no change</span><div class="marks"><i style="height:3px"></i><i style="height:6px"></i><i style="height:12px"></i><i style="height:4px"></i><i style="height:9px"></i><i style="height:2px"></i><i style="height:5px"></i><i style="height:11px"></i></div></div>
+    <div class="row"><span>## tick 2 · 08:00 · no change</span><div class="marks"><i style="height:4px"></i><i style="height:9px"></i><i style="height:2px"></i><i style="height:12px"></i><i style="height:6px"></i><i style="height:3px"></i><i style="height:11px"></i><i style="height:5px"></i></div></div>
+    <div class="row"><span>## tick 3 · 08:20 · no change</span><div class="marks"><i style="height:3px"></i><i style="height:11px"></i><i style="height:5px"></i><i style="height:8px"></i><i style="height:2px"></i><i style="height:7px"></i><i style="height:10px"></i><i style="height:3px"></i></div></div>
+    <div class="row"><span>## tick 4 · 08:40 · changed</span><div class="marks"><i style="height:7px"></i><i style="height:10px"></i><i style="height:3px"></i><i style="height:6px"></i><i style="height:12px"></i><i style="height:4px"></i><i style="height:9px"></i><i style="height:2px"></i></div></div>
+    <div class="row"><span>## tick 5 · 09:00 · no change</span><div class="marks"><i style="height:4px"></i><i style="height:9px"></i><i style="height:2px"></i><i style="height:5px"></i><i style="height:11px"></i><i style="height:7px"></i><i style="height:3px"></i><i style="height:4px"></i></div></div>
+    <div class="row"><span>## tick 6 · 09:20 · no change</span><div class="marks"><i style="height:5px"></i><i style="height:8px"></i><i style="height:2px"></i><i style="height:7px"></i><i style="height:10px"></i><i style="height:3px"></i><i style="height:6px"></i><i style="height:12px"></i></div></div>
+    <div class="row" class="live"><span>## tick 7 · 09:40 · changed</span><div class="marks"><i style="height:12px"></i><i style="height:6px"></i><i style="height:3px"></i><i style="height:11px"></i><i style="height:5px"></i><b></b></div></div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <span>A running loop is not proof it is doing the right thing. Read the log.</span>
+    <span class="repo">a Claude Code skill &middot; github.com/Aboudjem/loopify</span>
+  </footer>
+</div>
+</body>
+</html>
