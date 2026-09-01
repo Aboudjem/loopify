@@ -1,0 +1,28 @@
+# --- loopify's own state ---
+# loopify writes standing loop briefs to <project>/.loop/<slug>.md and the loop's state
+# (TICKS.md, LESSONS.md, QUEUE.md, LOCK, STOPPED) to <project>/.loop/<slug>/. They hold
+# absolute paths and project-specific context. Never commit them; keep this repo generic.
+.loop/
+.goal/
+
+# --- OS / editor noise ---
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+*.code-workspace
+
+# --- Tooling ---
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+.cache/
+.omc/
+.claude/
+
+# build journal (local resumability only)
+docs/audit/
