@@ -1,0 +1,24 @@
+{
+  "name": "loopify",
+  "version": "1.0.0",
+  "description": "Hand Claude a job that repeats. Come back to a log of what every tick did — not a loop you have to babysit.",
+  "author": {
+    "name": "Adam Boudjemaa",
+    "email": "boudjemaa.adam@gmail.com"
+  },
+  "homepage": "https://github.com/Aboudjem/loopify",
+  "repository": "https://github.com/Aboudjem/loopify",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "claude-code-plugin",
+    "loopify",
+    "recurring-tasks",
+    "scheduling",
+    "loop",
+    "cron",
+    "autonomous-agents",
+    "agent-skills",
+    "productivity"
+  ]
+}

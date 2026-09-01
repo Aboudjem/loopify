@@ -1,0 +1,17 @@
+{
+  "name": "loopify-marketplace",
+  "owner": {
+    "name": "Adam Boudjemaa"
+  },
+  "metadata": {
+    "description": "Hand Claude a job that repeats. Come back to a log of what every tick did — not a loop you have to babysit."
+  },
+  "plugins": [
+    {
+      "name": "loopify",
+      "source": "./",
+      "description": "Hand Claude a job that repeats. Come back to a log of what every tick did — not a loop you have to babysit.",
+      "version": "1.0.0"
+    }
+  ]
+}
