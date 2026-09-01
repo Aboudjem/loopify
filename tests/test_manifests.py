@@ -241,9 +241,25 @@ except FileNotFoundError as e:
     check("examples/loop.md is readable", False, str(e))
 
 # --- 7. README i18n parity ---
+def _h2_count(text):
+    """Count `## ` headings outside fenced code blocks (a sample TICKS.md shows `## tick N`)."""
+    n, fence = 0, None
+    for line in text.splitlines():
+        fm = FENCE_RE.match(line)
+        if fm:
+            if fence is None:
+                fence = fm.group(1)[0]
+            elif fm.group(1)[0] == fence and not fm.group(2).strip():
+                fence = None
+            continue
+        if fence is None and line.startswith("## "):
+            n += 1
+    return n
+
+
 try:
     readme = read("README.md")
-    h2 = len(re.findall(r"^## ", readme, re.MULTILINE))
+    h2 = _h2_count(readme)
     check("README.md carries the story verbatim", STORY in readme)
     check("README.md carries the canonical line verbatim", CANON in readme)
     check("README.md has the language switcher at the top", "READMEs/zh-CN.md" in readme[:1500])
@@ -254,8 +270,7 @@ try:
         except FileNotFoundError:
             check(f"{rel} exists", False)
             continue
-        check(f"{rel}: same H2 count as README.md ({h2})", len(re.findall(r"^## ", t, re.MULTILINE)) == h2,
-              f"{len(re.findall(r'^## ', t, re.MULTILINE))} vs {h2}")
+        check(f"{rel}: same H2 count as README.md ({h2})", _h2_count(t) == h2, f"{_h2_count(t)} vs {h2}")
         check(f"{rel}: switcher links back to ../README.md", "../README.md" in t[:1500])
         check(f"{rel}: carries the may-lag note marker", "<!-- may-lag -->" in t)
         rel_links = re.findall(r"(?:src=\"|\]\()(?:\.\./|assets/|docs/|examples/|skills/|CHANGELOG|LICENSE|SECURITY|CONTRIBUTING)", t)
