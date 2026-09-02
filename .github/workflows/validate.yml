@@ -139,7 +139,7 @@ jobs:
       - name: Loop-line lint (canonical line)
         shell: bash
         run: |
-          python3 evals/loop_line_lint.py "/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick."
+          python3 evals/loop_line_lint.py "/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick."
 
       # (c) NO-SECRETS CHECK (all tracked files)
       - name: No secrets

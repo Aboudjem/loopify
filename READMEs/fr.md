@@ -107,7 +107,7 @@ pour une pull request de release qui a besoin d'être surveillée :
     state      /Users/you/acme/.loop/pr-babysitter/       TICKS.md · LESSONS.md · QUEUE.md
     line       144 chars                                  one string — you paste it below
 
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 ```
 
 loopify commence par lire votre projet. Il regarde le README, les commits récents, les pull requests
@@ -144,7 +144,7 @@ planification cloud au lieu d'une boucle locale, et un chemin seul, qui ne donne
 
 ```text loop-antipattern
 # la ligne elle-même — la chaîne exacte affichée par loopify (144 caractères)
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 
 # pas ceci — "chaque matin" peut pousser /loop à proposer une planification cloud à la place, et il n'y a aucune règle d'arrêt
 /loop every morning keep the release PR healthy

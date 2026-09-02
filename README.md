@@ -13,7 +13,7 @@
 <h1 align="center">loopify</h1>
 
 <p align="center">
-  <strong>Hand Claude a job that repeats. Come back to a log of what every tick did — not a loop you have to babysit.</strong>
+  <strong>Hand Claude a job that repeats. Come back to a log of what every tick did, not a loop you have to babysit.</strong>
 </p>
 
 <p align="center">
@@ -96,7 +96,7 @@ for a release pull request that needs looking after:
     state      /Users/you/acme/.loop/pr-babysitter/       TICKS.md · LESSONS.md · QUEUE.md
     line       144 chars                                  one string — you paste it below
 
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 ```
 
 loopify reads your project first. It looks at the README, the recent commits, the open pull
@@ -133,7 +133,7 @@ local loop, and a bare path, which gives the tick nothing to do.
 
 ```text loop-antipattern
 # the line itself — the exact string loopify printed (144 characters)
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 
 # not this — "every morning" can make /loop offer a cloud schedule instead, and there is no stop rule
 /loop every morning keep the release PR healthy

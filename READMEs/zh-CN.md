@@ -71,7 +71,7 @@ claude plugin install loopify@10x
     state      /Users/you/acme/.loop/pr-babysitter/       TICKS.md · LESSONS.md · QUEUE.md
     line       144 chars                                  one string — you paste it below
 
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 ```
 
 loopify 会先读取你的项目：查看 README、最近的提交，还有未合并的 PR，然后问你一小批问题——多久跑一次、什么时候停、循环能改动什么。接着它会写出简报并打印出那一行。`/Users/you/acme/` 只是你项目路径的占位符；loopify 打印出来的会是你的真实路径。
@@ -98,7 +98,7 @@ tick: 7/30
 
 ```text loop-antipattern
 # 这行本身——loopify 打印出的原始字符串（144 个字符）
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 
 # 不要这样写——"every morning" 这种说法可能会让 /loop 转而提供云端排期，而且这里没有停止规则
 /loop every morning keep the release PR healthy

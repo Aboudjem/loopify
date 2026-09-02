@@ -1,6 +1,6 @@
 # Quickstart
 
-Hand Claude a job that repeats. Come back to a log of what every tick did — not a loop you have to
+Hand Claude a job that repeats. Come back to a log of what every tick did, not a loop you have to
 babysit. You do the prep once, while Claude still has your project in mind, and what you get back is
 one line you can paste whenever you want the loop running.
 
@@ -89,7 +89,7 @@ rule in the brief says otherwise.
 3. **Paste the line.** loopify prints it in full, and it looks like this:
 
    ```text
-   /loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+   /loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
    ```
 
    `/Users/you/acme/` stands in for your project; loopify prints the real path. Paste the whole
@@ -117,7 +117,7 @@ depends on what the last tick found. It prints the other form too, so switching 
 
 ```text loop-antipattern
 # the line — paste this whole string (144 characters)
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 
 # not this — "every morning" is daily phrasing, which can make /loop offer you a cloud schedule or refuse to run it here, and nothing says when to stop
 /loop every morning keep the release PR healthy

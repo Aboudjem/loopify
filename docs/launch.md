@@ -88,7 +88,7 @@ loopify writes two things before the loop starts:
 - **One line for `/loop`**, with the brief's path inside it:
 
 ```
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 ```
 
 Every tick re-reads the brief, does one round, and logs it to `TICKS.md` with a running `tick: N/30`
@@ -139,7 +139,7 @@ loopify writes a standing brief and one /loop line so it does all three. #Claude
 ```
 The line loopify hands you:
 
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 
 Each firing is a tick: re-read the brief, do one round, log it to TICKS.md.
 ```

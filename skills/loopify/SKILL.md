@@ -1,7 +1,7 @@
 ---
 name: loopify
 description: >-
-  Hand Claude a job that repeats. Come back to a log of what every tick did — not a loop you have to
+  Hand Claude a job that repeats. Come back to a log of what every tick did, not a loop you have to
   babysit. loopify writes the brief (a standing file the loop re-reads every tick) and the line (one
   short `/loop` string you paste into Claude Code's built-in `/loop`), with a stop rule, a tick cap and
   safety rails built in. Use when the user says "loopify", "loopify this", "loopify <job>",
@@ -20,7 +20,7 @@ metadata:
 
 ## Overview
 
-In one line, for anyone: **Hand Claude a job that repeats. Come back to a log of what every tick did —
+In one line, for anyone: **Hand Claude a job that repeats. Come back to a log of what every tick did,
 not a loop you have to babysit.**
 
 Prepare the best possible standing loop in THIS session, then hand the user one line to paste into
@@ -31,7 +31,7 @@ Claude Code's built-in `/loop`. loopify never starts the loop.
 1. **The brief — a file.** A *standing* loop brief at an absolute path under `.loop/`. The loop
    re-reads it at the start of every tick. It is never archived, moved, deleted or rewritten by a run;
    runs write only under the **state directory** next to it.
-2. **The line — a string.** One short `/loop [interval] Run one cycle of <ABSOLUTE PATH> — …` line
+2. **The line — a string.** One short `/loop [interval] Run one cycle of <ABSOLUTE PATH> · …` line
    the user pastes. The brief's path rides inside it.
 
 Also: **a tick** is one fire of the loop; **a cycle** is one pass of the brief per tick. Never call the
@@ -320,7 +320,7 @@ human.
   failure.
 
 ## Handoff — the line (what the human pastes; this file's path rides inside it)
-    /loop <interval> Run one cycle of <ABSOLUTE PATH> — read it first, obey its stop rule (<few words>), log the tick.
+    /loop <interval> Run one cycle of <ABSOLUTE PATH> · read it first, obey its stop rule (<few words>), log the tick.
 Self-paced form: <the same line without the interval>. No terminal open: <the headless recipe>.
 <If the interval is ≥ 60 min: you may be asked whether to make this a cloud schedule — answer
 "This session only".>
@@ -332,7 +332,7 @@ Derive it from the brief: the path, the mode, the stop rule in a few words. The 
 byte-identical everywhere it appears (144 characters; `/Users/you/acme/` stands in for the project):
 
 ```text
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 ```
 
 Self-paced form: the same line without `20m`.
@@ -376,7 +376,7 @@ and the headless recipe in one line.
 
 ```markdown
 # loopify default loop — written by loopify <date>
-Run one cycle of `<ABSOLUTE PATH>` — read it first, obey its stop rule, log the tick.
+Run one cycle of `<ABSOLUTE PATH>` · read it first, obey its stop rule, log the tick.
 Bare `/loop` (or `/loop 20m`) runs this. Typing any prompt after `/loop` ignores this file.
 One default per project (`.claude/loop.md` beats `~/.claude/loop.md`); edit this pointer to change it.
 ```
@@ -401,10 +401,10 @@ mode) — a permission prompt blocks the tick until you answer, and in fixed mod
    meanwhile is delivered once, late, when the prompt is answered — extra fires behind it are not queued.
 
 Next — one step (in this session, or any session open in this project; /clear first if you want it light):
-   /loop 20m Run one cycle of <ABSOLUTE PATH> — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+   /loop 20m Run one cycle of <ABSOLUTE PATH> · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 
-Self-paced instead:   /loop Run one cycle of <ABSOLUTE PATH> — read it first, obey its stop rule (…), log the tick.
-No terminal open?     cron/launchd → claude -p "Run one cycle of <ABSOLUTE PATH> — read it first, obey its stop rule (…), log the tick." --permission-mode acceptEdits --allowedTools "Bash(gh pr view:*),Bash(gh pr checks:*),Bash(git commit:*)"   (each tick is a fresh process; the state directory is its memory; remove the cron entry when STOPPED appears)
+Self-paced instead:   /loop Run one cycle of <ABSOLUTE PATH> · read it first, obey its stop rule (…), log the tick.
+No terminal open?     cron/launchd → claude -p "Run one cycle of <ABSOLUTE PATH> · read it first, obey its stop rule (…), log the tick." --permission-mode acceptEdits --allowedTools "Bash(gh pr view:*),Bash(gh pr checks:*),Bash(git commit:*)"   (each tick is a fresh process; the state directory is its memory; remove the cron entry when STOPPED appears)
 
 Fixed mode runs the first cycle at once and again at the next :00/:20/:40 — two ticks close together is normal.
 Stops at the 7-day expiry — paste the line again (delete <STATE DIR>/STOPPED first if it stopped itself).

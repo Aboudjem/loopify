@@ -92,7 +92,7 @@ Claude Code のチャットで `/loopify` と入力し、繰り返してほし�
     state      /Users/you/acme/.loop/pr-babysitter/       TICKS.md · LESSONS.md · QUEUE.md
     line       144 chars                                  one string — you paste it below
 
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 ```
 
 loopify はまず、あなたのプロジェクトを読み込みます。README、直近のコミット、オープンなプルリクエストに目
@@ -128,7 +128,7 @@ tick: 7/30
 
 ```text loop-antipattern
 # 一行そのもの — loopify が出力した文字列そのまま（144文字）
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 
 # これはダメ — 「毎朝」のような表現だと /loop がクラウドスケジュールを提案してしまうことがあり、停止ルールもありません
 /loop every morning keep the release PR healthy

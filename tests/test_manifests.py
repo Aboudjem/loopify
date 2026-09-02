@@ -40,9 +40,9 @@ from loop_line_lint import lint_loop_line  # noqa: E402
 failures = []
 _total = 0
 
-STORY = ("Hand Claude a job that repeats. Come back to a log of what every tick did — "
+STORY = ("Hand Claude a job that repeats. Come back to a log of what every tick did, "
          "not a loop you have to babysit.")
-CANON = ("/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, "
+CANON = ("/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, "
          "obey its stop rule (30 ticks or the PR merges), log the tick.")
 
 

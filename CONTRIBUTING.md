@@ -143,7 +143,7 @@ python3 tests/test_manifests.py                           # expect: exit 0, all 
 python3 tests/test_ticks_lint.py                          # expect: exit 0, all checks pass
 
 # 2. Lint any line you changed or added, the same way the skill does.
-python3 evals/loop_line_lint.py "/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick."
+python3 evals/loop_line_lint.py "/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick."
 
 # 3. Run the skill for real: drop it in and exercise the path you changed.
 cp -r skills/loopify ~/.claude/skills/loopify

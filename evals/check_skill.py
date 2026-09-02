@@ -19,9 +19,9 @@ import sys
 # Two strings are locked byte-identical across the whole repo (README, SKILL.md, the example
 # brief, the tests). They are compared against the RAW text, because the point of locking them
 # is that the wording does not drift.
-STORY = ("Hand Claude a job that repeats. Come back to a log of what every tick did — "
+STORY = ("Hand Claude a job that repeats. Come back to a log of what every tick did, "
          "not a loop you have to babysit.")
-CANON = ("/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, "
+CANON = ("/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, "
          "obey its stop rule (30 ticks or the PR merges), log the tick.")
 
 # The 15 sections of the brief template, in order (design lock §2.5; Repeat-safe added in 1.1.0).

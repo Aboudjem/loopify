@@ -1,7 +1,7 @@
 {
   "name": "loopify",
   "version": "1.1.0",
-  "description": "Hand Claude a job that repeats. Come back to a log of what every tick did — not a loop you have to babysit.",
+  "description": "Hand Claude a job that repeats. Come back to a log of what every tick did, not a loop you have to babysit.",
   "author": {
     "name": "Adam Boudjemaa",
     "url": "https://github.com/Aboudjem/loopify"

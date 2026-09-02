@@ -9,7 +9,7 @@ Every recipe below runs the words loopify printed, minus the `/loop 20m` prefix 
 the cadence has to be spoken, so it is folded into the sentence:
 
 ```text
-Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 ```
 
 `/Users/you/acme/` stands in for your project; loopify prints your real paths. The path has to be
@@ -85,7 +85,7 @@ Kimi has the scheduling tools but no command for you to type: `CronCreate`, `Cro
 `CronDelete` are called by the model after you ask for something. So ask.
 
 ```text
-Run one cycle of /Users/you/acme/.loop/pr-babysitter.md every 20 minutes — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+Run one cycle of /Users/you/acme/.loop/pr-babysitter.md every 20 minutes · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 ```
 
 The job is scoped to the session it was created in. It survives a resume of that same session and
@@ -101,7 +101,7 @@ something. Treat it as likely, and if a `/cron` command shows up in your build, 
 ### GitHub Copilot CLI
 
 ```text
-/every 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/every 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 ```
 
 `/after 20m <prompt>` is the one-shot sibling. The interval floor is 10 seconds and the ceiling is one
@@ -120,7 +120,7 @@ session-bound.
 ### Cursor CLI
 
 ```text
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 ```
 
 Cursor added `/loop` in 3.5. The syntax lines up with Claude Code's: an interval, then a prompt, and
@@ -137,7 +137,7 @@ the terminal, Cursor's cloud **Automations** are the product for that, not `/loo
 ### Qwen Code
 
 ```text
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 ```
 
 Qwen ships a close copy of the `/loop` syntax and two subcommands Claude Code does not have:
@@ -161,7 +161,7 @@ earlier pass that had described the gate as opt-in.
 ### Hermes Agent
 
 ```shell
-hermes cron create "every 20m" "Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick."
+hermes cron create "every 20m" "Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick."
 ```
 
 Hermes is the most cron-like of the group. Jobs are plain JSON in `~/.hermes/cron/jobs.json`, written
@@ -194,7 +194,7 @@ version: 1.0.0
 title: pr-babysitter
 description: One cycle of the loopify brief for the release PR.
 prompt: >-
-  Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first,
+  Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first,
   obey its stop rule (30 ticks or the PR merges), log the tick.
 ```
 
@@ -291,7 +291,7 @@ On macOS, save this as `~/Library/LaunchAgents/com.you.loopify.pr-babysitter.pli
   <array>
     <string>/bin/zsh</string>
     <string>-lc</string>
-    <string>cd /Users/you/acme &amp;&amp; claude -p "Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick." --permission-mode acceptEdits --allowedTools "Bash(gh pr view:*),Bash(gh pr checks:*),Bash(git commit:*)" &gt;&gt; ~/Library/Logs/loopify-pr-babysitter.log 2&gt;&amp;1</string>
+    <string>cd /Users/you/acme &amp;&amp; claude -p "Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick." --permission-mode acceptEdits --allowedTools "Bash(gh pr view:*),Bash(gh pr checks:*),Bash(git commit:*)" &gt;&gt; ~/Library/Logs/loopify-pr-babysitter.log 2&gt;&amp;1</string>
   </array>
   <key>StartInterval</key><integer>1200</integer>
   <key>RunAtLoad</key><false/>

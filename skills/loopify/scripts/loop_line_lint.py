@@ -6,7 +6,7 @@ The same rules are written in prose in skills/loopify/SKILL.md ("Loop-line rules
 is the executable form, used by tests/test_manifests.py against the shipped example and usable
 on any line you are about to paste:
 
-    python3 evals/loop_line_lint.py "/loop 20m Run one cycle of /abs/path/.loop/job.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick."
+    python3 evals/loop_line_lint.py "/loop 20m Run one cycle of /abs/path/.loop/job.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick."
 
 Exit 0 = passes; 1 = at least one rule failed (each failure printed). Notes are advisory.
 No third-party deps; standard library only. Every threshold below is sourced in SKILL.md.
@@ -27,7 +27,7 @@ EXPIRY_DAYS = 7
 SPAN_RE = re.compile(r"\b(\d+)\s*(d|days?|w|wks?|weeks?|mo|months?)\b", re.I)
 SPAN_DAYS = {"d": 1, "day": 1, "days": 1, "w": 7, "wk": 7, "wks": 7, "week": 7, "weeks": 7,
              "mo": 30, "month": 30, "months": 30}
-ABS_PATH_RE = re.compile(r"Run one cycle of (\S+?\.md)(?=[\s,.;:—–-]|$)")
+ABS_PATH_RE = re.compile(r"Run one cycle of (\S+?\.md)(?=[\s,.;:·—–-]|$)")
 
 
 def interval_minutes(token):

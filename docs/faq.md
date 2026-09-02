@@ -20,7 +20,7 @@ for word, every tick, for as long as the loop lasts. That is the line, and the b
 inside it:
 
 ```text
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 ```
 
 One file cannot be both. A prompt long enough to be a brief is a prompt you re-send every tick; a
@@ -128,7 +128,7 @@ and exits, so it fires zero times. What works is a cron or launchd entry that ru
 without the `/loop` part, as a one-shot headless call:
 
 ```bash
-claude -p "Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick." --permission-mode acceptEdits --allowedTools "Bash(gh pr view:*),Bash(gh pr checks:*),Bash(git commit:*)"
+claude -p "Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick." --permission-mode acceptEdits --allowedTools "Bash(gh pr view:*),Bash(gh pr checks:*),Bash(git commit:*)"
 ```
 
 One line, because a crontab entry is one line.

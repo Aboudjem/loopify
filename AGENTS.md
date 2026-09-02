@@ -14,7 +14,7 @@ batch, genuine forks only), and writes **two artifacts**:
 1. **The brief — a file.** A standing loop brief at an absolute path, `<project>/.loop/<slug>.md`. The
    loop re-reads it at the start of every tick. It is never archived, moved, deleted or rewritten by a
    run; runs write only under the **state directory**, `<project>/.loop/<slug>/`.
-2. **The line — a string.** One short `/loop [interval] Run one cycle of <ABSOLUTE PATH> — …` string
+2. **The line — a string.** One short `/loop [interval] Run one cycle of <ABSOLUTE PATH> · …` string
    the user pastes into Claude Code's built-in `/loop`. The brief's absolute path rides inside it.
 
 A **tick** is one fire of the loop. A **cycle** is one pass of the brief per tick. loopify never starts
@@ -56,7 +56,7 @@ These are non-negotiable. Do not look for loopholes; violating the letter violat
    ONLY under the state directory. A run that wants the brief changed writes the proposal to
    `QUEUE.md` and leaves the brief alone.
 5. **Never hand `/loop` a bare path.** The line always carries the verb: `Run one cycle of <ABSOLUTE
-   PATH> — read it first, obey its stop rule (…), log the tick.` A tick handed only a path has nothing
+   PATH> · read it first, obey its stop rule (…), log the tick.` A tick handed only a path has nothing
    to do with it. Print the whole line inline — never a file launcher, never a placeholder.
 6. **Every line carries a tick cap and a stop rule.** There is no native cost cap behind `/loop`, so
    the tick cap, the stop rule and the per-tick budget in the brief are the only bounds that exist. If

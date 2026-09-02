@@ -107,7 +107,7 @@ pull request de release que necesita que alguien la vigile:
     state      /Users/you/acme/.loop/pr-babysitter/       TICKS.md · LESSONS.md · QUEUE.md
     line       144 chars                                  one string — you paste it below
 
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 ```
 
 loopify lee tu proyecto primero. Mira el README, los commits recientes, las pull requests abiertas,
@@ -145,7 +145,7 @@ instrucción.
 
 ```text loop-antipattern
 # la línea en sí — la cadena exacta que imprimió loopify (144 caracteres)
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 
 # esto no — "every morning" puede hacer que /loop ofrezca un horario en la nube en su lugar, y no hay regla de parada
 /loop every morning keep the release PR healthy

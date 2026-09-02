@@ -1,13 +1,13 @@
 # loopify
 
-> Hand Claude a job that repeats. Come back to a log of what every tick did — not a loop you have to babysit.
+> Hand Claude a job that repeats. Come back to a log of what every tick did, not a loop you have to babysit.
 >
 > loopify is a Claude Code skill (an Agent Skill) that turns a job that repeats into two handoff
 > artifacts, and stops there. The **brief** is a standing Markdown file at an absolute path holding
 > what one round of the job does, what it must never do, when to stop, and where to write its notes;
 > the loop re-reads it at the start of every **tick** (one fire of the loop, one pass of the brief),
 > it is never archived, and the loop's own files live in a state directory beside it. The **line** is
-> one short `/loop [interval] Run one cycle of <ABSOLUTE PATH> — …` string the user pastes into Claude
+> one short `/loop [interval] Run one cycle of <ABSOLUTE PATH> · …` string the user pastes into Claude
 > Code's built-in `/loop`, with the brief's absolute path inside it. loopify writes both and prints
 > the line; it never starts the loop. Nothing behind `/loop` decides that the job is done, so the
 > brief's per-tick definition of done and the tick log (`TICKS.md`) are the only proof there is. A

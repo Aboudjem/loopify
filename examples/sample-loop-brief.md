@@ -193,10 +193,10 @@ go to QUEUE.md for the human.
 ## Handoff — the line (what the human pastes; this file's path rides inside it)
 
 ```text
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 ```
 
-Self-paced form: `/loop Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick.`
-No terminal open: cron/launchd → `claude -p "Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick." --permission-mode acceptEdits --allowedTools "Bash(gh pr view:*),Bash(gh pr checks:*),Bash(gh run view:*),Bash(npm test:*),Bash(git commit:*),Bash(git merge:*)"`.
+Self-paced form: `/loop Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.`
+No terminal open: cron/launchd → `claude -p "Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick." --permission-mode acceptEdits --allowedTools "Bash(gh pr view:*),Bash(gh pr checks:*),Bash(gh run view:*),Bash(npm test:*),Bash(git commit:*),Bash(git merge:*)"`.
 Permissions in a session: pre-approve the same commands (allowlist or auto mode) — a permission prompt
 blocks the tick until you answer, and a fire that lands meanwhile is delivered once, late — extra fires behind it are not queued.

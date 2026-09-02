@@ -88,7 +88,7 @@ The same eight rules the skill applies in prose before printing a line. Run it o
 about to paste:
 
 ```bash
-python3 evals/loop_line_lint.py "/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick."
+python3 evals/loop_line_lint.py "/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick."
 # PASS: loop-line lint (144 chars)
 
 python3 evals/loop_line_lint.py "/loop 20m /deploy-now"
