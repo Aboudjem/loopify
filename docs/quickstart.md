@@ -1,5 +1,9 @@
 # Quickstart
 
+<p align="center">
+  <img src="../assets/hero.svg" alt="Four steps: describe a job that repeats, get a brief (a file) and a line (one string), paste the line into /loop, come back to a tick log." width="100%">
+</p>
+
 Hand Claude a job that repeats. Come back to a log of what every tick did, not a loop you have to
 babysit. You do the prep once, while Claude still has your project in mind, and what you get back is
 one line you can paste whenever you want the loop running.

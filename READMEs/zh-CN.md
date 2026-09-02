@@ -1,138 +1,178 @@
 <p align="center">
-  <a href="../README.md">English</a> ·
-  <b>简体中文</b> ·
-  <a href="ja.md">日本語</a> ·
-  <a href="es.md">Español</a> ·
-  <a href="fr.md">Français</a>
-</p>
-
-<p align="center"><sub>此译文可能落后于英文原版。<!-- may-lag --></sub></p>
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Aboudjem/loopify/main/assets/hero.svg" alt="四个步骤：描述一项要重复的工作，得到一份简报（一个文件）和一行命令（一个字符串），把这一行粘贴进 /loop，然后回来查看 tick 日志。" width="100%">
-</p>
-
-<h1 align="center">loopify</h1>
-
-<p align="center">
-  <strong>把一项会反复出现的工作交给 Claude。回来看到的是每次 tick 都做了什么的日志——而不是一个需要你盯着的循环。</strong>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Aboudjem/loopify/main/assets/hero-dark.svg">
+    <img src="https://raw.githubusercontent.com/Aboudjem/loopify/main/assets/hero-light.svg" alt="loopify：一个不用你盯着的循环。把一项会重复的工作交给 Claude，回来看每个 tick 做了什么的日志。" width="100%">
+  </picture>
 </p>
 
 <p align="center">
   <a href="https://github.com/Aboudjem/loopify/actions/workflows/validate.yml"><img src="https://github.com/Aboudjem/loopify/actions/workflows/validate.yml/badge.svg" alt="validate"></a>
   <a href="https://github.com/Aboudjem/loopify/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg" alt="MIT license"></a>
-  <img src="https://img.shields.io/badge/Claude%20Code-skill-d97757" alt="Claude Code skill">
-  <a href="https://skills.sh/Aboudjem/loopify"><img src="https://skills.sh/b/Aboudjem/loopify" alt="skills.sh"></a>
+  <a href="https://github.com/Aboudjem/loopify/stargazers"><img src="https://img.shields.io/github/stars/Aboudjem/loopify?color=2BE8C8&labelColor=0A0F1C" alt="stars"></a>
 </p>
 
-有些工作从来做不完。一个发布 PR 需要有人整个下午盯着它的检查项、回复评审者的意见。一次部署需要每隔几分钟查看一次，直到它稳定下来。新的 bug 报告会在夜里不断堆积，需要有人在别人看到之前先看一遍。你可以让 Claude 把这些事各做一次。真正麻烦的，是让它按计划持续做下去，而你不用守在旁边。
+<p align="center">
+  <a href="../README.md">English</a> · <b>简体中文</b> · <a href="ja.md">日本語</a> · <a href="es.md">Español</a> · <a href="fr.md">Français</a>
+</p>
 
-Claude Code 有一个用来重复工作的命令：`/loop`。你给它一段提示词和一个时间间隔，只要你的会话保持打开，它就会一遍遍运行这段提示词。但它不会替你把提示词写好。写得太短，循环会忘记自己上一次决定过什么；写得太长，它可能会推送你从未想要推送的东西，或者在工作早就完成之后还继续运行——因为没有人告诉它该在什么时候停下。
+<p align="center">
+  <strong>把一项会重复的工作交给 Claude。回来时你看到的是每个 tick 做了什么的日志，而不是一个需要你盯着的循环。</strong>
+</p>
 
-loopify 是一个 Claude Code 技能，会替你把这段提示词好好写出来。你只需用大白话描述一次这项工作。趁 Claude 还掌握着你的上下文，loopify 会读取你的项目，问你几个真正重要的决定（多久跑一次、什么时候停、它能碰哪些东西），然后写出两样东西。
+<p align="center">
+  <a href="#它做什么">它做什么</a> · <a href="#安装">安装</a> · <a href="#怎么用">怎么用</a> · <a href="#在你的编辑器里">在你的编辑器里</a> · <a href="#值得先知道的事">值得先知道的事</a> · <a href="#了解更多">了解更多</a>
+</p>
 
-第一样是**简报**：一个描述这项工作每一轮该做什么的文件——该读什么、能改什么、绝不能做什么、什么时候停下来，以及要把发生的事写在哪里。循环每次运行开始时都会重新打开这个文件，所以不会在两次运行之间遗漏什么；而且你可以在循环运行期间编辑它。
-
-第二样是**那一行**：一小段你粘贴进 `/loop` 的字符串。简报的路径就藏在这行里，所以每次运行都知道该去哪里找；停止规则也在里面，所以循环几时结束由你决定。
-
-每一次运行称为一次 **tick**。每次 tick，Claude 都会重新读一遍简报，完成一轮工作，并把发生的事写进一份叫 `TICKS.md` 的日志。可以把它想象成一个拿着记录板巡夜的守夜人：简报是钉在墙上的巡查表，那一行是你贴出的排班，日志则是你早上翻看的那块记录板。你不必熬夜守着，但你得看那块记录板。
-
-## 你会得到什么
-
-- ⚡ **一行就能交出去。** 粘贴一次即可——无论是在当前会话，还是那个项目下打开的任意会话里。简报的路径就藏在这行命令里。
-- 📋 **简报常驻不变。** 它是一个固定不动的文件：每次 tick 都会重新读取，从不归档，也不会被循环改写。你可以在两次 tick 之间打开它，改动其中的某个决定。
-- 🧭 **先把那几个真正重要的选择定下来。** 多久跑一次、什么时候停、它能碰哪些东西——这些问题只在第一次 tick 之前问一次，而不是留到第 12 次 tick 才临时猜。
-- 🛑 **那一行里自带停止规则和 tick 上限。** 完成了工作的循环会停下来，达到上限的循环也会停下来。不会有循环在无人留意的情况下意外撞上 7 天的默认上限。
-- 🔒 **给无人值守的运行装上护栏。** 不碰账号、不碰支付，未经你允许不推送、不发布。循环沿途读到的一切——比如一条 PR 评论或一个 issue——都只是数据，从来不是指令。
-- 🗒️ **一份你看得懂的日志。** `TICKS.md` 记录每一次 tick，并附上它做了什么的证据；`QUEUE.md` 保存它没法安全完成、留给你处理的事项。
-- 🧠 **一个会学习的循环。** `LESSONS.md` 保存哪些做法有效、哪些白费了时间，循环每次 tick 都会重新读取它。
-- 🔁 **粘贴一次即可重启。** 简报保持原样不变；循环结束后，再粘贴一次那一行就行。
-
-## 三个步骤
-
-### 1. 先安装一次
-
-打开终端，添加 10x 应用市场，然后安装这个插件。loopify 已针对 Claude Code 2.1.252 验证过；[快速上手](https://github.com/Aboudjem/loopify/blob/main/docs/quickstart.md) 里还有其他安装方式。
+<p align="center"><sub>本翻译可能落后于英文原文。<!-- may-lag --></sub></p>
 
 ```bash
 claude plugin marketplace add Aboudjem/10x
 claude plugin install loopify@10x
 ```
 
-如果你更喜欢用 [skills CLI](https://skills.sh)，一条命令就能达到同样效果：`npx skills add Aboudjem/loopify`
+## 它做什么
 
-### 2. 描述这项工作，然后粘贴那一行
+有些工作其实永远做不完。一个发布用的 pull request 需要有人盯着一整个下午；新的 bug 报告在夜里堆积，
+最好在有人认真读之前先过一遍。Claude Code 已经有一个用来重复工作的命令 `/loop`：你给它一段提示词和一个
+时间间隔，只要会话还开着，它就会一遍遍地运行这段提示词。它不替你写的，正是那段提示词。
 
-在 Claude Code 聊天框里输入 `/loopify`，说出你想让它重复做的事。以下是一个需要持续照看的发布 PR 会是什么样子：
+loopify 来写这段提示词。你只用普通的话把工作描述一次。loopify 会趁 Claude 还带着你的上下文时读你的项目，
+问你几个真正需要决定的问题（多久跑一次、什么时候停、可以改动什么），然后写出两样东西。
+
+- **简报，一个文件。** 一轮工作的说明：读什么、可以改什么、绝对不能做什么、什么时候停、把发生的事写到
+  哪里。循环在每次运行开始时都会重新打开这个文件，所以两次运行之间不会丢失任何东西，而且循环正在跑的
+  时候你也可以改它。
+- **一行命令，一个字符串。** 你把它粘贴进 `/loop`。简报的路径就在这一行里面，所以每次运行都知道该去哪里
+  读。停止规则也在里面，所以循环会按你的条件结束。
+
+每次运行就是一个 **tick**。每个 tick，Claude 会重新读简报，做一轮工作，然后把发生的事写进一个叫
+`TICKS.md` 的日志。你不用熬夜等着，但你要读这份日志。
+
+如果你用过 [goalify](https://github.com/Aboudjem/goalify)，这会很眼熟。goalify 面向的是会结束的工作：
+一个大任务、一个完成的定义、`/goal`。loopify 面向的是会重复的工作。
+
+## 安装
+
+上面两条命令会添加 10x 插件市场，并把插件装进 Claude Code；loopify 是在 Claude Code 2.1.252 上验证过的。
+其他智能体也可以用 [skills CLI](https://github.com/vercel-labs/skills) 一行装上同一个技能目录：
+
+```bash
+npx skills add Aboudjem/loopify
+```
+
+## 怎么用
+
+### 1. 描述这项工作
+
+在 Claude Code 的对话里输入 `/loopify`，说清楚要重复什么。loopify 会读 README、最近的提交和打开的 pull
+request，然后集中问你一轮简短的问题。
 
 ```text
 /loopify keep our release PR healthy, check it every 20 minutes
-    brief      /Users/you/acme/.loop/pr-babysitter.md     a file — re-read every tick
+    brief      /Users/you/acme/.loop/pr-babysitter.md     a file, re-read every tick
     state      /Users/you/acme/.loop/pr-babysitter/       TICKS.md · LESSONS.md · QUEUE.md
-    line       144 chars                                  one string — you paste it below
+    line       144 chars                                  one string, you paste it below
+```
 
+`/Users/you/acme/` 代表你的项目；loopify 会打印你真实的路径。
+
+### 2. 粘贴这一行
+
+```text
 /loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 ```
 
-loopify 会先读取你的项目：查看 README、最近的提交，还有未合并的 PR，然后问你一小批问题——多久跑一次、什么时候停、循环能改动什么。接着它会写出简报并打印出那一行。`/Users/you/acme/` 只是你项目路径的占位符；loopify 打印出来的会是你的真实路径。
+Claude 会立刻跑一轮，之后在那个会话里每 20 分钟跑一次，直到这个 pull request 被合并，或者跑满 30 个
+tick，以先到者为准。不写时间间隔，Claude 就自己掌握节奏。最常见的两个写法错误：
 
-把那一行粘贴进聊天框。在上面的例子里，Claude 会立刻运行一轮，然后在那个会话里每 20 分钟运行一次，直到 PR 合并或者跑满 30 次 tick，以先到者为准。如果那一行里不写时间间隔，Claude 会自己把握节奏，在没什么动静时等得更久一些。
+```text loop-antipattern
+# 不要这样写："every morning" 这种说法可能会让 /loop 转而提供云端排期，而且这里没有停止规则
+/loop every morning keep the release PR healthy
+
+# 也不要只给路径：这个 tick 只拿到一个文件名，没有任何指令
+/loop 20m /Users/you/acme/.loop/pr-babysitter.md
+```
 
 ### 3. 读日志
 
-你可以随时回来看看。`TICKS.md` 里每次 tick 一条记录，写着改了什么、证据是什么，顶部还有一个计数器，让你看出循环跑到哪一步了：
+`TICKS.md` 里每个 tick 一条记录，写明改了什么以及对应的证据，顶部还有一个计数器：
 
 ```text
 tick: 7/30
 
 ## tick 7 · 2026-09-01T09:40 · changed
-- CI: src/api.ts 的 lint 检查失败 → 修复了未使用的 import，提交 4f2a1c9，npm test 12/12
-- reviews: 回复了 1 个新评审串（重命名），回复草稿写在 QUEUE.md 里
+- CI: lint failed on src/api.ts → fixed the unused import, committed 4f2a1c9, npm test 12/12
+- reviews: 1 new thread answered (rename), reply drafted in QUEUE.md
 ```
 
-循环没法安全完成的事——比如一条它不该擅自发出的评审回复——会留在 `QUEUE.md` 里等你处理。
+循环不能安全完成的事情，都会留在 `QUEUE.md` 里等你。
 
-### 那一行，对的写法和错的写法
+## 你会得到什么
 
-写对的那一行会带着简报的路径和停止规则。下面两个错误示例是大家最常犯的错：一种是按天描述的说法，可能会让 `/loop` 转而提供云端排期，而不是本地循环；另一种是只给路径，这样 tick 就没有任何指令可执行。
+- **一份不会乱动的简报。** 每个 tick 都重新读一遍，从不归档，也不会被循环改写。多久跑一次、什么时候停、
+  可以改动什么，都在第一个 tick 之前就定好了。
+- **停止规则和 tick 上限就写在那一行里。** 做完工作的循环会停，跑到上限的循环也会停。
+- **无人值守运行的护栏。** 不碰账号，不付款，除非你明确同意，否则不 push 也不发布。循环读到的任何东西，
+  比如一条 pull request 评论，都是数据，绝不是指令。
+- **每份简报都有一条“重复运行也安全”的条款。** 简报会写明一个 tick 动手之前要找的标记，这样再跑一次的
+  tick 就能判断这件事已经做过了。
+- **有固定格式的日志。** `TICKS.md` 的每条记录都以同样的表头开头，
+  `## tick <n> · <ISO timestamp> · changed | noop | stopped`，可以用
+  `skills/loopify/scripts/ticks_lint.py` 检查。`QUEUE.md` 里被卡住的条目会带上 `reason:` 行和
+  `unblock:` 行。
+- **一个会学习的循环。** `LESSONS.md` 记下哪些做法有效、哪些在浪费时间，循环每个 tick 都会重新读它。
 
-```text loop-antipattern
-# 这行本身——loopify 打印出的原始字符串（144 个字符）
-/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
+## 在你的编辑器里
 
-# 不要这样写——"every morning" 这种说法可能会让 /loop 转而提供云端排期，而且这里没有停止规则
-/loop every morning keep the release PR healthy
+可以在 Claude Code、Cursor、Codex、Copilot、Gemini CLI，以及通过 `npx skills add` 支持的另外 70 多个
+智能体里使用。
 
-# 也不要只给路径——这样 tick 只拿到一个文件名，没有任何指令
-/loop 20m /Users/you/acme/.loop/pr-babysitter.md
-```
+| 在哪里 | 怎么装 |
+| --- | --- |
+| Claude Code | `claude plugin install loopify@10x` |
+| Cursor、Codex、Gemini CLI、OpenCode、Windsurf、Zed、Kimi Code CLI | `npx skills add Aboudjem/loopify -a <agent>` |
+| VS Code 和 GitHub Copilot | `npx skills add Aboudjem/loopify -a github-copilot` |
+| 其他所有情况 | 把 `skills/loopify/` 复制到你的智能体的技能目录 |
 
-### 在你第一次运行循环之前，值得了解的几件事
+loopify 只是一个技能目录，旁边放着两个只用标准库的 Python 脚本，没有服务要跑，也没有东西要编译。每个
+智能体的 `-a` 代号、两个安装路径，以及手动复制的做法，都在
+[docs/editors.md](https://github.com/Aboudjem/loopify/blob/main/docs/editors.md) 里。
 
-- **循环活在你粘贴它的那个会话里。** 只有那个会话保持打开，它才会触发。关掉终端它就停了；`/clear` 也会把排期一并清掉。在后台运行 Claude Code 可以让它在没有窗口的情况下继续存活。
-- **提前批准 tick 要运行的命令。** loopify 会打印出循环需要用到的命令，比如 `gh pr view` 或 `git commit`。在粘贴那一行之前，把它们加进你的许可清单。如果某次 tick 撞上了权限确认提示，它会停在那里，直到有人回应。
-- **每个循环都会在 7 天后结束。** 这是 Claude Code 对排期工作的规定，两种模式都一样。再粘贴一次那一行，循环就会按简报里写的地方继续。
-- **想提前停下**，可以在自定节奏的循环等待时按 `Esc`；对固定间隔的循环，就说"取消 pr-babysitter 任务"。可以问一句"我有哪些排期任务？"来确认它已经没了。
+简报可以跨工具带走，那一行不行。那一行是 Claude Code 的 `/loop` 命令行，而简报里的排期步骤用的是
+Claude Code 的工具。简报本身留好了这个分支：跑一轮、记录、退出，让外部的调度器触发下一个 tick。
+[docs/other-agents.md](https://github.com/Aboudjem/loopify/blob/main/docs/other-agents.md) 覆盖了 Kimi、
+Copilot CLI、Cursor、Qwen Code、Hermes、Goose 和普通的 cron。
+
+## 值得先知道的事
 
 > [!IMPORTANT]
-> 循环在运行不代表它做的事是对的——请去读 tick 日志。没有任何机制会对
-> `/loop` 做评判；简报里每次 tick 的检查清单和 `TICKS.md` 是仅有的证据。循环运行
-> 在你粘贴它的那个 Claude Code 会话内部：只有那个会话保持打开，它才会触发。每个
-> 循环都会在 7 天后停止；再粘贴一次那一行即可重新开始。
+> 循环在跑，并不证明它在做对的事。请读 tick 日志。`/loop` 背后没有任何评估器，简报里逐 tick 的检查清单
+> 和 `TICKS.md` 是仅有的证据。
+
+- **循环活在你粘贴它的那个会话里。** 只有那个会话开着它才会触发。关掉终端它就停了，`/clear` 也会清掉
+  排期。把 Claude Code 放到后台运行，可以在没有窗口的情况下让它继续活着。
+- **任何循环都会在 7 天时结束**，而且一个会话最多容纳 50 个已排期的任务。这两条都是 Claude Code 对排期
+  工作的限制，不是 loopify 的限制。想继续，把那一行再粘贴一次。
+- **提前批准 tick 会执行的命令。** loopify 会打印循环需要的命令，比如 `gh pr view` 或 `git commit`。
+  撞上权限询问的 tick 会一直等在那里，直到有人回答。
 
 ## 了解更多
 
-- [快速上手](https://github.com/Aboudjem/loopify/blob/main/docs/quickstart.md) — 你的第一个循环、其他安装方式、在不打开终端的情况下运行
-- [一个完整示例](https://github.com/Aboudjem/loopify/blob/main/examples/sample-loop-brief.md) — 一份完整的发布 PR 简报，末尾附着那一行
-- [如实说明的局限](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md) — loopify 不承诺做到的所有事，每一条都能追溯到 Claude Code 的二进制文件或官方文档
-- [其他智能体](https://github.com/Aboudjem/loopify/blob/main/docs/other-agents.md) — 同一份简报在 Kimi、Copilot CLI、Cursor、Qwen Code、Hermes、Goose 和普通 cron 下的用法
-- [常见问题](https://github.com/Aboudjem/loopify/blob/main/docs/faq.md) · [`loop.md` 指针文件](https://github.com/Aboudjem/loopify/blob/main/docs/loop-md.md) · [更新日志](https://github.com/Aboudjem/loopify/blob/main/CHANGELOG.md) · [贡献指南](https://github.com/Aboudjem/loopify/blob/main/CONTRIBUTING.md) · [技能本身](https://github.com/Aboudjem/loopify/blob/main/skills/loopify/SKILL.md)
-
-如果你用过 [goalify](https://github.com/Aboudjem/goalify)，这一切会显得很眼熟。goalify 面向的是能做完的工作：一个大任务、一个明确的完成标准、`/goal`。loopify 面向的是会反复出现的工作。同一个作者，同样先写测试的习惯，同样如实说明工具做不到什么。
+- [快速上手](https://github.com/Aboudjem/loopify/blob/main/docs/quickstart.md)：第一个循环的完整步骤，
+  以及不开终端时怎么跑
+- [装进你的编辑器](https://github.com/Aboudjem/loopify/blob/main/docs/editors.md)：智能体代号和 skills
+  CLI 的两个路径
+- [一个完整示例](https://github.com/Aboudjem/loopify/blob/main/examples/sample-loop-brief.md)：一份完整
+  简报，那一行就在末尾
+- [如实说明的局限](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md)：loopify 不承诺的所有
+  事情，每条都能追溯到二进制文件或官方文档
+- [其他智能体](https://github.com/Aboudjem/loopify/blob/main/docs/other-agents.md)：同一份简报在 Kimi、
+  Cursor、Goose 和普通 cron 下怎么跑
+- [常见问题](https://github.com/Aboudjem/loopify/blob/main/docs/faq.md) · [`loop.md` 指针](https://github.com/Aboudjem/loopify/blob/main/docs/loop-md.md) · [更新日志](https://github.com/Aboudjem/loopify/blob/main/CHANGELOG.md) · [参与贡献](https://github.com/Aboudjem/loopify/blob/main/CONTRIBUTING.md) · [技能本身](https://github.com/Aboudjem/loopify/blob/main/skills/loopify/SKILL.md)
 
 ---
 
-<sub>由 <a href="https://github.com/Aboudjem">Adam Boudjemaa</a> 构建 · MIT 许可。`/loop` 的行为于
-2026 年根据实际发布的 Claude Code 2.1.252 二进制文件与官方文档重新推导得出。是
-<a href="https://github.com/Aboudjem/goalify">goalify</a> 的姊妹项目，goalify 为 `/goal` 做同样的事。
-<a href="https://github.com/Aboudjem/loopify/issues">发现遗漏了吗？</a></sub>
+<sub>由 <a href="https://github.com/Aboudjem">Adam Boudjemaa</a> 制作 · MIT。`/loop` 的行为是 2026 年从
+已发布的 Claude Code 2.1.252 二进制文件和官方文档重新推导的。它是
+<a href="https://github.com/Aboudjem/goalify">goalify</a> 的姊妹项目，后者为 `/goal` 做同样的事。
+<a href="https://github.com/Aboudjem/loopify/issues">发现缺漏了吗？</a></sub>
