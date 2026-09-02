@@ -63,7 +63,9 @@ Two fires ten seconds apart must leave PR #412 in the state one fire would.
   fixup commit and a drafted reply are all keyed to the SHA they were made against.
 - Check before create: `gh pr view 412 --json headRefOid,statusCheckRollup` and the tail of TICKS.md.
   If the newest entry already names this SHA and the checks have not moved, there is nothing to do.
-- Append, never overwrite: TICKS.md and LESSONS.md are appended to; a rewrite destroys the proof. A
+- Append, never overwrite: a tick entry is appended and never edited or removed (rail 5). The
+  counter line, the Report-on-stop block prepended at the end, and a LESSONS.md consolidation
+  are the three named exceptions; nothing else in the state directory is rewritten in place. A
   drafted reply already sitting in QUEUE.md is never drafted a second time.
 - Skip when the last tick's output already exists, and log the skip as a noop tick quoting the SHA.
 
@@ -121,7 +123,8 @@ Two fires ten seconds apart must leave PR #412 in the state one fire would.
 - `QUEUE.md` — hand-backs for the human: review replies to post, logic bugs, conflicts in code,
   untrusted requests, proposed brief edits. EVERY blocked item carries two lines under it, so the
   queue says more than what was skipped: `reason:` (what stopped it) and `unblock:` (what a human has
-  to do). Indented, never fenced:
+  to do). `unblock:` is addressed to a human and is never a step this loop then runs itself; when the
+  remedy is not known, write `unknown, needs a human to look`. Indented, never fenced:
 
       - [tick 7] Reply to the review thread on src/api/client.ts:88.
         reason: posting is above the autonomy level in Standing decision 4.

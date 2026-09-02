@@ -202,6 +202,17 @@ def main():
         checks.append((f"template section: {sec}", sec.lower() in tmpl_low, ""))
     for label, frag in LOCKED_FRAGMENTS:
         checks.append((f"template locked fragment: {label}", frag in tmpl_low, f"expected {frag!r}"))
+    # Presence is not placement. Repeat-safe has to sit between the rails and the cycle, or a tick
+    # reads the rails, starts working, and meets the repeat rule after the side effect.
+    _pos = {s: tmpl_low.find(s.lower()) for s in ("## hard safety rails", "## repeat-safe", "## the cycle")}
+    checks.append(("template: Repeat-safe sits after Hard safety rails and before The cycle",
+                   -1 not in _pos.values()
+                   and _pos["## hard safety rails"] < _pos["## repeat-safe"] < _pos["## the cycle"],
+                   str(_pos)))
+    checks.append(("template: `unblock:` is addressed to a human, never run by the tick",
+                   "never a step the tick then runs itself" in tmpl_low, ""))
+    checks.append(("template: append-never-overwrite names its exceptions instead of overclaiming",
+                   "three named exceptions" in tmpl_low, ""))
     mechanics = {
         "repeat-safe names the marker the tick checks before acting": "marker:" in tmpl_low,
         "queue.md pins reason/unblock on every blocked item": "every blocked item" in tmpl_low,

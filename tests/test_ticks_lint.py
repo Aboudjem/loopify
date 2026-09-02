@@ -46,8 +46,6 @@ check("a well-formed log passes", ok, "; ".join(why))
 BAD = [
     ("a missing counter line is caught",
      GOOD.replace("tick: 3/30", "# TICKS"), "check 1"),
-    ("an unrotated log with a gap between the counter and the entries is caught",
-     GOOD.replace("tick: 3/30", "tick: 5/30"), "check 2"),
     ("headers out of order are caught",
      GOOD.replace("## tick 3 ·", "## tick 2 ·"), "append-only"),
     ("an unknown status is caught",
@@ -77,9 +75,15 @@ ok, why = lint_ticks(ROTATED)
 check("a rotated log passes (fewer entries than the counter, newest entry matches)", ok,
       "; ".join(why))
 
-ok, why = lint_ticks(ROTATED.replace("tick: 512/600", "tick: 900/1000"))
-check("a rotated log whose newest entry is not the counter is caught", (not ok) and "check 2" in " ".join(why),
+# A tick that exits on the LOCK check (STATE increments before that check) bumps the counter and
+# never reaches LOG, so the counter legitimately runs ahead of the newest entry.
+ok, why = lint_ticks(GOOD.replace("tick: 3/30", "tick: 5/30"))
+check("a counter ahead of the newest entry passes (a tick exited on the LOCK check)", ok,
       "; ".join(why))
+
+ok, why = lint_ticks(GOOD.replace("tick: 3/30", "tick: 2/30"))
+check("a newest entry ahead of the counter is caught (logged without incrementing)",
+      (not ok) and "check 2" in " ".join(why), "; ".join(why))
 
 ok, why = lint_ticks("tick: 4/30\n")
 check("a counter above zero with no entries at all is caught",

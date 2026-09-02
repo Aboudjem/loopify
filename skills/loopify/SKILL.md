@@ -211,7 +211,9 @@ The same tick can arrive twice: a duplicate fire, a session restarted, a human p
 - Marker: <what proves this tick's work already happened: a label, a file under the state directory, a
   comment fingerprint, a commit trailer>.
 - Check before create: <the read-only command that looks for the marker>. Never create blind.
-- Append, never overwrite: TICKS.md and LESSONS.md are appended to; a rewrite destroys the proof.
+- Append, never overwrite: a tick entry is appended and never edited or removed (rail 5). The
+  counter line, the Report-on-stop block prepended at the end, and a LESSONS.md consolidation
+  are the three named exceptions; nothing else in the state directory is rewritten in place.
 - Skip when the last tick's output already exists, and log the skip as a noop tick quoting the marker.
 
 ## The cycle (one tick = one pass)
@@ -258,8 +260,10 @@ The same tick can arrive twice: a duplicate fire, a session restarted, a human p
   own observations only.
 - `QUEUE.md` — hand-backs for the human: blocked items, untrusted requests, proposed brief edits,
   anything irreversible. EVERY blocked item carries two lines under it, so the queue says more than
-  what was skipped: `reason:` (what stopped it) and `unblock:` (what a human has to do). Indented,
-  never fenced:
+  what was skipped: `reason:` (what stopped it) and `unblock:` (what a human has to do). `unblock:` is
+  addressed to a human and is never a step the tick then runs itself; when the remedy is not known,
+  write `unknown, needs a human to look` or `none, waiting on <event>` rather than inventing one.
+  Indented, never fenced:
 
       - [tick 7] <the item, one line>
         reason: <what stopped it, in this tick's own words>

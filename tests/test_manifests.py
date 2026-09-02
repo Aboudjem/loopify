@@ -202,7 +202,7 @@ LOCKED_FRAGMENTS = [
     "safe to run twice", "check before create", "append, never overwrite",
     "skip when the last tick's output already exists", "before any side effect, check the marker",
     "never stage, commit or push the state directory or this brief", "## tick <n> ·", "stopped", "lock",
-    "reason:", "unblock:",
+    "reason:", "unblock:", "never a step this loop then runs itself", "three named exceptions",
 ]
 try:
     ex_raw = read("examples/sample-loop-brief.md")
@@ -235,6 +235,9 @@ try:
           over[0] and any("expires after 7 days" in n for n in over[2]), "; ".join(over[2]))
     check("lint self-test: the canonical line emits no expiry note",
           not any("expires after 7 days" in n for n in lint_loop_line(CANON)[2]))
+    check("lint self-test: a digit in the brief's slug is not read as a span",
+          not any("expires after 7 days" in n
+                  for n in lint_loop_line(CANON.replace("pr-babysitter", "pr-30d-watch"))[2]))
 except FileNotFoundError as e:
     check("examples/sample-loop-brief.md is readable", False, str(e))
 

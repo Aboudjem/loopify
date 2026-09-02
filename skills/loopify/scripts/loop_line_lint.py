@@ -105,8 +105,10 @@ def lint_loop_line(line, expected_mode=None):
         failures.append(f"rule 8: line is {mode} but the brief's Standing decision 1 says {expected_mode}")
 
     # beyond the eight: a span longer than the 7-day expiry cannot be covered by one paste
+    # Scan the words, not the path: a slug is named by the human and a digit in it is not a span.
+    scanned = ABS_PATH_RE.sub("Run one cycle of <path>", raw)
     longest = 0
-    for n, unit in SPAN_RE.findall(raw):
+    for n, unit in SPAN_RE.findall(scanned):
         longest = max(longest, int(n) * SPAN_DAYS[unit.lower()])
     if longest > EXPIRY_DAYS:
         notes.append(f"the line asks for {longest} days, but a recurring loop expires after "

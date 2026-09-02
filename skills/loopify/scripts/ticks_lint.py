@@ -10,9 +10,9 @@ shape every time. skills/loopify/SKILL.md pins that shape; this file checks a lo
 
 Five checks:
   1. the first line is `tick: N/<cap>` (the durable counter, incremented before any work);
-  2. the newest header's number equals N (a header written without bumping the counter, or a
-     counter bumped without a header, is the bug this catches); on a log that still starts at
-     tick 1, the entry count must equal N too, which a rotated log is exempt from;
+  2. no header runs ahead of N and there are no more entries than N (a header written without
+     bumping the counter is the bug this catches; the counter legitimately runs ahead after a
+     rotation, and after a tick that exits on the LOCK check before it reaches LOG);
   3. header numbers are strictly increasing (the log is append-only, never reordered);
   4. every header carries an ISO-8601 timestamp in its second field;
   5. every header's status is one of changed | noop | stopped, and so is the last one.
@@ -77,15 +77,18 @@ def lint_ticks(text):
     #    line), so a rotated log legitimately holds fewer headers than N. The invariant that
     #    survives rotation is that the newest entry is the tick the counter is on. The stricter
     #    count check applies only to an unrotated log, one that still starts at tick 1.
+    #    Every logged tick incremented the counter first, so no header may run AHEAD of it. The
+    #    reverse gap is legal and expected: STATE increments before the LOCK check and the
+    #    already-met-stop check, and both of those exit without reaching LOG, so a correct log can
+    #    sit behind its counter. The count of entries is bounded by the counter for the same reason.
     if counter is not None and headers:
-        if headers[-1][1] != counter:
-            failures.append(f"check 2: the counter says tick {counter} but the newest entry is "
-                            f"tick {headers[-1][1]}; a tick that bumped the counter without "
-                            "logging (or logged without bumping) leaves the stop rule reading the "
-                            "wrong number")
-        elif headers[0][1] == 1 and len(headers) != counter:
-            failures.append(f"check 2: the log starts at tick 1 and has not rotated, so it should "
-                            f"hold {counter} entries; it holds {len(headers)}")
+        if headers[-1][1] > counter:
+            failures.append(f"check 2: the newest entry is tick {headers[-1][1]} but the counter "
+                            f"says {counter}; a tick was logged without incrementing the counter, "
+                            "so the stop rule is reading the wrong number")
+        if len(headers) > counter:
+            failures.append(f"check 2: the log holds {len(headers)} entries against a counter of "
+                            f"{counter}; every logged tick increments the counter first")
     elif counter is not None and counter > 0 and not headers:
         failures.append(f"check 2: the counter says tick {counter} but the log has no entries")
 
