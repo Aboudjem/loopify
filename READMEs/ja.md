@@ -185,3 +185,5 @@ Copilot CLI、Cursor、Qwen Code、Hermes、Goose、素の cron を扱ってい�
 Claude Code 2.1.252 のバイナリと公式ドキュメントから 2026 年に導き出したものです。`/goal` に対して同じことを
 する <a href="https://github.com/Aboudjem/goalify">goalify</a> の姉妹プロジェクトです。
 <a href="https://github.com/Aboudjem/loopify/issues">足りないところを見つけたら</a></sub>
+
+<sub>この翻訳は機械支援によるもので、レビュー済みです。正典は英語版の <a href="../README.md">README.md</a> です。</sub>

@@ -195,3 +195,5 @@ Kimi, Copilot CLI, Cursor, Qwen Code, Hermes, Goose et le cron classique.
 redérivé à partir du binaire Claude Code 2.1.252 diffusé et de la documentation officielle, 2026. Frère de
 <a href="https://github.com/Aboudjem/goalify">goalify</a>, qui fait la même chose pour `/goal`.
 <a href="https://github.com/Aboudjem/loopify/issues">Une lacune repérée ?</a></sub>
+
+<sub>Traduction assistée par machine, puis relue. La version de référence est le <a href="../README.md">README.md</a> en anglais.</sub>

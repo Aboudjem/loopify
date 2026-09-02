@@ -176,3 +176,5 @@ Copilot CLI、Cursor、Qwen Code、Hermes、Goose 和普通的 cron。
 已发布的 Claude Code 2.1.252 二进制文件和官方文档重新推导的。它是
 <a href="https://github.com/Aboudjem/goalify">goalify</a> 的姊妹项目，后者为 `/goal` 做同样的事。
 <a href="https://github.com/Aboudjem/loopify/issues">发现缺漏了吗？</a></sub>
+
+<sub>本译文由机器辅助翻译并经过校对，以英文版 <a href="../README.md">README.md</a> 为准。</sub>
