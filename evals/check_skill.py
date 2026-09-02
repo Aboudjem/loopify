@@ -52,6 +52,8 @@ LOCKED_FRAGMENTS = [
     ("repeat-safe: append, never overwrite", "append, never overwrite"),
     ("repeat-safe: skip when the output exists", "skip when the last tick's output already exists"),
     ("repeat-safe rail: check the marker before a side effect", "before any side effect, check the marker"),
+    ("queue.md blocked items carry reason:", "reason:"),
+    ("queue.md blocked items carry unblock:", "unblock:"),
     ("durable tick counter", "tick: n/<cap>"),
     ("machine-countable tick header", "## tick <n> ·"),
     ("STOPPED sentinel", "stopped"),
@@ -202,6 +204,7 @@ def main():
         checks.append((f"template locked fragment: {label}", frag in tmpl_low, f"expected {frag!r}"))
     mechanics = {
         "repeat-safe names the marker the tick checks before acting": "marker:" in tmpl_low,
+        "queue.md pins reason/unblock on every blocked item": "every blocked item" in tmpl_low,
         "counter incremented BEFORE work": "increment" in tmpl_low and "before" in tmpl_low,
         "mode check with branches (a) (b) (c)": "mode check" in tmpl_low and "(a)" in tmpl_low and "(b)" in tmpl_low and "(c)" in tmpl_low,
         "detection wins over Standing decision 1": "detection wins" in tmpl_low,

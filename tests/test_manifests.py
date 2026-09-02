@@ -202,6 +202,7 @@ LOCKED_FRAGMENTS = [
     "safe to run twice", "check before create", "append, never overwrite",
     "skip when the last tick's output already exists", "before any side effect, check the marker",
     "never stage, commit or push the state directory or this brief", "## tick <n> ·", "stopped", "lock",
+    "reason:", "unblock:",
 ]
 try:
     ex_raw = read("examples/sample-loop-brief.md")
@@ -231,6 +232,29 @@ try:
     check("lint self-test: mode mismatch fails rule 8", not lint_loop_line(CANON, "self-paced")[0])
 except FileNotFoundError as e:
     check("examples/sample-loop-brief.md is readable", False, str(e))
+
+# --- 5b. the QUEUE.md example block inside the SKILL.md template ---
+# check_skill.py extracts the template with the same non-greedy regex, so it stops at the FIRST
+# closing fence. SKILL.md has two ```markdown fences (the template, then the .claude/loop.md
+# pointer); anchoring on the first is what both suites do, and it is why the QUEUE.md example is
+# indented rather than fenced: a nested fence would truncate the template here.
+try:
+    skill_body = read("skills/loopify/SKILL.md")
+    tm = re.search(r"^```markdown\s*\n(.*?)\n```\s*$", skill_body, re.DOTALL | re.MULTILINE)
+    tmpl = tm.group(1) if tm else ""
+    check("SKILL.md template block extracts whole (no nested fence truncates it)",
+          "## Handoff" in tmpl, f"{len(tmpl)} chars extracted")
+    qm = re.search(r"^\s+- \[tick \d+\].*?(?=\n\S|\Z)", tmpl, re.DOTALL | re.MULTILINE)
+    block = qm.group(0) if qm else ""
+    check("SKILL.md QUEUE.md example block exists (indented, not fenced)", bool(block))
+    check("SKILL.md QUEUE.md example block carries a `reason:` line",
+          bool(re.search(r"^\s+reason:\s*\S", block, re.MULTILINE)), repr(block[:120]))
+    check("SKILL.md QUEUE.md example block carries an `unblock:` line",
+          bool(re.search(r"^\s+unblock:\s*\S", block, re.MULTILINE)), repr(block[:120]))
+    check("SKILL.md pins both fields on every blocked item",
+          "every blocked item" in tmpl.lower() and "`reason:`" in tmpl and "`unblock:`" in tmpl)
+except FileNotFoundError as e:
+    check("skills/loopify/SKILL.md is readable", False, str(e))
 
 # --- 6. the pointer example ---
 try:
