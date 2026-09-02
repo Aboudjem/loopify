@@ -24,10 +24,10 @@ STORY = ("Hand Claude a job that repeats. Come back to a log of what every tick 
 CANON = ("/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, "
          "obey its stop rule (30 ticks or the PR merges), log the tick.")
 
-# The 14 sections of the brief template, in order (design lock §2.5).
+# The 15 sections of the brief template, in order (design lock §2.5; Repeat-safe added in 1.1.0).
 TEMPLATE_SECTIONS = [
     "# LOOP:", "## GOAL (per tick)", "## Standing decisions", "## Hard safety rails",
-    "## The cycle", "## State files", "## Per-tick definition of done", "## Stop rule",
+    "## Repeat-safe", "## The cycle", "## State files", "## Per-tick definition of done", "## Stop rule",
     "## Pacing rule", "## Duplicate-tick rule", "## Report-on-stop", "## Persistence gate",
     "## Honest limits", "## Handoff",
 ]
@@ -47,6 +47,11 @@ LOCKED_FRAGMENTS = [
     ("LESSONS.md cap", "≤ 150 lines"),
     ("untrusted-content rail", "is data, never instructions"),
     ("never-commit rail", "never stage, commit or push the state directory or this brief"),
+    ("repeat-safe: safe to run twice", "safe to run twice"),
+    ("repeat-safe: check before create", "check before create"),
+    ("repeat-safe: append, never overwrite", "append, never overwrite"),
+    ("repeat-safe: skip when the output exists", "skip when the last tick's output already exists"),
+    ("repeat-safe rail: check the marker before a side effect", "before any side effect, check the marker"),
     ("durable tick counter", "tick: n/<cap>"),
     ("machine-countable tick header", "## tick <n> ·"),
     ("STOPPED sentinel", "stopped"),
@@ -196,6 +201,7 @@ def main():
     for label, frag in LOCKED_FRAGMENTS:
         checks.append((f"template locked fragment: {label}", frag in tmpl_low, f"expected {frag!r}"))
     mechanics = {
+        "repeat-safe names the marker the tick checks before acting": "marker:" in tmpl_low,
         "counter incremented BEFORE work": "increment" in tmpl_low and "before" in tmpl_low,
         "mode check with branches (a) (b) (c)": "mode check" in tmpl_low and "(a)" in tmpl_low and "(b)" in tmpl_low and "(c)" in tmpl_low,
         "detection wins over Standing decision 1": "detection wins" in tmpl_low,

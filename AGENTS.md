@@ -83,7 +83,7 @@ usage metrics.
 ## Where things live
 
 - `skills/loopify/SKILL.md` — the skill: the two-phase model, the PREPARE procedure, how `/loop`
-  actually works, the 14-section brief template, the eight loop-line rules, the mode-choice rule, the
+  actually works, the 15-section brief template, the eight loop-line rules, the mode-choice rule, the
   `.claude/loop.md` pointer option, the handoff format, hard rules, common mistakes.
 - `evals/` — `check_skill.py` (deterministic assertions on `SKILL.md`, in CI), `loop_line_lint.py`
   (the eight loop-line rules as code, and a CLI you can run on any line before pasting it),

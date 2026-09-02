@@ -9,7 +9,7 @@ Two layers, both built test-first (RED → GREEN → REFACTOR). The recorded bas
 
 Encodes the locked design as pass/fail checks on `skills/loopify/SKILL.md`. It is the regression
 guard: if a future edit drops the WHEN-only description, the vocabulary lock, a `/loop` fact, one of
-the 14 template sections, a locked verbatim fragment, one of the eight loop-line rules, the mode-choice
+the 15 template sections, a locked verbatim fragment, one of the eight loop-line rules, the mode-choice
 rule, the handoff clauses or a PREPARE rule, CI goes red.
 
 ```bash
@@ -45,7 +45,7 @@ python3 evals/check_skill.py /tmp/goalify/skills/goalify/SKILL.md   # exit 1, 31
 
 (ii) is the useful one. goalify is a well-formed, shipping Agent Skill built by the same author to the
 same standards, so the 105 assertions it fails are precisely the loopify-specific contract: the story,
-the brief-and-line vocabulary, every `/loop` fact, the 14-section standing-brief template, the eight
+the brief-and-line vocabulary, every `/loop` fact, the 15-section standing-brief template, the eight
 loop-line rules, the mode check, the pacing rule, the cross-harness table. It passes the generic ones
 (spec-clean frontmatter, a body under 500 lines, a documented `$ARGUMENTS`). The exact figure depends
 on which goalify version you clone; 31/136 was measured against v2.5.0 on 2026-09-01.

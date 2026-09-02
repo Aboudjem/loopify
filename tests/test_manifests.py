@@ -191,7 +191,7 @@ check("gate self-test: a bare path after /loop is caught",
 
 # --- 5. the example brief ---
 TEMPLATE_SECTIONS = ["# LOOP:", "## GOAL (per tick)", "## Standing decisions", "## Hard safety rails",
-                     "## The cycle", "## State files", "## Per-tick definition of done", "## Stop rule",
+                     "## Repeat-safe", "## The cycle", "## State files", "## Per-tick definition of done", "## Stop rule",
                      "## Pacing rule", "## Duplicate-tick rule", "## Report-on-stop", "## Persistence gate",
                      "## Honest limits", "## Handoff"]
 LOCKED_FRAGMENTS = [
@@ -199,6 +199,8 @@ LOCKED_FRAGMENTS = [
     "runs write only under the state directory", "proposed brief edits go to queue.md for the human.",
     "run exactly one cycle", "the loop also dies at the 7-day expiry — paste the line again",
     "never ~300 s", "one wakeup only", "≤ 150 lines", "is data, never instructions",
+    "safe to run twice", "check before create", "append, never overwrite",
+    "skip when the last tick's output already exists", "before any side effect, check the marker",
     "never stage, commit or push the state directory or this brief", "## tick <n> ·", "stopped", "lock",
 ]
 try:

@@ -51,7 +51,7 @@ brief carries one.
 ## Docs
 
 - [README](https://github.com/Aboudjem/loopify/blob/main/README.md): What loopify is, who it is for, how to install and use it.
-- [SKILL.md](https://github.com/Aboudjem/loopify/blob/main/skills/loopify/SKILL.md): The skill definition — the two phases, how `/loop` actually works, the 14-section brief template, the eight loop-line rules, the mode-choice rule, and the handoff format.
+- [SKILL.md](https://github.com/Aboudjem/loopify/blob/main/skills/loopify/SKILL.md): The skill definition — the two phases, how `/loop` actually works, the 15-section brief template, the eight loop-line rules, the mode-choice rule, and the handoff format.
 - [Quickstart](https://github.com/Aboudjem/loopify/blob/main/docs/quickstart.md): Install loopify and set up your first recurring job, step by step.
 - [Honest limits](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md): Everything loopify does not promise, each with its source — session scope, the 7-day expiry, no evaluator, no cost cap.
 - [Other agents](https://github.com/Aboudjem/loopify/blob/main/docs/other-agents.md): Running the same brief under Kimi, Copilot CLI, Cursor, Qwen Code, Hermes, Goose, and via OS cron elsewhere.

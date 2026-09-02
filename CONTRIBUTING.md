@@ -14,7 +14,7 @@ scenario, a clearer doc, a typo fix. Open an issue first if you want to discuss 
 ```
 skills/loopify/
   SKILL.md              the skill: two phases, the PREPARE procedure, how /loop
-                        actually works, the 14-section brief template, the eight
+                        actually works, the 15-section brief template, the eight
                         loop-line rules, the mode-choice rule, the handoff format
 evals/
   check_skill.py        deterministic assertions on SKILL.md (runs in CI)
