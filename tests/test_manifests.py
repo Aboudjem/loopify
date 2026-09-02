@@ -16,8 +16,8 @@ Manifest + contract tests for loopify (a release gate; runs in CI).
   7. README i18n parity: READMEs/{zh-CN,ja,es,fr}.md exist, same H2 count as README.md, carry
      the switcher and the "may lag" note, use absolute URLs for every asset/doc link, and keep
      the canonical line untranslated.
-  8. Every shipped SVG is GitHub-safe and animated; the social card has no script/external ref;
-     the social preview PNG is exactly 1280x640.
+  8. Every shipped SVG is GitHub-safe, and animated unless it is the OG card (which is rasterised);
+     the social card has no script/external ref; the social preview PNG is exactly 1280x640.
   9. No tracked file matches a credential pattern.
  10. evals/RED-baseline.md exists and names both RED records.
 
@@ -341,6 +341,10 @@ EXTERNAL_REF_RE = re.compile(r"""<script|@import|xlink:href\s*=\s*["']https?:|hr
 SMIL_RE = re.compile(r"<(?:animate|animateTransform|animateMotion|set)\b", re.I)
 GENERIC = {"serif", "sans-serif", "monospace", "cursive", "fantasy", "system-ui", "ui-serif", "ui-sans-serif",
            "ui-monospace", "ui-rounded", "math", "emoji"}
+# The OG card is the one asset that must NOT animate: GitHub and every social platform rasterise
+# it to a still PNG (assets/social-preview.png), so motion there is invisible weight. It still
+# carries the reduced-motion guard, because CI's markup step requires the string in every asset.
+STATIC_BY_DESIGN = {"assets/social-preview.svg"}
 svgs = sorted(r for r in tracked if r.startswith("assets/") and r.endswith(".svg"))
 check("assets/ ships at least three SVGs", len(svgs) >= 3, f"found {svgs}")
 for rel in svgs:
@@ -353,7 +357,11 @@ for rel in svgs:
     check(f"{rel}: well-formed XML", wf, why)
     ext = EXTERNAL_REF_RE.search(raw)
     check(f"{rel}: no <script> and no external reference", not ext, f"matched {ext.group(0)!r}" if ext else "")
-    check(f"{rel}: is animated (@keyframes or SMIL)", "@keyframes" in raw or bool(SMIL_RE.search(raw)))
+    animated = "@keyframes" in raw or bool(SMIL_RE.search(raw))
+    if rel in STATIC_BY_DESIGN:
+        check(f"{rel}: static by design (it is rasterised to the OG PNG)", not animated)
+    else:
+        check(f"{rel}: is animated (@keyframes or SMIL)", animated)
     check(f"{rel}: has a prefers-reduced-motion guard", "prefers-reduced-motion" in raw)
     stacks = re.findall(r'font-family\s*=\s*"([^"]*)"', raw) + re.findall(r"font-family\s*:\s*([^;{}]+)", raw)
     bad = [v.strip() for v in stacks if v.split(",")[-1].strip().strip("\"'").lower() not in GENERIC]

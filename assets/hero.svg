@@ -1,79 +1,139 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="1200" height="420" role="img" aria-labelledby="hero-t hero-d">
-  <title id="hero-t">Four steps: describe a job that repeats, get a brief (a file) and a line (one string), paste the line into /loop, come back to a tick log.</title>
-  <desc id="hero-d">A dark petrol card. Down the left, three numbered beats. One, describe a job that repeats: the command /loopify keep our release PR healthy, check it every 20 minutes. Two, get two things: a pale record sheet labelled BRIEF, a file, pr-babysitter.md; and a violet capsule labelled LINE, one string. Three, paste the line into /loop: the string /loop 20m Run one cycle of ...pr-babysitter.md, ...log the tick. On the right, beat four: a record sheet headed TICKS.md at tick 7 of 30, with five log rows, each carrying a run of tick marks of different heights. A short row is a tick that did nothing. The newest row, tick 7 at 09:40, changed, is still being written by a violet pen. Below: a running loop is not proof, the rows are. Stops at 7 days.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="1200" height="420" role="img" aria-label="Four steps: describe a job that repeats, get a brief (a file) and a line (one string), paste the line into /loop, come back to a tick log.">
+  <defs>
+    <linearGradient id="h-ground" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0%" stop-color="#0A0F1C"/>
+      <stop offset="60%" stop-color="#080C16"/>
+      <stop offset="100%" stop-color="#07070C"/>
+    </linearGradient>
+    <radialGradient id="h-bloom" cx="0.5" cy="1" r="0.75">
+      <stop offset="0%"  stop-color="#FF2D78" stop-opacity="0.20"/>
+      <stop offset="38%" stop-color="#7C3AED" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#7C3AED" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="h-brand" x1="0" y1="0" x2="1" y2="0.25" gradientUnits="objectBoundingBox">
+      <stop offset="0%"   stop-color="#2BE8C8"/>
+      <stop offset="55%"  stop-color="#00D4FF"/>
+      <stop offset="100%" stop-color="#5B9DFF"/>
+      <animateTransform attributeName="gradientTransform" type="translate"
+        values="-0.12 0; 0.12 0; -0.12 0" dur="18s" repeatCount="indefinite"/>
+    </linearGradient>
+    <linearGradient id="h-rule" gradientUnits="userSpaceOnUse" x1="36" y1="68" x2="1164" y2="68">
+      <stop offset="0%"   stop-color="#2BE8C8" stop-opacity="0.65"/>
+      <stop offset="45%"  stop-color="#00D4FF" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#5B9DFF" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="h-glow-sm" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="3.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="h-card"><rect x="0" y="0" width="1200" height="420" rx="14"/></clipPath>
+  </defs>
+
   <style>
-  .sans{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
-  .static{display:none}
-  @media (prefers-reduced-motion: reduce){.motion{display:none}.static{display:inline}}
+    .disp { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
+    .mono { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace; }
+    .step  { font-size: 26px; font-weight: 700; fill: #F2F6FF; letter-spacing: -0.3px; }
+    .cmd   { font-size: 16px; fill: #B6C2DA; }
+    .num   { font-size: 18px; font-weight: 700; fill: #2BE8C8; }
+    .numon { font-size: 18px; font-weight: 700; fill: #07070C; }
+    .tag   { font-size: 11.5px; letter-spacing: 1.6px; fill: #8494B0; }
+    .row   { font-size: 16px; fill: #48546B; }
+    .tk    { stroke: #0E8571; stroke-width: 2.5; stroke-linecap: round; opacity: 0.55; }
+    .tk-hi { stroke: #0E8571; stroke-width: 2.5; stroke-linecap: round; }
+
+    @keyframes h-breathe { 0%,100% { opacity: 0.5; } 50% { opacity: 0.9; } }
+    .bloom { animation: h-breathe 9s ease-in-out infinite; }
+
+    @keyframes h-flow { to { stroke-dashoffset: -240; } }
+    .flowline { animation: h-flow 14s linear infinite; }
+
+    @keyframes h-cue { 0% { opacity: 0; } 2% { opacity: 1; } 23% { opacity: 1; } 25%, 100% { opacity: 0; } }
+    .c1 { animation: h-cue 16s linear infinite 0s; }
+    .c2 { animation: h-cue 16s linear infinite -12s; }
+    .c3 { animation: h-cue 16s linear infinite -8s; }
+    .c4 { animation: h-cue 16s linear infinite -4s; }
+
+    @keyframes h-rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .row-new { animation: h-rise 0.7s ease-out 1.2s both; }
+
+    @keyframes h-pip { 0%,100% { opacity: 0.35; } 50% { opacity: 1; } }
+    .nib { animation: h-pip 2.6s ease-in-out infinite; }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
   </style>
-  <rect x="0" y="0" width="1200" height="420" rx="14" fill="#0C2A2B"/>
-  <rect x="0.5" y="0.5" width="1199" height="419" rx="13.5" fill="none" stroke="#7E9A9A" stroke-width="1"/>
 
-  <text class="mono" x="36" y="48" font-size="34" font-weight="700" fill="#E8F1EE">loopify</text>
-  <text class="sans" x="1164" y="48" font-size="20" fill="#A6BEBD" text-anchor="end">a Claude Code skill</text>
-  <line x1="36" y1="68" x2="1164" y2="68" stroke="#7E9A9A" stroke-width="1"/>
+  <g clip-path="url(#h-card)">
+    <rect width="1200" height="420" fill="url(#h-ground)"/>
+    <ellipse class="bloom" cx="600" cy="424" rx="720" ry="200" fill="url(#h-bloom)"/>
+  </g>
+  <rect x="0.5" y="0.5" width="1199" height="419" rx="13.5" fill="none" stroke="#1E2A42" stroke-width="1"/>
 
-  <circle cx="49" cy="96" r="14" fill="none" stroke="#C3ABF2" stroke-width="2"/><text class="mono" x="49" y="102" font-size="18" font-weight="700" fill="#C3ABF2" text-anchor="middle">1</text>
-  <circle cx="49" cy="192" r="14" fill="none" stroke="#C3ABF2" stroke-width="2"/><text class="mono" x="49" y="198" font-size="18" font-weight="700" fill="#C3ABF2" text-anchor="middle">2</text>
-  <circle cx="49" cy="304" r="14" fill="none" stroke="#C3ABF2" stroke-width="2"/><text class="mono" x="49" y="310" font-size="18" font-weight="700" fill="#C3ABF2" text-anchor="middle">3</text>
-  <circle cx="741" cy="96" r="14" fill="none" stroke="#C3ABF2" stroke-width="2"/><text class="mono" x="741" y="102" font-size="18" font-weight="700" fill="#C3ABF2" text-anchor="middle">4</text>
+  <text class="disp" x="36" y="48" font-size="34" font-weight="800" letter-spacing="-1" fill="url(#h-brand)">loopify</text>
+  <text class="mono tag" x="1164" y="48" text-anchor="end">A CLAUDE CODE SKILL</text>
+  <line x1="36" y1="68" x2="1164" y2="68" stroke="url(#h-rule)" stroke-width="1.25"/>
+  <line class="flowline" x1="36" y1="68" x2="1164" y2="68" stroke="url(#h-rule)" stroke-width="1.25" stroke-dasharray="3 9"/>
 
-  <text class="sans" x="72" y="104" font-size="26" font-weight="700" fill="#E8F1EE">Describe a job that repeats</text>
-  <rect x="36" y="118" width="664" height="46" rx="10" fill="#16403F" stroke="#7E9A9A" stroke-width="1"/>
-  <text class="mono" x="54" y="148" font-size="17" fill="#E8F1EE">/loopify keep our release PR healthy, check it every 20 minutes</text>
-
-  <text class="sans" x="72" y="200" font-size="26" font-weight="700" fill="#E8F1EE">Get two things</text>
-  <rect x="36" y="214" width="320" height="70" rx="5" fill="#D7E3E0"/>
-  <rect x="36" y="214" width="320" height="12" fill="#C6D5D1"/>
-  <text class="sans" x="54" y="250" font-size="20" font-weight="800" fill="#54308C">BRIEF</text>
-  <text class="sans" x="338" y="250" font-size="15" font-weight="700" letter-spacing="1.2" fill="#3F585D" text-anchor="end">A FILE</text>
-  <text class="mono" x="54" y="274" font-size="17" fill="#0C2A2B">pr-babysitter.md</text>
-  <rect x="380" y="214" width="320" height="70" rx="35" fill="#54308C"/>
-  <text class="sans" x="406" y="248" font-size="20" font-weight="800" fill="#D7E3E0">LINE</text>
-  <text class="sans" x="674" y="248" font-size="15" font-weight="700" letter-spacing="1.2" fill="#D7E3E0" text-anchor="end">ONE STRING</text>
-  <text class="mono" x="406" y="272" font-size="17" fill="#E8F1EE">/loop 20m Run one cycle of …</text>
-
-  <text class="sans" x="72" y="312" font-size="26" font-weight="700" fill="#E8F1EE">Paste the line into /loop</text>
-  <rect x="36" y="326" width="664" height="46" rx="10" fill="#16403F" stroke="#7E9A9A" stroke-width="1"/>
-  <text class="mono" x="54" y="356" font-size="17" fill="#E8F1EE">/loop 20m Run one cycle of …pr-babysitter.md — …log the tick.</text>
-
-  <text class="sans" x="764" y="104" font-size="26" font-weight="700" fill="#E8F1EE">Come back to the log</text>
-  <rect x="728" y="118" width="436" height="254" rx="8" fill="#16403F" stroke="#7E9A9A" stroke-width="1"/>
-  <rect x="740" y="130" width="412" height="230" rx="3" fill="#D7E3E0"/>
-  <text class="mono" x="756" y="158" font-size="20" font-weight="700" fill="#0C2A2B">TICKS.md</text>
-  <text class="mono" x="1136" y="158" font-size="18" font-weight="700" fill="#54308C" text-anchor="end">tick: 7/30</text>
-  <line x1="756" y1="170" x2="1136" y2="170" stroke="#607876" stroke-width="1"/>
-  <g>
-    <line x1="756" y1="204" x2="1136" y2="204" stroke="#607876" stroke-width="0.75" opacity="0.55"/>
-    <text class="mono" x="756" y="198" font-size="16" fill="#3F585D">## tick 3 · 08:20 · noop</text>
-    <line x1="1060" y1="196" x2="1060" y2="192" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1069" y1="196" x2="1069" y2="187" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1078" y1="196" x2="1078" y2="194" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1087" y1="196" x2="1087" y2="184" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1096" y1="196" x2="1096" y2="190" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1105" y1="196" x2="1105" y2="193" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1114" y1="196" x2="1114" y2="185" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1123" y1="196" x2="1123" y2="191" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/>
-    <line x1="756" y1="236" x2="1136" y2="236" stroke="#607876" stroke-width="0.75" opacity="0.55"/>
-    <text class="mono" x="756" y="230" font-size="16" fill="#3F585D">## tick 4 · 08:40 · changed</text>
-    <line x1="1060" y1="228" x2="1060" y2="225" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1069" y1="228" x2="1069" y2="217" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1078" y1="228" x2="1078" y2="223" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1087" y1="228" x2="1087" y2="220" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1096" y1="228" x2="1096" y2="226" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1105" y1="228" x2="1105" y2="221" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1114" y1="228" x2="1114" y2="218" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1123" y1="228" x2="1123" y2="225" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/>
-    <line x1="756" y1="268" x2="1136" y2="268" stroke="#607876" stroke-width="0.75" opacity="0.55"/>
-    <text class="mono" x="756" y="262" font-size="16" fill="#3F585D">## tick 5 · 09:00 · noop</text>
-    <line x1="1060" y1="260" x2="1060" y2="253" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1069" y1="260" x2="1069" y2="250" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1078" y1="260" x2="1078" y2="257" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1087" y1="260" x2="1087" y2="254" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1096" y1="260" x2="1096" y2="248" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1105" y1="260" x2="1105" y2="256" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1114" y1="260" x2="1114" y2="251" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1123" y1="260" x2="1123" y2="258" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/>
-    <line x1="756" y1="300" x2="1136" y2="300" stroke="#607876" stroke-width="0.75" opacity="0.55"/>
-    <text class="mono" x="756" y="294" font-size="16" fill="#3F585D">## tick 6 · 09:20 · noop</text>
-    <line x1="1060" y1="292" x2="1060" y2="288" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1069" y1="292" x2="1069" y2="283" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1078" y1="292" x2="1078" y2="290" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1087" y1="292" x2="1087" y2="287" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1096" y1="292" x2="1096" y2="281" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1105" y1="292" x2="1105" y2="285" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1114" y1="292" x2="1114" y2="289" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/><line x1="1123" y1="292" x2="1123" y2="288" stroke="#6F4FA8" stroke-width="2.5" stroke-linecap="round"/>
+  <g fill="none" stroke="#2BE8C8" stroke-width="1.75">
+    <circle cx="49" cy="96" r="14"/><circle cx="49" cy="192" r="14"/>
+    <circle cx="49" cy="304" r="14"/><circle cx="741" cy="96" r="14"/>
+  </g>
+  <g class="mono num" text-anchor="middle">
+    <text x="49" y="102">1</text><text x="49" y="198">2</text>
+    <text x="49" y="310">3</text><text x="741" y="102">4</text>
+  </g>
+  <g text-anchor="middle">
+    <g class="c1"><circle cx="49" cy="96" r="14" fill="#2BE8C8" filter="url(#h-glow-sm)"/><text class="mono numon" x="49" y="102">1</text></g>
+    <g class="c2" opacity="0"><circle cx="49" cy="192" r="14" fill="#2BE8C8" filter="url(#h-glow-sm)"/><text class="mono numon" x="49" y="198">2</text></g>
+    <g class="c3" opacity="0"><circle cx="49" cy="304" r="14" fill="#2BE8C8" filter="url(#h-glow-sm)"/><text class="mono numon" x="49" y="310">3</text></g>
+    <g class="c4" opacity="0"><circle cx="741" cy="96" r="14" fill="#2BE8C8" filter="url(#h-glow-sm)"/><text class="mono numon" x="741" y="102">4</text></g>
   </g>
 
-  <g class="motion">
-    <g opacity="0"><animate attributeName="opacity" values="1;0;0;0" keyTimes="0;0.25;0.5;0.75" calcMode="discrete" dur="8s" begin="0s" repeatCount="indefinite"/><circle cx="49" cy="96" r="14" fill="#C3ABF2"/><text class="mono" x="49" y="102" font-size="18" font-weight="700" fill="#0C2A2B" text-anchor="middle">1</text></g>
-    <g opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.25;0.5;0.75" calcMode="discrete" dur="8s" begin="0s" repeatCount="indefinite"/><circle cx="49" cy="192" r="14" fill="#C3ABF2"/><text class="mono" x="49" y="198" font-size="18" font-weight="700" fill="#0C2A2B" text-anchor="middle">2</text></g>
-    <g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.25;0.5;0.75" calcMode="discrete" dur="8s" begin="0s" repeatCount="indefinite"/><circle cx="49" cy="304" r="14" fill="#C3ABF2"/><text class="mono" x="49" y="310" font-size="18" font-weight="700" fill="#0C2A2B" text-anchor="middle">3</text></g>
-    <g opacity="0"><animate attributeName="opacity" values="0;0;0;1" keyTimes="0;0.25;0.5;0.75" calcMode="discrete" dur="8s" begin="0s" repeatCount="indefinite"/><circle cx="741" cy="96" r="14" fill="#C3ABF2"/><text class="mono" x="741" y="102" font-size="18" font-weight="700" fill="#0C2A2B" text-anchor="middle">4</text></g>
-    <g opacity="0"><animate attributeName="opacity" values="0;0;0;1" keyTimes="0;0.25;0.5;0.78" calcMode="discrete" dur="8s" begin="0s" repeatCount="indefinite"/>
-      <line x1="756" y1="332" x2="1136" y2="332" stroke="#607876" stroke-width="0.75" opacity="0.55"/><text class="mono" x="756" y="326" font-size="16" font-weight="600" fill="#54308C">## tick 7 · 09:40 · changed</text><line x1="1060" y1="324" x2="1060" y2="312" stroke="#54308C" stroke-width="2.5" stroke-linecap="round"/><line x1="1069" y1="324" x2="1069" y2="318" stroke="#54308C" stroke-width="2.5" stroke-linecap="round"/><line x1="1078" y1="324" x2="1078" y2="321" stroke="#54308C" stroke-width="2.5" stroke-linecap="round"/><line x1="1087" y1="324" x2="1087" y2="313" stroke="#54308C" stroke-width="2.5" stroke-linecap="round"/><line x1="1096" y1="324" x2="1096" y2="319" stroke="#54308C" stroke-width="2.5" stroke-linecap="round"/><rect x="1105" y="312" width="2.5" height="12" fill="#54308C"/><circle cx="1106.2" cy="310" r="4" fill="#54308C"/>
-    </g>
-  </g>
-  <g class="static">
-    <g opacity="1"><circle cx="741" cy="96" r="14" fill="#C3ABF2"/><text class="mono" x="741" y="102" font-size="18" font-weight="700" fill="#0C2A2B" text-anchor="middle">4</text></g>
-    <line x1="756" y1="332" x2="1136" y2="332" stroke="#607876" stroke-width="0.75" opacity="0.55"/><text class="mono" x="756" y="326" font-size="16" font-weight="600" fill="#54308C">## tick 7 · 09:40 · changed</text><line x1="1060" y1="324" x2="1060" y2="312" stroke="#54308C" stroke-width="2.5" stroke-linecap="round"/><line x1="1069" y1="324" x2="1069" y2="318" stroke="#54308C" stroke-width="2.5" stroke-linecap="round"/><line x1="1078" y1="324" x2="1078" y2="321" stroke="#54308C" stroke-width="2.5" stroke-linecap="round"/><line x1="1087" y1="324" x2="1087" y2="313" stroke="#54308C" stroke-width="2.5" stroke-linecap="round"/><line x1="1096" y1="324" x2="1096" y2="319" stroke="#54308C" stroke-width="2.5" stroke-linecap="round"/><rect x="1105" y="312" width="2.5" height="12" fill="#54308C"/><circle cx="1106.2" cy="310" r="4" fill="#54308C"/>
+  <text class="disp step" x="72" y="104">Describe a job that repeats</text>
+  <rect x="36" y="118" width="664" height="46" rx="10" fill="#0E1524" stroke="#1E2A42" stroke-width="1"/>
+  <text class="mono cmd" x="54" y="148">/loopify keep our release PR healthy, check it every 20 minutes</text>
+
+  <text class="disp step" x="72" y="200">Get two things</text>
+  <rect x="36" y="214" width="320" height="70" rx="5" fill="#FFFFFF"/>
+  <path d="M36 226 V219 A5 5 0 0 1 41 214 H351 A5 5 0 0 1 356 219 V226 Z" fill="#D8DEE9"/>
+  <text class="disp" x="54" y="250" font-size="20" font-weight="800" fill="#0E8571">BRIEF</text>
+  <text class="disp" x="338" y="250" font-size="15" font-weight="700" letter-spacing="1.2" fill="#48546B" text-anchor="end">A FILE</text>
+  <text class="mono" x="54" y="274" font-size="17" fill="#1A2233">pr-babysitter.md</text>
+  <rect x="380.75" y="214.75" width="318.5" height="68.5" rx="34.25" fill="#141C2E" stroke="#2BE8C8" stroke-width="1.5"/>
+  <text class="disp" x="406" y="248" font-size="20" font-weight="800" fill="#2BE8C8">LINE</text>
+  <text class="disp tag" x="674" y="248" font-size="15" font-weight="700" letter-spacing="1.2" text-anchor="end">ONE STRING</text>
+  <text class="mono" x="406" y="272" font-size="16" fill="#F2F6FF">/loop 20m Run one cycle of …</text>
+
+  <text class="disp step" x="72" y="312">Paste the line into /loop</text>
+  <rect x="36" y="326" width="664" height="46" rx="10" fill="#0E1524" stroke="#1E2A42" stroke-width="1"/>
+  <text class="mono cmd" x="54" y="356">/loop 20m Run one cycle of …pr-babysitter.md · …log the tick.</text>
+
+  <text class="disp step" x="764" y="104">Come back to the log</text>
+  <rect x="728" y="118" width="436" height="254" rx="8" fill="#0E1524" stroke="#1E2A42" stroke-width="1"/>
+  <rect x="740" y="130" width="412" height="230" rx="3" fill="#FFFFFF"/>
+  <text class="mono" x="756" y="158" font-size="20" font-weight="700" fill="#07070C">TICKS.md</text>
+  <text class="mono" x="1136" y="158" font-size="18" font-weight="700" fill="#1A2233" text-anchor="end">tick: 7/30</text>
+  <line x1="756" y1="170" x2="1136" y2="170" stroke="#48546B" stroke-width="1"/>
+    <line x1="756" y1="204" x2="1136" y2="204" stroke="#D8DEE9" stroke-width="1"/>
+    <text class="mono row" x="756" y="198">## tick 3 · 08:20 · noop</text>
+    <g class="tk"><line x1="1060" y1="196" x2="1060" y2="192"/><line x1="1069" y1="196" x2="1069" y2="187"/><line x1="1078" y1="196" x2="1078" y2="194"/><line x1="1087" y1="196" x2="1087" y2="184"/><line x1="1096" y1="196" x2="1096" y2="190"/><line x1="1105" y1="196" x2="1105" y2="193"/><line x1="1114" y1="196" x2="1114" y2="185"/><line x1="1123" y1="196" x2="1123" y2="191"/></g>
+    <line x1="756" y1="236" x2="1136" y2="236" stroke="#D8DEE9" stroke-width="1"/>
+    <text class="mono row" x="756" y="230">## tick 4 · 08:40 · changed</text>
+    <g class="tk"><line x1="1060" y1="228" x2="1060" y2="225"/><line x1="1069" y1="228" x2="1069" y2="217"/><line x1="1078" y1="228" x2="1078" y2="223"/><line x1="1087" y1="228" x2="1087" y2="220"/><line x1="1096" y1="228" x2="1096" y2="226"/><line x1="1105" y1="228" x2="1105" y2="221"/><line x1="1114" y1="228" x2="1114" y2="218"/><line x1="1123" y1="228" x2="1123" y2="225"/></g>
+    <line x1="756" y1="268" x2="1136" y2="268" stroke="#D8DEE9" stroke-width="1"/>
+    <text class="mono row" x="756" y="262">## tick 5 · 09:00 · noop</text>
+    <g class="tk"><line x1="1060" y1="260" x2="1060" y2="253"/><line x1="1069" y1="260" x2="1069" y2="250"/><line x1="1078" y1="260" x2="1078" y2="257"/><line x1="1087" y1="260" x2="1087" y2="254"/><line x1="1096" y1="260" x2="1096" y2="248"/><line x1="1105" y1="260" x2="1105" y2="256"/><line x1="1114" y1="260" x2="1114" y2="251"/><line x1="1123" y1="260" x2="1123" y2="258"/></g>
+    <line x1="756" y1="300" x2="1136" y2="300" stroke="#D8DEE9" stroke-width="1"/>
+    <text class="mono row" x="756" y="294">## tick 6 · 09:20 · noop</text>
+    <g class="tk"><line x1="1060" y1="292" x2="1060" y2="288"/><line x1="1069" y1="292" x2="1069" y2="283"/><line x1="1078" y1="292" x2="1078" y2="290"/><line x1="1087" y1="292" x2="1087" y2="287"/><line x1="1096" y1="292" x2="1096" y2="281"/><line x1="1105" y1="292" x2="1105" y2="285"/><line x1="1114" y1="292" x2="1114" y2="289"/><line x1="1123" y1="292" x2="1123" y2="288"/></g>
+  <g class="row-new">
+    <line x1="756" y1="332" x2="1136" y2="332" stroke="#D8DEE9" stroke-width="1"/>
+    <text class="mono" x="756" y="326" font-size="16" font-weight="600" fill="#0E8571">## tick 7 · 09:40 · changed</text>
+    <g class="tk-hi"><line x1="1060" y1="324" x2="1060" y2="312"/><line x1="1069" y1="324" x2="1069" y2="318"/><line x1="1078" y1="324" x2="1078" y2="321"/><line x1="1087" y1="324" x2="1087" y2="313"/><line x1="1096" y1="324" x2="1096" y2="319"/></g>
+    <g class="nib" fill="#0E8571"><rect x="1105" y="312" width="2.5" height="12"/><circle cx="1106.2" cy="310" r="4"/></g>
   </g>
 
-  <text class="sans" x="36" y="402" font-size="22" fill="#A6BEBD">A running loop is not proof. Read the log.</text>
-  <text class="mono" x="1164" y="402" font-size="18" fill="#A6BEBD" text-anchor="end">STOPS AT 7 DAYS</text>
+  <text class="disp" x="36" y="402" font-size="22" fill="#B6C2DA">A running loop is not proof. Read the log.</text>
+  <text class="mono tag" x="1164" y="402" text-anchor="end">STOPS AT 7 DAYS</text>
 </svg>

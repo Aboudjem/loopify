@@ -1,63 +1,116 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300" role="img" aria-labelledby="hiw-t hiw-d">
-  <title id="hiw-t">One tick, five moves: state, work, log, improve, schedule or stop — then round again.</title>
-  <desc id="hiw-d">Five stations on a track. STATE, read the brief and the log. WORK, do one cycle of the job. LOG, append one row to TICKS.md. IMPROVE, note what to change next tick. SCHEDULE or STOP, wait 20 minutes, or stop if the rule says. A dashed return sweep closes the circuit below the track, labelled wait 20m, so the five moves form a loop. Each station lights in turn, and a tick counter at the top right climbs from 5 of 30. The loop stops at its stop rule: 30 ticks, the PR merges, or 7 days.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300" role="img" aria-label="One tick, five moves: state, work, log, improve, schedule or stop, then round again.">
+  <defs>
+    <linearGradient id="w-ground" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0%" stop-color="#0A0F1C"/>
+      <stop offset="60%" stop-color="#080C16"/>
+      <stop offset="100%" stop-color="#07070C"/>
+    </linearGradient>
+    <linearGradient id="w-rule" gradientUnits="userSpaceOnUse" x1="36" y1="64" x2="1164" y2="64">
+      <stop offset="0%"   stop-color="#2BE8C8" stop-opacity="0.65"/>
+      <stop offset="45%"  stop-color="#00D4FF" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#5B9DFF" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="w-track" gradientUnits="userSpaceOnUse" x1="150" y1="180" x2="1050" y2="180">
+      <stop offset="0%"   stop-color="#2BE8C8"/>
+      <stop offset="55%"  stop-color="#00D4FF"/>
+      <stop offset="100%" stop-color="#5B9DFF"/>
+    </linearGradient>
+    <filter id="w-glow-sm" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="3.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="w-card"><rect x="0" y="0" width="1200" height="300" rx="14"/></clipPath>
+  </defs>
+
   <style>
-  .sans{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
-  .static{display:none}
-  @media (prefers-reduced-motion: reduce){.motion{display:none}.static{display:inline}}
+    .disp { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
+    .mono { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace; }
+    .h1   { font-size: 28px; font-weight: 700; fill: #F2F6FF; letter-spacing: -0.3px; }
+    .st   { font-size: 23px; font-weight: 700; fill: #F2F6FF; letter-spacing: 0.4px; }
+    .sd   { font-size: 18px; fill: #B6C2DA; }
+    .ft   { font-size: 18px; fill: #B6C2DA; }
+    .ct   { font-size: 24px; font-weight: 700; fill: #2BE8C8; }
+    .wait { font-size: 20px; fill: #2BE8C8; }
+
+    @keyframes w-flow { to { stroke-dashoffset: -240; } }
+    .flowline { animation: w-flow 14s linear infinite; }
+    @keyframes w-return { to { stroke-dashoffset: -280; } }
+    .returnline { animation: w-return 16s linear infinite; }
+
+    @keyframes w-cue { 0% { opacity: 0; } 2% { opacity: 1; } 18% { opacity: 1; } 20%, 100% { opacity: 0; } }
+    .s1 { animation: w-cue 15s linear infinite 0s; }
+    .s2 { animation: w-cue 15s linear infinite -12s; }
+    .s3 { animation: w-cue 15s linear infinite -9s; }
+    .s4 { animation: w-cue 15s linear infinite -6s; }
+    .s5 { animation: w-cue 15s linear infinite -3s; }
+
+    @keyframes w-count { 0% { opacity: 0; } 1% { opacity: 1; } 24% { opacity: 1; } 25%, 100% { opacity: 0; } }
+    .k1 { animation: w-count 24s linear infinite 0s; }
+    .k2 { animation: w-count 24s linear infinite -18s; }
+    .k3 { animation: w-count 24s linear infinite -12s; }
+    .k4 { animation: w-count 24s linear infinite -6s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
   </style>
-  <rect x="0" y="0" width="1200" height="300" rx="14" fill="#0C2A2B"/>
-  <rect x="0.5" y="0.5" width="1199" height="299" rx="13.5" fill="none" stroke="#7E9A9A" stroke-width="1"/>
 
-  <text class="sans" x="36" y="46" font-size="28" font-weight="700" fill="#E8F1EE">One tick, five moves.</text>
-  <g class="motion">
-    <text class="mono" x="1164" y="46" font-size="24" font-weight="700" fill="#C3ABF2" text-anchor="end" opacity="0">tick: 5/30<animate attributeName="opacity" values="1;0;0;0" keyTimes="0;0.25;0.5;0.75" calcMode="discrete" dur="24s" begin="0s" repeatCount="indefinite"/></text>
-    <text class="mono" x="1164" y="46" font-size="24" font-weight="700" fill="#C3ABF2" text-anchor="end" opacity="0">tick: 6/30<animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.25;0.5;0.75" calcMode="discrete" dur="24s" begin="0s" repeatCount="indefinite"/></text>
-    <text class="mono" x="1164" y="46" font-size="24" font-weight="700" fill="#C3ABF2" text-anchor="end" opacity="0">tick: 7/30<animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.25;0.5;0.75" calcMode="discrete" dur="24s" begin="0s" repeatCount="indefinite"/></text>
-    <text class="mono" x="1164" y="46" font-size="24" font-weight="700" fill="#C3ABF2" text-anchor="end" opacity="0">tick: 8/30<animate attributeName="opacity" values="0;0;0;1" keyTimes="0;0.25;0.5;0.75" calcMode="discrete" dur="24s" begin="0s" repeatCount="indefinite"/></text>
+  <g clip-path="url(#w-card)"><rect width="1200" height="300" fill="url(#w-ground)"/></g>
+  <rect x="0.5" y="0.5" width="1199" height="299" rx="13.5" fill="none" stroke="#1E2A42" stroke-width="1"/>
+
+  <text class="disp h1" x="36" y="46">One tick, five moves.</text>
+  <g class="mono ct" text-anchor="end">
+    <text class="k1" x="1164" y="46">tick: 5/30</text>
+    <text class="k2" x="1164" y="46" opacity="0">tick: 6/30</text>
+    <text class="k3" x="1164" y="46" opacity="0">tick: 7/30</text>
+    <text class="k4" x="1164" y="46" opacity="0">tick: 8/30</text>
   </g>
-  <g class="static"><text class="mono" x="1164" y="46" font-size="24" font-weight="700" fill="#C3ABF2" text-anchor="end">tick: 7/30</text></g>
-  <line x1="36" y1="64" x2="1164" y2="64" stroke="#7E9A9A" stroke-width="1"/>
+  <line x1="36" y1="64" x2="1164" y2="64" stroke="url(#w-rule)" stroke-width="1.25"/>
+  <line class="flowline" x1="36" y1="64" x2="1164" y2="64" stroke="url(#w-rule)" stroke-width="1.25" stroke-dasharray="3 9"/>
 
-  <line x1="150" y1="180" x2="1050" y2="180" stroke="#7E9A9A" stroke-width="2"/>
-  <path d="M256.5 172 L268.5 180 L256.5 188" fill="none" stroke="#7E9A9A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M481.5 172 L493.5 180 L481.5 188" fill="none" stroke="#7E9A9A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M706.5 172 L718.5 180 L706.5 188" fill="none" stroke="#7E9A9A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M931.5 172 L943.5 180 L931.5 188" fill="none" stroke="#7E9A9A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M1050 194 C 1110 220 1110 250 1050 250 L 150 250 C 90 250 90 220 150 194" fill="none" stroke="#C3ABF2" stroke-width="2.5" stroke-dasharray="7 7" stroke-linecap="round"/>
-  <rect x="516" y="236" width="168" height="28" fill="#0C2A2B"/>
-  <text class="mono" x="600" y="257" font-size="22" fill="#C3ABF2" text-anchor="middle">wait 20m</text>
-
-  <text class="sans" x="150" y="100" font-size="24" font-weight="700" fill="#E8F1EE" text-anchor="middle">STATE</text>
-  <circle cx="150" cy="180" r="13" fill="#0C2A2B" stroke="#C3ABF2" stroke-width="3"/>
-  <text class="sans" x="150" y="124" font-size="19" fill="#A6BEBD" text-anchor="middle">read the brief</text>
-  <text class="sans" x="150" y="145" font-size="19" fill="#A6BEBD" text-anchor="middle">and the log</text>
-  <text class="sans" x="375" y="100" font-size="24" font-weight="700" fill="#E8F1EE" text-anchor="middle">WORK</text>
-  <circle cx="375" cy="180" r="13" fill="#0C2A2B" stroke="#C3ABF2" stroke-width="3"/>
-  <text class="sans" x="375" y="124" font-size="19" fill="#A6BEBD" text-anchor="middle">do one cycle</text>
-  <text class="sans" x="375" y="145" font-size="19" fill="#A6BEBD" text-anchor="middle">of the job</text>
-  <text class="sans" x="600" y="100" font-size="24" font-weight="700" fill="#E8F1EE" text-anchor="middle">LOG</text>
-  <circle cx="600" cy="180" r="13" fill="#0C2A2B" stroke="#C3ABF2" stroke-width="3"/>
-  <text class="sans" x="600" y="124" font-size="19" fill="#A6BEBD" text-anchor="middle">append one row</text>
-  <text class="sans" x="600" y="145" font-size="19" fill="#A6BEBD" text-anchor="middle">to TICKS.md</text>
-  <text class="sans" x="825" y="100" font-size="24" font-weight="700" fill="#E8F1EE" text-anchor="middle">IMPROVE</text>
-  <circle cx="825" cy="180" r="13" fill="#0C2A2B" stroke="#C3ABF2" stroke-width="3"/>
-  <text class="sans" x="825" y="124" font-size="19" fill="#A6BEBD" text-anchor="middle">note what to</text>
-  <text class="sans" x="825" y="145" font-size="19" fill="#A6BEBD" text-anchor="middle">change next tick</text>
-  <text class="sans" x="1050" y="100" font-size="24" font-weight="700" fill="#E8F1EE" text-anchor="middle">SCHEDULE / STOP</text>
-  <circle cx="1050" cy="180" r="13" fill="#0C2A2B" stroke="#C3ABF2" stroke-width="3"/>
-  <text class="sans" x="1050" y="124" font-size="19" fill="#A6BEBD" text-anchor="middle">wait 20m — or</text>
-  <text class="sans" x="1050" y="145" font-size="19" fill="#A6BEBD" text-anchor="middle">stop, if the rule says</text>
-  <g class="motion">
-    <circle cx="150" cy="180" r="13" fill="#C3ABF2" opacity="0"><animate attributeName="opacity" values="1;0;0;0;0" keyTimes="0;0.2;0.4;0.6;0.8" calcMode="discrete" dur="6s" begin="0s" repeatCount="indefinite"/></circle>
-    <circle cx="375" cy="180" r="13" fill="#C3ABF2" opacity="0"><animate attributeName="opacity" values="0;1;0;0;0" keyTimes="0;0.2;0.4;0.6;0.8" calcMode="discrete" dur="6s" begin="0s" repeatCount="indefinite"/></circle>
-    <circle cx="600" cy="180" r="13" fill="#C3ABF2" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;0.2;0.4;0.6;0.8" calcMode="discrete" dur="6s" begin="0s" repeatCount="indefinite"/></circle>
-    <circle cx="825" cy="180" r="13" fill="#C3ABF2" opacity="0"><animate attributeName="opacity" values="0;0;0;1;0" keyTimes="0;0.2;0.4;0.6;0.8" calcMode="discrete" dur="6s" begin="0s" repeatCount="indefinite"/></circle>
-    <circle cx="1050" cy="180" r="13" fill="#C3ABF2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1" keyTimes="0;0.2;0.4;0.6;0.8" calcMode="discrete" dur="6s" begin="0s" repeatCount="indefinite"/></circle>
+  <line x1="150" y1="180" x2="1050" y2="180" stroke="#1E2A42" stroke-width="2"/>
+  <line class="flowline" x1="150" y1="180" x2="1050" y2="180" stroke="url(#w-track)" stroke-width="2" stroke-dasharray="4 10" opacity="0.9"/>
+  <g fill="none" stroke="#5B9DFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+    <path d="M256.5 172 L268.5 180 L256.5 188"/>
+    <path d="M481.5 172 L493.5 180 L481.5 188"/>
+    <path d="M706.5 172 L718.5 180 L706.5 188"/>
+    <path d="M931.5 172 L943.5 180 L931.5 188"/>
   </g>
-  <g class="static"><circle cx="600" cy="180" r="13" fill="#C3ABF2"/></g>
 
-  <text class="sans" x="36" y="290" font-size="19" fill="#A6BEBD">Stops at its stop rule — 30 ticks, the PR merges, or 7 days.</text>
+  <path d="M1050 194 C 1110 220 1110 250 1050 250 L 150 250 C 90 250 90 220 150 194" fill="none" stroke="#1E2A42" stroke-width="2.5"/>
+  <path class="returnline" d="M1050 194 C 1110 220 1110 250 1050 250 L 150 250 C 90 250 90 220 150 194" fill="none" stroke="#2BE8C8" stroke-width="2.5" stroke-dasharray="7 9" stroke-linecap="round" opacity="0.85"/>
+  <rect x="518" y="235" width="164" height="30" rx="8" fill="#0E1524" stroke="#1E2A42" stroke-width="1"/>
+  <text class="mono wait" x="600" y="256" text-anchor="middle">wait 20m</text>
+
+  <g text-anchor="middle">
+    <text class="disp st" x="150" y="100">STATE</text>
+    <text class="disp sd" x="150" y="124">read the brief</text>
+    <text class="disp sd" x="150" y="145">and the log</text>
+    <text class="disp st" x="375" y="100">WORK</text>
+    <text class="disp sd" x="375" y="124">do one cycle</text>
+    <text class="disp sd" x="375" y="145">of the job</text>
+    <text class="disp st" x="600" y="100">LOG</text>
+    <text class="disp sd" x="600" y="124">append one row</text>
+    <text class="disp sd" x="600" y="145">to TICKS.md</text>
+    <text class="disp st" x="825" y="100">IMPROVE</text>
+    <text class="disp sd" x="825" y="124">note what to</text>
+    <text class="disp sd" x="825" y="145">change next tick</text>
+    <text class="disp st" x="1050" y="100">SCHEDULE / STOP</text>
+    <text class="disp sd" x="1050" y="124">wait 20m, or</text>
+    <text class="disp sd" x="1050" y="145">stop, if the rule says</text>
+  </g>
+
+  <g fill="#0E1524" stroke="#2BE8C8" stroke-width="3">
+    <circle cx="150" cy="180" r="13"/><circle cx="375" cy="180" r="13"/><circle cx="600" cy="180" r="13"/>
+    <circle cx="825" cy="180" r="13"/><circle cx="1050" cy="180" r="13"/>
+  </g>
+  <g fill="#2BE8C8" filter="url(#w-glow-sm)">
+    <circle class="s1" cx="150"  cy="180" r="13"/>
+    <circle class="s2" cx="375"  cy="180" r="13" opacity="0"/>
+    <circle class="s3" cx="600"  cy="180" r="13" opacity="0"/>
+    <circle class="s4" cx="825"  cy="180" r="13" opacity="0"/>
+    <circle class="s5" cx="1050" cy="180" r="13" opacity="0"/>
+  </g>
+
+  <text class="disp ft" x="36" y="283">Stops at its stop rule: 30 ticks, the PR merges, or 7 days.</text>
 </svg>
