@@ -90,7 +90,7 @@ usage metrics.
   skill ships it and `ticks_lint.py` under `skills/loopify/scripts/`),
   `scenarios.md` (behavioral scenarios and rubrics), `RED-baseline.md` (the recorded RED),
   `README.md` (what the two layers are and how to reproduce them).
-- `tests/test_manifests.py` — manifest validity, version parity across four sources, the repo-wide
+- `tests/test_manifests.py` — manifest validity, version parity across six manifests, the repo-wide
   vocabulary lock, the example brief's clauses, the eight rules run as code, README i18n parity, the
   SVG and social-preview gate, a secrets scan. A release gate; CI runs it.
 - `tests/test_ticks_lint.py`, the TICKS.md lint (`skills/loopify/scripts/ticks_lint.py`) against a

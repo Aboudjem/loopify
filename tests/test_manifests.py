@@ -3,8 +3,9 @@
 Manifest + contract tests for loopify (a release gate; runs in CI).
 
   1. plugin.json / marketplace.json parse and carry the required fields.
-  2. The version is identical across SKILL.md metadata.version, plugin.json, marketplace.json
-     and the latest CHANGELOG.md entry.
+  2. The version is identical across SKILL.md metadata.version, plugin.json, marketplace.json,
+     the latest CHANGELOG.md entry, and the .cursor-plugin / .copilot-plugin mirrors, which must
+     otherwise match .claude-plugin/plugin.json field for field.
   3. evals/check_skill.py exits 0 on the real SKILL.md (regression guard).
   4. Repo-wide vocabulary lock: no tracked text file calls the line a "condition", says /loop
      "judges" anything, or hands /loop a bare path with no verb (counted `loop-antipattern`
@@ -93,7 +94,7 @@ except (json.JSONDecodeError, FileNotFoundError) as e:
     check("marketplace.json parses as valid JSON", False, str(e))
 
 
-# --- 2. version parity across the four sources of truth ---
+# --- 2. version parity across the six manifests that carry a version ---
 def _skill_version():
     try:
         t = read("skills/loopify/SKILL.md")
@@ -114,15 +115,37 @@ def _changelog_version():
     return None
 
 
+def _mirror(rel):
+    try:
+        return json.loads(read(rel))
+    except (json.JSONDecodeError, FileNotFoundError):
+        return {}
+
+
+cursor, copilot = _mirror(".cursor-plugin/plugin.json"), _mirror(".copilot-plugin/plugin.json")
 versions = {
     "SKILL.md metadata.version": _skill_version(),
     "plugin.json version": plugin.get("version"),
     "marketplace.json plugins[0].version": (mkt.get("plugins") or [{}])[0].get("version"),
     "CHANGELOG.md latest release": _changelog_version(),
+    ".cursor-plugin/plugin.json version": cursor.get("version"),
+    ".copilot-plugin/plugin.json version": copilot.get("version"),
 }
 distinct = set(versions.values())
-check("version is identical across SKILL.md, plugin.json, marketplace.json, CHANGELOG.md",
+check("version is identical across all six manifests (SKILL.md, plugin.json, marketplace.json, "
+      "CHANGELOG.md, .cursor-plugin, .copilot-plugin)",
       len(distinct) == 1 and None not in distinct, ", ".join(f"{k}={v!r}" for k, v in versions.items()))
+
+# The editor mirrors are the same plugin under another agent's directory name, so nothing but the
+# path may differ. A mirror that drifts installs a different description than the marketplace shows.
+for rel, m in ((".cursor-plugin/plugin.json", cursor), (".copilot-plugin/plugin.json", copilot)):
+    check(f"{rel} parses and names the plugin", m.get("name") == "loopify", f"got {m.get('name')!r}")
+    check(f"{rel} description matches .claude-plugin/plugin.json",
+          m.get("description") == plugin.get("description"))
+    check(f"{rel} license matches .claude-plugin/plugin.json", m.get("license") == plugin.get("license"))
+    check(f"{rel} keywords match .claude-plugin/plugin.json", m.get("keywords") == plugin.get("keywords"))
+    check(f"{rel} declares skills == ['loopify']", m.get("skills") == ["loopify"])
+    check(f"{rel} declares no mcp key (loopify ships no server)", "mcp" not in m)
 
 # --- 3. eval regression guard ---
 result = subprocess.run([sys.executable, os.path.join(ROOT, "evals", "check_skill.py"),

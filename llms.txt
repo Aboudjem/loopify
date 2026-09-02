@@ -54,6 +54,7 @@ brief carries one.
 - [SKILL.md](https://github.com/Aboudjem/loopify/blob/main/skills/loopify/SKILL.md): The skill definition — the two phases, how `/loop` actually works, the 15-section brief template, the eight loop-line rules, the mode-choice rule, and the handoff format.
 - [Quickstart](https://github.com/Aboudjem/loopify/blob/main/docs/quickstart.md): Install loopify and set up your first recurring job, step by step.
 - [Honest limits](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md): Everything loopify does not promise, each with its source — session scope, the 7-day expiry, no evaluator, no cost cap.
+- [Install in your editor](https://github.com/Aboudjem/loopify/blob/main/docs/editors.md): The `npx skills add` one-liner and the `-a` code for Claude Code, Cursor, Codex, GitHub Copilot, Gemini CLI, OpenCode, Windsurf, Zed and Kimi Code CLI, plus the manual copy path.
 - [Other agents](https://github.com/Aboudjem/loopify/blob/main/docs/other-agents.md): Running the same brief under Kimi, Copilot CLI, Cursor, Qwen Code, Hermes, Goose, and via OS cron elsewhere.
 - [The .claude/loop.md pointer](https://github.com/Aboudjem/loopify/blob/main/docs/loop-md.md): The optional project default, its two caveats, and when not to use it.
 - [FAQ](https://github.com/Aboudjem/loopify/blob/main/docs/faq.md): Common questions about the two artifacts, the tick log, and stopping a loop.

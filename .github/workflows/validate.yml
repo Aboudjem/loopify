@@ -121,7 +121,7 @@ jobs:
         run: python3 evals/check_skill.py skills/loopify/SKILL.md
 
       # (b2) MANIFEST + CONTRACT TESTS — AGENTS.md calls this a release gate, so CI must run it.
-      #      Covers plugin/marketplace validity, version parity across all four sources, the
+      #      Covers plugin/marketplace validity, version parity across all six manifests, the
       #      repo-wide vocabulary lock, the shipped example brief's clauses, the eight loop-line
       #      rules run as code, README i18n parity, and the SVG / social-preview gate.
       - name: Manifest and contract tests (test_manifests.py)

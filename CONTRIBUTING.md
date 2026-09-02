@@ -12,6 +12,13 @@ scenario, a clearer doc, a typo fix. Open an issue first if you want to discuss 
 ## Repo layout
 
 ```
+.claude-plugin/
+  plugin.json           the Claude Code manifest (the version 10x pins)
+  marketplace.json      the single-plugin marketplace entry
+.cursor-plugin/
+  plugin.json           the same manifest under Cursor's directory name
+.copilot-plugin/
+  plugin.json           the same manifest under GitHub Copilot's directory name
 skills/loopify/
   SKILL.md              the skill: two phases, the PREPARE procedure, how /loop
                         actually works, the 15-section brief template, the eight
@@ -24,7 +31,7 @@ evals/
   RED-baseline.md       the recorded RED: both deterministic suites + the cold run
   README.md             the two eval layers and how to reproduce them
 tests/
-  test_manifests.py     manifests, version parity across four sources, the repo-wide
+  test_manifests.py     manifests, version parity across six manifests, the repo-wide
                         vocabulary lock, the example brief's clauses, the eight rules
                         run as code, i18n parity, the SVG/PNG gate (runs in CI)
   test_ticks_lint.py    the TICKS.md lint against good, rotated and malformed logs
@@ -33,7 +40,7 @@ examples/
   sample-loop-brief.md  an illustrative standing brief in the shape loopify produces
   loop.md               the <= 5-line .claude/loop.md pointer
 assets/                 animated SVGs + the 1280x640 social preview card
-docs/                   quickstart, limits, faq, other-agents, loop-md, launch
+docs/                   quickstart, limits, faq, editors, other-agents, loop-md, launch
                         (docs/audit/ is a local build journal, gitignored)
 READMEs/                zh-CN, ja, es, fr translations of README.md
 AGENTS.md               instructions for AI agents working in / invoking this repo
