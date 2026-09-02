@@ -230,6 +230,11 @@ try:
     check("lint self-test: a missing tick cap fails rule 3", not lint_loop_line(CANON.replace("30 ticks or ", ""))[0])
     check("lint self-test: ≥ 60 min emits the cloud-caveat note", bool(lint_loop_line(CANON.replace("20m", "2h"))[2]))
     check("lint self-test: mode mismatch fails rule 8", not lint_loop_line(CANON, "self-paced")[0])
+    over = lint_loop_line(CANON.replace("20m", "14d"))
+    check("lint self-test: a span past the 7-day expiry emits a note, not a failure",
+          over[0] and any("expires after 7 days" in n for n in over[2]), "; ".join(over[2]))
+    check("lint self-test: the canonical line emits no expiry note",
+          not any("expires after 7 days" in n for n in lint_loop_line(CANON)[2]))
 except FileNotFoundError as e:
     check("examples/sample-loop-brief.md is readable", False, str(e))
 

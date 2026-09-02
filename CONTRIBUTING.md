@@ -19,7 +19,7 @@ skills/loopify/
 evals/
   check_skill.py        deterministic assertions on SKILL.md (runs in CI)
   loop_line_lint.py     the eight loop-line rules as code; also a CLI for any line
-                        you are about to paste
+                        you are about to paste (a shim over the copy in skills/)
   scenarios.md          behavioral scenarios + rubrics
   RED-baseline.md       the recorded RED: both deterministic suites + the cold run
   README.md             the two eval layers and how to reproduce them
@@ -27,6 +27,8 @@ tests/
   test_manifests.py     manifests, version parity across four sources, the repo-wide
                         vocabulary lock, the example brief's clauses, the eight rules
                         run as code, i18n parity, the SVG/PNG gate (runs in CI)
+  test_ticks_lint.py    the TICKS.md lint against good, rotated and malformed logs
+                        (runs in CI)
 examples/
   sample-loop-brief.md  an illustrative standing brief in the shape loopify produces
   loop.md               the <= 5-line .claude/loop.md pointer
@@ -131,6 +133,7 @@ These mirror the skill's rules in `AGENTS.md` / `SKILL.md`. Don't look for looph
 # 1. Both deterministic suites must pass.
 python3 evals/check_skill.py skills/loopify/SKILL.md      # expect: exit 0, all checks pass
 python3 tests/test_manifests.py                           # expect: exit 0, all checks pass
+python3 tests/test_ticks_lint.py                          # expect: exit 0, all checks pass
 
 # 2. Lint any line you changed or added, the same way the skill does.
 python3 evals/loop_line_lint.py "/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md — read it first, obey its stop rule (30 ticks or the PR merges), log the tick."

@@ -20,6 +20,13 @@ INTERVAL_RE = re.compile(r"^(\d+)([smhd])$")
 # "Offer cloud first" block). With daily phrasing and no parsed interval, "This session only"
 # makes /loop refuse to schedule locally — the user ends with nothing scheduled.
 DAILY_PHRASES = ("every morning", "daily", "every day", "each night", "every weekday")
+# A recurring loop expires 7 days after it is created, in both modes (docs/limits.md,
+# re-derived from the shipped Claude Code 2.1.252 binary). A line that asks for longer is not
+# wrong, but it cannot be honoured by one paste, so the lint says so.
+EXPIRY_DAYS = 7
+SPAN_RE = re.compile(r"\b(\d+)\s*(d|days?|w|wks?|weeks?|mo|months?)\b", re.I)
+SPAN_DAYS = {"d": 1, "day": 1, "days": 1, "w": 7, "wk": 7, "wks": 7, "week": 7, "weeks": 7,
+             "mo": 30, "month": 30, "months": 30}
 ABS_PATH_RE = re.compile(r"Run one cycle of (\S+?\.md)(?=[\s,.;:—–-]|$)")
 
 
@@ -96,6 +103,15 @@ def lint_loop_line(line, expected_mode=None):
     # 8. the line's mode matches the brief's Standing decision 1
     if expected_mode and expected_mode != mode:
         failures.append(f"rule 8: line is {mode} but the brief's Standing decision 1 says {expected_mode}")
+
+    # beyond the eight: a span longer than the 7-day expiry cannot be covered by one paste
+    longest = 0
+    for n, unit in SPAN_RE.findall(raw):
+        longest = max(longest, int(n) * SPAN_DAYS[unit.lower()])
+    if longest > EXPIRY_DAYS:
+        notes.append(f"the line asks for {longest} days, but a recurring loop expires after "
+                     f"{EXPIRY_DAYS} days in both modes: keep the brief's restart note, and expect "
+                     "to paste the line again rather than planning a longer single run")
 
     return not failures, failures, notes
 

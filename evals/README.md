@@ -69,6 +69,19 @@ python3 tests/test_manifests.py                           # GREEN: exit 0
 Its RED, recorded the same day against an empty scaffold: **4/17 checks passed, 13 failed** — the three
 gate self-tests passed and the secrets scan passed vacuously; everything that needed a real file failed.
 
+### `ticks_lint.py`: the pinned per-tick header as code
+
+`TICKS.md` is what a human reads to find out what the loop did, so its shape is fixed rather than
+free prose. `skills/loopify/scripts/ticks_lint.py` checks a log against it: the durable counter on
+the first line, the newest entry matching the counter, header numbers that only go up, an ISO
+timestamp per header, and a status from the fixed set. A rotated log (the counter keeps climbing
+after `TICKS.md` is renamed) passes, which is the case the check is written around.
+
+```bash
+python3 skills/loopify/scripts/ticks_lint.py <STATE DIR>/TICKS.md   # exit 0 when the log obeys it
+python3 tests/test_ticks_lint.py                                    # the fixtures, in CI
+```
+
 ### `loop_line_lint.py` — the eight rules as code, and a tool you can run
 
 The same eight rules the skill applies in prose before printing a line. Run it on any line you are

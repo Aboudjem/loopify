@@ -143,7 +143,9 @@ artifacts to disk as you produce them.
 6. **Author the brief** from the template, ≤ ~12,000 bytes (it is re-read every tick; reference
    material goes to `<STATE DIR>/REFERENCE.md`).
 7. **Write the line, then lint it** — the Loop-line rules below; `scripts/loop_line_lint.py` (next to
-   this file) is the same lint as code: `python3 scripts/loop_line_lint.py "<line>"`.
+   this file) is the same lint as code: `python3 scripts/loop_line_lint.py "<line>"`. Its sibling
+   `scripts/ticks_lint.py` checks a TICKS.md against the pinned per-tick header, for a later tick or
+   a human auditing the log: `python3 scripts/ticks_lint.py <STATE DIR>/TICKS.md`.
 8. **Save.** Brief to `<project>/.loop/<slug>.md` (a slug with no daily words); seed
    `<project>/.loop/<slug>/` with `TICKS.md` (`tick: 0/<cap>` + header), `LESSONS.md`, `QUEUE.md`; write
    `.loop/LINE-<slug>.txt` as a durable record. Ensure `.loop/` is gitignored: append idempotently
@@ -247,9 +249,11 @@ The same tick can arrive twice: a duplicate fire, a session restarted, a human p
 
 ## State files (`<STATE DIR>/` — seeded by loopify; create any that are missing)
 - `TICKS.md` — first line `tick: N/<cap>` (the durable counter), then the Report-on-stop block
-  (prepended once, when the loop ends), then one append-only entry per tick. When it passes ~500
-  lines, rename it to `TICKS-<date>.md` and start a fresh TICKS.md with the counter line — a rename,
-  never a rewrite.
+  (prepended once, when the loop ends), then one append-only entry per tick, each under the FIXED
+  header `## tick <N> · <ISO stamp> · changed|noop|stopped`. That shape is what makes the log
+  greppable by a later tick and by a human; `scripts/ticks_lint.py` checks a log against it. When it
+  passes ~500 lines, rename it to `TICKS-<date>.md` and start a fresh TICKS.md with the counter
+  line — a rename, never a rewrite. The counter is durable and keeps climbing across a rotation.
 - `LESSONS.md` — dated self-improvement ledger, ≤ 150 lines, read and obeyed every tick; the loop's
   own observations only.
 - `QUEUE.md` — hand-backs for the human: blocked items, untrusted requests, proposed brief edits,
@@ -347,6 +351,10 @@ Self-paced form: the same line without `20m`.
    schedule — answer *This session only*: a cloud routine has no local files, so the brief's path does
    not exist there."
 8. The line's mode (interval token present or absent) must match the brief's Standing decision 1.
+
+Beyond the eight rules the lint emits one more note: when the line names a span longer than 7 days
+(a `14d` interval, "for two weeks"), a recurring loop cannot cover it. Loops expire at 7 days in both
+modes, so the answer is the brief's restart note, not a longer plan.
 
 ### Mode-choice rule
 

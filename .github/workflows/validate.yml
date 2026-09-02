@@ -128,6 +128,12 @@ jobs:
         shell: bash
         run: python3 tests/test_manifests.py
 
+      # (b2b) TICKS LINT TESTS: the per-tick header in TICKS.md is a pinned format, so the lint
+      #       that reads it is a gate too. Plain python3, same as the suites above; no pytest.
+      - name: Ticks lint tests (test_ticks_lint.py)
+        shell: bash
+        run: python3 tests/test_ticks_lint.py
+
       # (b3) LOOP-LINE LINT — the canonical line must keep passing the eight rules as code.
       #      Same lint the skill runs before it prints a line.
       - name: Loop-line lint (canonical line)

@@ -112,8 +112,10 @@ Two fires ten seconds apart must leave PR #412 in the state one fire would.
 ## State files (`/Users/you/acme/.loop/pr-babysitter/` — seeded by loopify; create any that are missing)
 
 - `TICKS.md` — first line `tick: N/30` (the durable counter), then the Report-on-stop block (prepended
-  once, when the loop ends), then one append-only entry per tick. When it passes ~500 lines, rename it
-  to `TICKS-<date>.md` and start a fresh TICKS.md with the counter line — a rename, never a rewrite.
+  once, when the loop ends), then one append-only entry per tick, each under the FIXED header
+  `## tick <N> · <ISO stamp> · changed|noop|stopped` (`scripts/ticks_lint.py` checks a log against
+  it). When it passes ~500 lines, rename it to `TICKS-<date>.md` and start a fresh TICKS.md with the
+  counter line — a rename, never a rewrite. The counter keeps climbing across a rotation.
 - `LESSONS.md` — dated self-improvement ledger, ≤ 150 lines, read and obeyed every tick; the loop's
   own observations only.
 - `QUEUE.md` — hand-backs for the human: review replies to post, logic bugs, conflicts in code,

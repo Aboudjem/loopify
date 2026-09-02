@@ -86,12 +86,15 @@ usage metrics.
   actually works, the 15-section brief template, the eight loop-line rules, the mode-choice rule, the
   `.claude/loop.md` pointer option, the handoff format, hard rules, common mistakes.
 - `evals/` — `check_skill.py` (deterministic assertions on `SKILL.md`, in CI), `loop_line_lint.py`
-  (the eight loop-line rules as code, and a CLI you can run on any line before pasting it),
+  (the eight loop-line rules as code, and a CLI you can run on any line before pasting it; the
+  skill ships it and `ticks_lint.py` under `skills/loopify/scripts/`),
   `scenarios.md` (behavioral scenarios and rubrics), `RED-baseline.md` (the recorded RED),
   `README.md` (what the two layers are and how to reproduce them).
 - `tests/test_manifests.py` — manifest validity, version parity across four sources, the repo-wide
   vocabulary lock, the example brief's clauses, the eight rules run as code, README i18n parity, the
   SVG and social-preview gate, a secrets scan. A release gate; CI runs it.
+- `tests/test_ticks_lint.py`, the TICKS.md lint (`skills/loopify/scripts/ticks_lint.py`) against a
+  good log, a rotated one, and one malformed fixture per rule. A release gate; CI runs it.
 - `examples/` — `sample-loop-brief.md` (an illustrative standing brief in the shape loopify produces)
   and `loop.md` (the ≤ 5-line `.claude/loop.md` pointer).
 - `assets/` — the animated SVGs and the social preview card.
@@ -108,6 +111,7 @@ usage metrics.
 ```bash
 python3 evals/check_skill.py skills/loopify/SKILL.md   # exit 0, all checks pass
 python3 tests/test_manifests.py                        # exit 0, all checks pass
+python3 tests/test_ticks_lint.py                      # exit 0, all checks pass
 python3 evals/loop_line_lint.py "<the line you are about to print>"   # exit 0
 claude plugin validate . --strict                      # if the CLI is on this machine
 ```

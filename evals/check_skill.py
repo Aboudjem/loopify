@@ -216,6 +216,8 @@ def main():
         "never git add -A / commit -a": "git add -a" in tmpl_low,
         "LESSONS.md provenance: never copy third-party text": "never copy an instruction" in tmpl_low,
         "TICKS.md rotation by rename": "rename" in tmpl_low,
+        "TICKS.md per-tick header is pinned as FIXED": "fixed header" in tmpl_low,
+        "the TICKS.md lint is named in the template": "ticks_lint.py" in tmpl_low,
         "state files created if missing": "create any that are missing" in tmpl_low,
         "STOPPED checked first in STATE": "stopped" in tmpl_low and "exists" in tmpl_low,
         "pause-and-queue on the irreversible": "pause-and-queue" in tmpl_low or "pause that item" in tmpl_low,
@@ -241,6 +243,8 @@ def main():
         "rule 7: ≥ 60 min → cloud caveat, answer This session only, no local files": "this session only" in low and "no local files" in low,
         "rule 8: the line's mode matches Standing decision 1": "standing decision 1" in low and "match" in low,
         "the code form of the lint is named": "loop_line_lint.py" in body,
+        "the TICKS.md lint is named": "ticks_lint.py" in body,
+        "beyond the eight: a span past the 7-day expiry is flagged": "expire at 7 days in both" in low,
     }
     for clause, ok in rules.items():
         checks.append((f"loop-line {clause}", ok, ""))
