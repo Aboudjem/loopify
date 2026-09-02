@@ -6,12 +6,61 @@ All notable changes to this project are documented here. The format is based on
 
 ## [1.1.0] - 2026-09-02
 
-Identity, README and install refresh; improvements listed below as they land.
+A repeat-safe clause in every brief, a `TICKS.md` log with a fixed shape, a queue that says why it
+is blocked, a new visual identity, a shorter README, and one-line installs for every other agent.
 
 ### Added
 
-- Release workflow: pushing a `vX.Y.Z` tag now creates the GitHub release and tells the 10x
+- **Repeat-safe clause.** The brief template gains a required `## Repeat-safe` section, so every
+  brief names the marker a tick looks for before it acts, the read-only check that finds it, and
+  what to do when the last tick's output is already there. The template is 15 sections now.
+  `evals/scenarios.md` gains Scenario 4, a job whose danger is a repeated side effect.
+- **Blocked items say why.** Every blocked entry in `QUEUE.md` carries a `reason:` line for what
+  stopped it and an `unblock:` line for what a human has to do. `unblock:` is addressed to a
+  person and is never a step the loop then runs itself.
+- **A fixed per-tick header, and a lint for it.** Every entry in `TICKS.md` opens with
+  `## tick <n> · <ISO timestamp> · changed | noop | stopped`. The new
+  `skills/loopify/scripts/ticks_lint.py` (standard library only) checks a log against the durable
+  counter, rejects a header that runs ahead of it or a number that goes backwards, and accepts a
+  rotated log. New `tests/test_ticks_lint.py`, 13 checks, wired into `validate.yml`.
+- **Editor manifests.** `.cursor-plugin/plugin.json` and `.copilot-plugin/plugin.json` mirror
+  `.claude-plugin/plugin.json`, and the version parity test now compares six manifests rather than
+  four, so a mirror cannot drift.
+- **[docs/editors.md](docs/editors.md)**: the `-a` code and both install directories for Claude
+  Code, Cursor, Codex, GitHub Copilot, Gemini CLI, OpenCode, Windsurf, Zed and Kimi Code CLI, read
+  from the skills CLI's own supported-agents table, plus what does not travel outside Claude Code.
+- **Neon Noir identity**: `assets/logo-mark.png` and `logo-mark-512.png`, the `hero-dark.svg` /
+  `hero-light.svg` banner pair for a `<picture>` swap, and `social-preview.svg`, the source of the
+  1280x640 `social-preview.png`.
+- **Release workflow**: pushing a `vX.Y.Z` tag now creates the GitHub release and tells the 10x
   marketplace to re-sync (`.github/workflows/release.yml`).
+
+### Changed
+
+- **README rewritten**, 185 lines to 180, install above the fold, the emoji bullets and the block
+  that repeated the alert both gone, the `TICKS.md` sample promoted into the walkthrough, and the
+  goalify comparison moved near the top. The four translations were rebuilt from it.
+- **The canonical line's separator is a middle dot**, not an em-dash:
+  `Run one cycle of <ABSOLUTE PATH> · read it first, obey its stop rule (...), log the tick.` Still
+  144 characters, and a line written the old way still passes the lint.
+- **The one-sentence purpose** now reads "Come back to a log of what every tick did, not a loop you
+  have to babysit", across `plugin.json`, both mirrors, `marketplace.json`, `SKILL.md` and
+  `llms.txt`.
+- The three diagrams were rebuilt in place in the new palette at their original size and wording.
+- `tests/test_manifests.py` grew from 113 checks to 158, and `evals/check_skill.py` from 136 to 153.
+
+### Fixed
+
+- `evals/loop_line_lint.py` emits a note when a line names a span longer than seven days, since a
+  recurring loop expires at seven days in both modes. It reads the words, not the brief's slug, so
+  a path like `pr-30d-watch.md` no longer trips it.
+- The tick lint no longer fails a correct log. A tick increments the counter before the LOCK check
+  and the already-met-stop check, and both exit without writing an entry, so a log legitimately
+  sits behind its counter; only a header that runs ahead of it is a bug.
+- "Append, never overwrite" in the brief template now names its three real exceptions: the counter
+  line is updated in place, the report on stop is prepended, and `LESSONS.md` is consolidated.
+- The social preview card is exempt from the SVG animation gate. It is rasterised to a PNG, so
+  motion there was never visible.
 
 ## [1.0.0] - 2026-09-01
 
