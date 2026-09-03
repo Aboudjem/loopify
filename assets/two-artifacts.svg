@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" width="1200" height="340" role="img" aria-label="Two things, two lifespans: the brief is a file re-read every tick, the line is one string pasted once.">
   <defs>
     <linearGradient id="t-ground" x1="0" y1="0" x2="0.35" y2="1">
-      <stop offset="0%" stop-color="#0A0F1C"/>
-      <stop offset="60%" stop-color="#080C16"/>
-      <stop offset="100%" stop-color="#07070C"/>
+      <stop offset="0%" stop-color="#0D1626"/>
+      <stop offset="60%" stop-color="#0A0F1C"/>
+      <stop offset="100%" stop-color="#080C18"/>
     </linearGradient>
     <linearGradient id="t-rule" gradientUnits="userSpaceOnUse" x1="36" y1="64" x2="1164" y2="64">
       <stop offset="0%"   stop-color="#2BE8C8" stop-opacity="0.65"/>
@@ -11,23 +11,29 @@
       <stop offset="100%" stop-color="#5B9DFF" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id="t-link" gradientUnits="userSpaceOnUse" x1="256" y1="156" x2="640" y2="182">
-      <stop offset="0%"   stop-color="#2BE8C8"/>
-      <stop offset="100%" stop-color="#00D4FF"/>
-      <animateTransform attributeName="gradientTransform" type="translate"
-        values="-40 0; 40 0; -40 0" dur="18s" repeatCount="indefinite"/>
-    </linearGradient>
+      <stop class="v2d1" offset="0%"   stop-color="#2BE8C8"/>
+      <stop class="v2d2" offset="100%" stop-color="#00D4FF"/>
+</linearGradient>
     <clipPath id="t-card"><rect x="0" y="0" width="1200" height="340" rx="14"/></clipPath>
     <clipPath id="t-sheet"><rect x="36" y="84" width="544" height="210" rx="5"/></clipPath>
+      <radialGradient id="v2-bloomA" cx="0.18" cy="0.22" r="0.72">
+      <stop offset="0%" stop-color="#2BE8C8" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#2BE8C8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="v2-bloomB" cx="0.84" cy="0.86" r="0.68">
+      <stop offset="0%" stop-color="#00D4FF" stop-opacity="0.11"/>
+      <stop offset="100%" stop-color="#00D4FF" stop-opacity="0"/>
+    </radialGradient>
   </defs>
 
   <style>
     .disp { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
     .mono { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace; }
     .h1   { font-size: 28px; font-weight: 700; fill: #F2F6FF; letter-spacing: -0.3px; }
-    .tag  { font-size: 15px; letter-spacing: 1.6px; fill: #8494B0; }
+    .tag  { font-size: 15px; letter-spacing: 1.6px; fill: #93A2BE; }
     .item { font-size: 17px; fill: #1A2233; }
     .cap  { font-size: 17px; fill: #F2F6FF; }
-    .note { font-size: 18px; fill: #B6C2DA; }
+    .note { font-size: 18px; fill: #C2CDE4; }
 
     @keyframes t-flow { to { stroke-dashoffset: -160; } }
     .flowline { animation: t-flow 14s linear infinite; }
@@ -46,9 +52,16 @@
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; }
     }
+      @keyframes v2-d1 { 0%,100% { stop-color:#2BE8C8; } 50% { stop-color:#00D4FF; } }
+    .v2d1 { animation: v2-d1 16s ease-in-out infinite; }
+    @keyframes v2-d2 { 0%,100% { stop-color:#00D4FF; } 50% { stop-color:#2BE8C8; } }
+    .v2d2 { animation: v2-d2 16s ease-in-out infinite; }
+    @keyframes v2-breathe { 0%,100% { opacity:0.66; } 50% { opacity:1; } }
+    .v2bloom { animation: v2-breathe 11s ease-in-out infinite; }
   </style>
 
-  <g clip-path="url(#t-card)"><rect width="1200" height="340" fill="url(#t-ground)"/></g>
+  <g clip-path="url(#t-card)"><rect width="1200" height="340" fill="url(#t-ground)"/>
+  <g class="v2bloom"><rect width="1200" height="340" fill="url(#v2-bloomA)"/><rect width="1200" height="340" fill="url(#v2-bloomB)"/></g></g>
   <rect x="0.5" y="0.5" width="1199" height="339" rx="13.5" fill="none" stroke="#1E2A42" stroke-width="1"/>
 
   <text class="disp h1" x="36" y="46">Two things, two lifespans.</text>

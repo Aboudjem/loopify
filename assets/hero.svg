@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="1200" height="420" role="img" aria-label="Four steps: describe a job that repeats, get a brief (a file) and a line (one string), paste the line into /loop, come back to a tick log.">
   <defs>
     <linearGradient id="h-ground" x1="0" y1="0" x2="0.35" y2="1">
-      <stop offset="0%" stop-color="#0A0F1C"/>
-      <stop offset="60%" stop-color="#080C16"/>
-      <stop offset="100%" stop-color="#07070C"/>
+      <stop offset="0%" stop-color="#0D1626"/>
+      <stop offset="60%" stop-color="#0A0F1C"/>
+      <stop offset="100%" stop-color="#080C18"/>
     </linearGradient>
     <radialGradient id="h-bloom" cx="0.5" cy="1" r="0.75">
       <stop offset="0%"  stop-color="#FF2D78" stop-opacity="0.20"/>
@@ -11,12 +11,10 @@
       <stop offset="100%" stop-color="#7C3AED" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="h-brand" x1="0" y1="0" x2="1" y2="0.25" gradientUnits="objectBoundingBox">
-      <stop offset="0%"   stop-color="#2BE8C8"/>
-      <stop offset="55%"  stop-color="#00D4FF"/>
-      <stop offset="100%" stop-color="#5B9DFF"/>
-      <animateTransform attributeName="gradientTransform" type="translate"
-        values="-0.12 0; 0.12 0; -0.12 0" dur="18s" repeatCount="indefinite"/>
-    </linearGradient>
+      <stop class="v2d1" offset="0%"   stop-color="#2BE8C8"/>
+      <stop class="v2d2" offset="55%"  stop-color="#00D4FF"/>
+      <stop class="v2d3" offset="100%" stop-color="#5B9DFF"/>
+</linearGradient>
     <linearGradient id="h-rule" gradientUnits="userSpaceOnUse" x1="36" y1="68" x2="1164" y2="68">
       <stop offset="0%"   stop-color="#2BE8C8" stop-opacity="0.65"/>
       <stop offset="45%"  stop-color="#00D4FF" stop-opacity="0.45"/>
@@ -27,16 +25,24 @@
       <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
     <clipPath id="h-card"><rect x="0" y="0" width="1200" height="420" rx="14"/></clipPath>
+      <radialGradient id="v2-bloomA" cx="0.18" cy="0.22" r="0.72">
+      <stop offset="0%" stop-color="#2BE8C8" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#2BE8C8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="v2-bloomB" cx="0.84" cy="0.86" r="0.68">
+      <stop offset="0%" stop-color="#00D4FF" stop-opacity="0.11"/>
+      <stop offset="100%" stop-color="#00D4FF" stop-opacity="0"/>
+    </radialGradient>
   </defs>
 
   <style>
     .disp { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
     .mono { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace; }
     .step  { font-size: 26px; font-weight: 700; fill: #F2F6FF; letter-spacing: -0.3px; }
-    .cmd   { font-size: 16px; fill: #B6C2DA; }
+    .cmd   { font-size: 16px; fill: #C2CDE4; }
     .num   { font-size: 18px; font-weight: 700; fill: #2BE8C8; }
     .numon { font-size: 18px; font-weight: 700; fill: #07070C; }
-    .tag   { font-size: 11.5px; letter-spacing: 1.6px; fill: #8494B0; }
+    .tag   { font-size: 11.5px; letter-spacing: 1.6px; fill: #93A2BE; }
     .row   { font-size: 16px; fill: #48546B; }
     .tk    { stroke: #0E8571; stroke-width: 2.5; stroke-linecap: round; opacity: 0.55; }
     .tk-hi { stroke: #0E8571; stroke-width: 2.5; stroke-linecap: round; }
@@ -62,10 +68,19 @@
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; }
     }
+      @keyframes v2-d1 { 0%,100% { stop-color:#2BE8C8; } 50% { stop-color:#00D4FF; } }
+    .v2d1 { animation: v2-d1 16s ease-in-out infinite; }
+    @keyframes v2-d2 { 0%,100% { stop-color:#00D4FF; } 50% { stop-color:#2BE8C8; } }
+    .v2d2 { animation: v2-d2 16s ease-in-out infinite; }
+    @keyframes v2-d3 { 0%,100% { stop-color:#5B9DFF; } 50% { stop-color:#8E7BFF; } }
+    .v2d3 { animation: v2-d3 16s ease-in-out infinite; }
+    @keyframes v2-breathe { 0%,100% { opacity:0.66; } 50% { opacity:1; } }
+    .v2bloom { animation: v2-breathe 11s ease-in-out infinite; }
   </style>
 
   <g clip-path="url(#h-card)">
     <rect width="1200" height="420" fill="url(#h-ground)"/>
+  <g class="v2bloom"><rect width="1200" height="420" fill="url(#v2-bloomA)"/><rect width="1200" height="420" fill="url(#v2-bloomB)"/></g>
     <ellipse class="bloom" cx="600" cy="424" rx="720" ry="200" fill="url(#h-bloom)"/>
   </g>
   <rect x="0.5" y="0.5" width="1199" height="419" rx="13.5" fill="none" stroke="#1E2A42" stroke-width="1"/>
@@ -112,7 +127,7 @@
   <text class="disp step" x="764" y="104">Come back to the log</text>
   <rect x="728" y="118" width="436" height="254" rx="8" fill="#0E1524" stroke="#1E2A42" stroke-width="1"/>
   <rect x="740" y="130" width="412" height="230" rx="3" fill="#FFFFFF"/>
-  <text class="mono" x="756" y="158" font-size="20" font-weight="700" fill="#07070C">TICKS.md</text>
+  <text class="mono" x="756" y="158" font-size="20" font-weight="700" fill="#080C18">TICKS.md</text>
   <text class="mono" x="1136" y="158" font-size="18" font-weight="700" fill="#1A2233" text-anchor="end">tick: 7/30</text>
   <line x1="756" y1="170" x2="1136" y2="170" stroke="#48546B" stroke-width="1"/>
     <line x1="756" y1="204" x2="1136" y2="204" stroke="#D8DEE9" stroke-width="1"/>
@@ -134,6 +149,6 @@
     <g class="nib" fill="#0E8571"><rect x="1105" y="312" width="2.5" height="12"/><circle cx="1106.2" cy="310" r="4"/></g>
   </g>
 
-  <text class="disp" x="36" y="402" font-size="22" fill="#B6C2DA">A running loop is not proof. Read the log.</text>
+  <text class="disp" x="36" y="402" font-size="22" fill="#C2CDE4">A running loop is not proof. Read the log.</text>
   <text class="mono tag" x="1164" y="402" text-anchor="end">STOPS AT 7 DAYS</text>
 </svg>

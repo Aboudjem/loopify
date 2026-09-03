@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img"
+     aria-label="loopify: an infinity sign whose light never stops going round">
+  <title>loopify</title>
+  <desc>Animated dark-mode logo mark. The whole mark is drawn as a muted track; one bright
+  element travels over it, so no frame is an incomplete logo and the reduced-motion resting frame
+  is the finished mark.</desc>
+  <defs>
+    <linearGradient id="lp-plate" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#0D1626"/>
+      <stop offset="58%" stop-color="#0A0F1C"/>
+      <stop offset="100%" stop-color="#080C18"/>
+    </linearGradient>
+    <radialGradient id="lp-bloomA" cx="0.24" cy="0.24" r="0.68">
+      <stop offset="0%" stop-color="#2BE8C8" stop-opacity="0.42"/>
+      <stop offset="100%" stop-color="#2BE8C8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="lp-bloomB" cx="0.80" cy="0.82" r="0.64">
+      <stop offset="0%" stop-color="#00D4FF" stop-opacity="0.34"/>
+      <stop offset="100%" stop-color="#00D4FF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="lp-ink" gradientUnits="userSpaceOnUse" x1="36" y1="170" x2="220" y2="86">
+      <stop class="lpk1" offset="0%"   stop-color="#3DFFDA"/>
+      <stop class="lpk2" offset="52%"  stop-color="#2BE8C8"/>
+      <stop class="lpk3" offset="100%" stop-color="#00D4FF"/>
+    </linearGradient>
+    <filter id="lp-glow" x="-45%" y="-45%" width="190%" height="190%">
+      <feGaussianBlur stdDeviation="6.5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="lp-glow-sm" x="-150%" y="-150%" width="400%" height="400%">
+      <feGaussianBlur stdDeviation="4.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    @keyframes lp-breathe { 0%,100% { opacity:0.62; } 50% { opacity:1; } }
+    .lpbloom { animation: lp-breathe 9s ease-in-out infinite; }
+    @keyframes lp-flow { to { stroke-dashoffset: -1000; } }
+    @keyframes lp-ride{0%{transform:translate(47.9px,104.6px)}4%{transform:translate(40.2px,123.8px)}8%{transform:translate(43.5px,144.3px)}13%{transform:translate(57.2px,159.8px)}17%{transform:translate(77.0px,165.9px)}21%{transform:translate(97.2px,161.6px)}25%{transform:translate(113.2px,148.3px)}29%{transform:translate(125.7px,131.5px)}33%{transform:translate(137.5px,114.2px)}38%{transform:translate(151.8px,99.0px)}42%{transform:translate(170.7px,90.4px)}46%{transform:translate(191.3px,92.6px)}50%{transform:translate(208.1px,104.6px)}54%{transform:translate(215.8px,123.8px)}58%{transform:translate(212.5px,144.3px)}63%{transform:translate(198.8px,159.8px)}67%{transform:translate(179.0px,165.9px)}71%{transform:translate(158.8px,161.6px)}75%{transform:translate(142.8px,148.3px)}79%{transform:translate(130.3px,131.5px)}83%{transform:translate(118.5px,114.2px)}88%{transform:translate(104.2px,99.0px)}92%{transform:translate(85.3px,90.4px)}96%{transform:translate(64.7px,92.6px)}100%{transform:translate(47.9px,104.6px)}}
+    .lpcomet { stroke-dasharray: 200 800; animation: lp-flow 6s linear infinite; }
+    /* led 200/1000 ahead of the dash head, so the dot sits exactly on the comet tip */
+    .lphead { transform: translate(47.9px, 104.6px); animation: lp-ride 6s linear infinite; }
+    @keyframes lp-k1 { 0%,100% { stop-color:#3DFFDA; } 50% { stop-color:#2BE8C8; } }
+    @keyframes lp-k2 { 0%,100% { stop-color:#2BE8C8; } 50% { stop-color:#00D4FF; } }
+    @keyframes lp-k3 { 0%,100% { stop-color:#00D4FF; } 50% { stop-color:#5B9DFF; } }
+    .lpk1 { animation: lp-k1 12s ease-in-out infinite; }
+    .lpk2 { animation: lp-k2 12s ease-in-out infinite; }
+    .lpk3 { animation: lp-k3 12s ease-in-out infinite; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+
+  <rect width="256" height="256" rx="56" fill="url(#lp-plate)"/>
+  <g class="lpbloom">
+    <rect width="256" height="256" rx="56" fill="url(#lp-bloomA)"/>
+    <rect width="256" height="256" rx="56" fill="url(#lp-bloomB)"/>
+  </g>
+  <rect x="0.9" y="0.9" width="254.2" height="254.2" rx="55.2" fill="none"
+        stroke="#22314D" stroke-width="1.8"/>
+
+  <path d="M128 128 C114 106 100 90 80 90 C56 90 40 107 40 128 C40 149 56 166 80 166 C100 166 114 150 128 128 C142 106 156 90 176 90 C200 90 216 107 216 128 C216 149 200 166 176 166 C156 166 142 150 128 128 Z" pathLength="1000" fill="none" stroke="#2BE8C8"
+        stroke-opacity="0.32" stroke-width="15" stroke-linecap="round"/>
+  <g filter="url(#lp-glow)">
+    <path class="lpcomet" d="M128 128 C114 106 100 90 80 90 C56 90 40 107 40 128 C40 149 56 166 80 166 C100 166 114 150 128 128 C142 106 156 90 176 90 C200 90 216 107 216 128 C216 149 200 166 176 166 C156 166 142 150 128 128 Z" pathLength="1000" fill="none"
+          stroke="url(#lp-ink)" stroke-width="15" stroke-linecap="round"/>
+  </g>
+  <g class="lphead" filter="url(#lp-glow-sm)"><circle r="8" fill="#FFFFFF"/></g>
+</svg>

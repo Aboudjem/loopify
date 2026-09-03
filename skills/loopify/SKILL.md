@@ -13,7 +13,7 @@ description: >-
 argument-hint: "[recurring job to prepare a /loop line for]"
 license: MIT
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # loopify

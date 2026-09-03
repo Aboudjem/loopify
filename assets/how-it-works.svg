@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300" role="img" aria-label="One tick, five moves: state, work, log, improve, schedule or stop, then round again.">
   <defs>
     <linearGradient id="w-ground" x1="0" y1="0" x2="0.35" y2="1">
-      <stop offset="0%" stop-color="#0A0F1C"/>
-      <stop offset="60%" stop-color="#080C16"/>
-      <stop offset="100%" stop-color="#07070C"/>
+      <stop offset="0%" stop-color="#0D1626"/>
+      <stop offset="60%" stop-color="#0A0F1C"/>
+      <stop offset="100%" stop-color="#080C18"/>
     </linearGradient>
     <linearGradient id="w-rule" gradientUnits="userSpaceOnUse" x1="36" y1="64" x2="1164" y2="64">
       <stop offset="0%"   stop-color="#2BE8C8" stop-opacity="0.65"/>
@@ -20,6 +20,14 @@
       <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
     <clipPath id="w-card"><rect x="0" y="0" width="1200" height="300" rx="14"/></clipPath>
+      <radialGradient id="v2-bloomA" cx="0.18" cy="0.22" r="0.72">
+      <stop offset="0%" stop-color="#2BE8C8" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#2BE8C8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="v2-bloomB" cx="0.84" cy="0.86" r="0.68">
+      <stop offset="0%" stop-color="#00D4FF" stop-opacity="0.11"/>
+      <stop offset="100%" stop-color="#00D4FF" stop-opacity="0"/>
+    </radialGradient>
   </defs>
 
   <style>
@@ -27,8 +35,8 @@
     .mono { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace; }
     .h1   { font-size: 28px; font-weight: 700; fill: #F2F6FF; letter-spacing: -0.3px; }
     .st   { font-size: 23px; font-weight: 700; fill: #F2F6FF; letter-spacing: 0.4px; }
-    .sd   { font-size: 18px; fill: #B6C2DA; }
-    .ft   { font-size: 18px; fill: #B6C2DA; }
+    .sd   { font-size: 18px; fill: #C2CDE4; }
+    .ft   { font-size: 18px; fill: #C2CDE4; }
     .ct   { font-size: 24px; font-weight: 700; fill: #2BE8C8; }
     .wait { font-size: 20px; fill: #2BE8C8; }
 
@@ -53,9 +61,12 @@
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; }
     }
+      @keyframes v2-breathe { 0%,100% { opacity:0.66; } 50% { opacity:1; } }
+    .v2bloom { animation: v2-breathe 11s ease-in-out infinite; }
   </style>
 
-  <g clip-path="url(#w-card)"><rect width="1200" height="300" fill="url(#w-ground)"/></g>
+  <g clip-path="url(#w-card)"><rect width="1200" height="300" fill="url(#w-ground)"/>
+  <g class="v2bloom"><rect width="1200" height="300" fill="url(#v2-bloomA)"/><rect width="1200" height="300" fill="url(#v2-bloomB)"/></g></g>
   <rect x="0.5" y="0.5" width="1199" height="299" rx="13.5" fill="none" stroke="#1E2A42" stroke-width="1"/>
 
   <text class="disp h1" x="36" y="46">One tick, five moves.</text>

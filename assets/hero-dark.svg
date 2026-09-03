@@ -1,203 +1,137 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" fill="none" role="img" aria-label="loopify: a loop you do not babysit. Hand Claude a job that repeats, come back to a log of what every tick did.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" fill="none" role="img"
+     aria-label="loopify, recurring runs that are logged: a loop you do not babysit">
+  <title>loopify</title>
   <defs>
-    <linearGradient id="lp-ground" x1="0" y1="0" x2="0.35" y2="1">
-      <stop offset="0%" stop-color="#0A0F1C"/>
-      <stop offset="60%" stop-color="#080C16"/>
-      <stop offset="100%" stop-color="#07070C"/>
+    <linearGradient id="lp-ground" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#0D1626"/>
+      <stop offset="55%" stop-color="#0A0F1C"/>
+      <stop offset="100%" stop-color="#080C18"/>
     </linearGradient>
-
-    <radialGradient id="lp-bloom" cx="0.5" cy="1" r="0.75">
-      <stop offset="0%"  stop-color="#FF2D78" stop-opacity="0.30"/>
-      <stop offset="38%" stop-color="#7C3AED" stop-opacity="0.14"/>
-      <stop offset="100%" stop-color="#7C3AED" stop-opacity="0"/>
+    <radialGradient id="lp-bloomA" cx="0.15" cy="0.13" r="0.44">
+      <stop offset="0%" stop-color="#2BE8C8" stop-opacity="0.26"/>
+      <stop offset="100%" stop-color="#2BE8C8" stop-opacity="0"/>
     </radialGradient>
-
-    <linearGradient id="lp-sun" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%"   stop-color="#FFD59A"/>
-      <stop offset="30%"  stop-color="#FFB341"/>
-      <stop offset="66%"  stop-color="#FF4D8D"/>
-      <stop offset="100%" stop-color="#C77DFF"/>
-    </linearGradient>
-
-    <linearGradient id="lp-brand" x1="0" y1="0" x2="1" y2="0.25" gradientUnits="objectBoundingBox">
-      <stop offset="0%"   stop-color="#2BE8C8"/>
-      <stop offset="52%"  stop-color="#00D4FF"/>
-      <stop offset="100%" stop-color="#5B9DFF"/>
-      <animateTransform attributeName="gradientTransform" type="translate"
-        values="-0.12 0; 0.12 0; -0.12 0" dur="18s" repeatCount="indefinite"/>
-    </linearGradient>
-
-    <linearGradient id="lp-mark" gradientUnits="userSpaceOnUse" x1="80" y1="92" x2="168" y2="172">
-      <stop offset="0%"   stop-color="#2BE8C8"/>
-      <stop offset="100%" stop-color="#00D4FF"/>
-    </linearGradient>
-
-    <linearGradient id="lp-rule" gradientUnits="userSpaceOnUse" x1="470" y1="112" x2="470" y2="272">
+    <radialGradient id="lp-bloomB" cx="0.88" cy="0.85" r="0.50">
+      <stop offset="0%" stop-color="#00D4FF" stop-opacity="0.26"/>
+      <stop offset="100%" stop-color="#00D4FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="lp-bloomC" cx="0.52" cy="0.04" r="0.36">
+      <stop offset="0%" stop-color="#5B9DFF" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#5B9DFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="lp-wash" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%"   stop-color="#3DFFDA" stop-opacity="0.20"/>
+      <stop offset="42%"  stop-color="#00D4FF" stop-opacity="0.124"/>
+      <stop offset="76%"  stop-color="#5B9DFF" stop-opacity="0.046"/>
+      <stop offset="100%" stop-color="#5B9DFF" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="lp-frame"><rect width="1200" height="400"/></clipPath>
+    <linearGradient id="lp-rule" gradientUnits="userSpaceOnUse" x1="500" y1="100" x2="500" y2="300">
       <stop offset="0%"   stop-color="#2BE8C8" stop-opacity="0"/>
-      <stop offset="45%"  stop-color="#2BE8C8" stop-opacity="0.75"/>
+      <stop offset="45%"  stop-color="#2BE8C8" stop-opacity="0.8"/>
       <stop offset="100%" stop-color="#00D4FF" stop-opacity="0"/>
     </linearGradient>
-
-    <linearGradient id="lp-horizon" gradientUnits="userSpaceOnUse" x1="60" y1="332" x2="1140" y2="332">
-      <stop offset="0%"   stop-color="#2BE8C8" stop-opacity="0"/>
-      <stop offset="22%"  stop-color="#2BE8C8" stop-opacity="0.5"/>
-      <stop offset="55%"  stop-color="#00D4FF" stop-opacity="0.8"/>
-      <stop offset="82%"  stop-color="#FF2D78" stop-opacity="0.55"/>
-      <stop offset="100%" stop-color="#FF2D78" stop-opacity="0"/>
+    <linearGradient id="lp-ink" gradientUnits="userSpaceOnUse" x1="36" y1="170" x2="220" y2="86">
+      <stop class="lpk1" offset="0%"   stop-color="#3DFFDA"/>
+      <stop class="lpk2" offset="52%"  stop-color="#2BE8C8"/>
+      <stop class="lpk3" offset="100%" stop-color="#00D4FF"/>
     </linearGradient>
-
-    <linearGradient id="lp-gridfade" gradientUnits="userSpaceOnUse" x1="0" y1="332" x2="0" y2="400">
-      <stop offset="0%"   stop-color="#2BE8C8" stop-opacity="0.55"/>
-      <stop offset="55%"  stop-color="#00D4FF" stop-opacity="0.28"/>
-      <stop offset="100%" stop-color="#FF2D78" stop-opacity="0.05"/>
+    <filter id="lp-glow" x="-45%" y="-45%" width="190%" height="190%">
+      <feGaussianBlur stdDeviation="6.5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="lp-glow-sm" x="-150%" y="-150%" width="400%" height="400%">
+      <feGaussianBlur stdDeviation="4.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="lp-word" x1="0" y1="0" x2="1" y2="0.25">
+      <stop class="lpk1" offset="0%"   stop-color="#3DFFDA"/>
+      <stop class="lpk2" offset="46%"  stop-color="#2BE8C8"/>
+      <stop class="lpk3" offset="100%" stop-color="#00D4FF"/>
     </linearGradient>
-
     <linearGradient id="lp-sheen" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%"   stop-color="#FFFFFF" stop-opacity="0"/>
-      <stop offset="50%"  stop-color="#FFFFFF" stop-opacity="0.55"/>
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.62"/>
       <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
     </linearGradient>
-
-    <filter id="lp-glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="10" result="b"/>
-      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-
-    <filter id="lp-glow-sm" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="3.2" result="b"/>
-      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-
-    <filter id="lp-glow-atmo" x="-70%" y="-70%" width="240%" height="240%">
-      <feGaussianBlur stdDeviation="22" result="b"/>
-      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-
-    <clipPath id="lp-sunclip"><circle cx="1068" cy="268" r="60"/></clipPath>
-    <clipPath id="lp-gridclip"><rect x="0" y="332" width="1200" height="68"/></clipPath>
     <clipPath id="lp-wordclip">
-      <text x="76" y="272" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
-            font-size="100" font-weight="800" letter-spacing="-4">loopify</text>
+      <text x="76" y="286" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+            font-size="111" font-weight="800" letter-spacing="-3.9">loopify</text>
     </clipPath>
   </defs>
 
   <style>
     .disp { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
     .mono { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace; }
-    .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: 4.5px; fill: #2BE8C8; }
+    .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: 4.5px; fill: #3DFFDA; }
     .head    { font-size: 34px; font-weight: 700; fill: #F2F6FF; letter-spacing: -0.5px; }
-    .sub     { font-size: 16px; font-weight: 500; fill: #B6C2DA; }
-    .tag     { font-size: 11.5px; letter-spacing: 1.6px; fill: #8494B0; }
-
-    @keyframes lp-breathe { 0%,100% { opacity: 0.55; } 50% { opacity: 0.95; } }
-    .bloom { animation: lp-breathe 9s ease-in-out infinite; }
-
-    @keyframes lp-sunpulse { 0%,100% { opacity: 0.42; } 50% { opacity: 0.62; } }
-    .sun { animation: lp-sunpulse 10s ease-in-out infinite; }
-
-    @keyframes lp-flow { to { stroke-dashoffset: -240; } }
-    .flowline { animation: lp-flow 14s linear infinite; }
-
-    @keyframes lp-pip { 0%,100% { opacity: 0.45; } 50% { opacity: 1; } }
-    .d1 { animation: lp-pip 5s ease-in-out infinite 0s; }
-    .d2 { animation: lp-pip 5s ease-in-out infinite 0.35s; }
-    .d3 { animation: lp-pip 5s ease-in-out infinite 0.7s; }
-    .d4 { animation: lp-pip 5s ease-in-out infinite 1.05s; }
-    .d5 { animation: lp-pip 5s ease-in-out infinite 1.4s; }
-    .d6 { animation: lp-pip 5s ease-in-out infinite 1.75s; }
-    .d7 { animation: lp-pip 5s ease-in-out infinite 2.1s; }
-
-    @keyframes lp-sheen {
-      0%   { transform: translateX(0); }
-      34%  { transform: translateX(760px); }
-      100% { transform: translateX(760px); }
-    }
-    .sheen { animation: lp-sheen 7.5s linear infinite; }
-
-    @media (prefers-reduced-motion: reduce) {
-      * { animation: none !important; }
-    }
+    .sub     { font-size: 16.5px; font-weight: 500; fill: #C2CDE4; }
+    .tag     { font-size: 11.5px; letter-spacing: 1.6px; fill: #93A2BE; }
+    .chip    { font-size: 11.5px; letter-spacing: 1.2px; fill: #C2CDE4; }
+    @keyframes lp-breathe { 0%,100% { opacity:0.62; } 50% { opacity:1; } }
+    .lpbloom { animation: lp-breathe 11s ease-in-out infinite; }
+    @keyframes lp-sweep { 0% { transform: translateX(-360px); } 100% { transform: translateX(1560px); } }
+    .lpwash { animation: lp-sweep 17s cubic-bezier(.5,0,.5,1) infinite; }
+    @keyframes lp-sheen { 0% { transform: translateX(0); } 15%,100% { transform: translateX(510px); } }
+    .lpsheen { animation: lp-sheen 8.5s cubic-bezier(.4,0,.3,1) infinite; }
+    @keyframes lp-pip { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+    .lpp1 { animation: lp-pip 5s ease-in-out infinite 0.0s; }
+    .lpp2 { animation: lp-pip 5s ease-in-out infinite 0.35s; }
+    .lpp3 { animation: lp-pip 5s ease-in-out infinite 0.7s; }
+    .lpp4 { animation: lp-pip 5s ease-in-out infinite 1.05s; }
+    .lpp5 { animation: lp-pip 5s ease-in-out infinite 1.4s; }
+    .lpp6 { animation: lp-pip 5s ease-in-out infinite 1.75s; }
+    @keyframes lp-flow { to { stroke-dashoffset: -1000; } }
+    @keyframes lp-ride{0%{transform:translate(47.9px,104.6px)}4%{transform:translate(40.2px,123.8px)}8%{transform:translate(43.5px,144.3px)}13%{transform:translate(57.2px,159.8px)}17%{transform:translate(77.0px,165.9px)}21%{transform:translate(97.2px,161.6px)}25%{transform:translate(113.2px,148.3px)}29%{transform:translate(125.7px,131.5px)}33%{transform:translate(137.5px,114.2px)}38%{transform:translate(151.8px,99.0px)}42%{transform:translate(170.7px,90.4px)}46%{transform:translate(191.3px,92.6px)}50%{transform:translate(208.1px,104.6px)}54%{transform:translate(215.8px,123.8px)}58%{transform:translate(212.5px,144.3px)}63%{transform:translate(198.8px,159.8px)}67%{transform:translate(179.0px,165.9px)}71%{transform:translate(158.8px,161.6px)}75%{transform:translate(142.8px,148.3px)}79%{transform:translate(130.3px,131.5px)}83%{transform:translate(118.5px,114.2px)}88%{transform:translate(104.2px,99.0px)}92%{transform:translate(85.3px,90.4px)}96%{transform:translate(64.7px,92.6px)}100%{transform:translate(47.9px,104.6px)}}
+    .lpcomet { stroke-dasharray: 200 800; animation: lp-flow 6s linear infinite; }
+    /* led 200/1000 ahead of the dash head, so the dot sits exactly on the comet tip */
+    .lphead { transform: translate(47.9px, 104.6px); animation: lp-ride 6s linear infinite; }
+    @keyframes lp-k1 { 0%,100% { stop-color:#3DFFDA; } 50% { stop-color:#2BE8C8; } }
+    @keyframes lp-k2 { 0%,100% { stop-color:#2BE8C8; } 50% { stop-color:#00D4FF; } }
+    @keyframes lp-k3 { 0%,100% { stop-color:#00D4FF; } 50% { stop-color:#5B9DFF; } }
+    .lpk1 { animation: lp-k1 12s ease-in-out infinite; }
+    .lpk2 { animation: lp-k2 12s ease-in-out infinite; }
+    .lpk3 { animation: lp-k3 12s ease-in-out infinite; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
   </style>
 
   <rect width="1200" height="400" fill="url(#lp-ground)"/>
-  <ellipse class="bloom" cx="600" cy="404" rx="720" ry="190" fill="url(#lp-bloom)"/>
-
-  <g class="sun">
-    <g filter="url(#lp-glow-atmo)">
-      <circle cx="1068" cy="268" r="60" fill="url(#lp-sun)"/>
-    </g>
-    <g clip-path="url(#lp-sunclip)" fill="#080C16">
-      <rect x="996" y="276" width="144" height="3"/>
-      <rect x="996" y="286" width="144" height="4"/>
-      <rect x="996" y="297.5" width="144" height="5.5"/>
-      <rect x="996" y="311" width="144" height="7.5"/>
-      <rect x="996" y="327" width="144" height="10"/>
+  <g class="lpbloom">
+    <rect width="1200" height="400" fill="url(#lp-bloomA)"/>
+    <rect width="1200" height="400" fill="url(#lp-bloomB)"/>
+    <rect width="1200" height="400" fill="url(#lp-bloomC)"/>
+  </g>
+  <g clip-path="url(#lp-frame)">
+    <g transform="translate(0,196)">
+      <ellipse class="lpwash" cx="0" cy="0" rx="430" ry="300" fill="url(#lp-wash)"/>
     </g>
   </g>
-
-  <g id="grid" clip-path="url(#lp-gridclip)" opacity="0">
-    <g stroke="url(#lp-gridfade)" stroke-width="1" fill="none">
-      <path d="M600 332 L-1180 400"/><path d="M600 332 L-560 400"/><path d="M600 332 L-190 400"/>
-      <path d="M600 332 L40 400"/>   <path d="M600 332 L200 400"/>  <path d="M600 332 L320 400"/>
-      <path d="M600 332 L415 400"/>  <path d="M600 332 L490 400"/>  <path d="M600 332 L548 400"/>
-      <path d="M600 332 L600 400"/>
-      <path d="M600 332 L652 400"/>  <path d="M600 332 L710 400"/>  <path d="M600 332 L785 400"/>
-      <path d="M600 332 L880 400"/>  <path d="M600 332 L1000 400"/> <path d="M600 332 L1160 400"/>
-      <path d="M600 332 L1390 400"/> <path d="M600 332 L1760 400"/> <path d="M600 332 L2380 400"/>
-    </g>
-    <g stroke="url(#lp-gridfade)" stroke-width="1" fill="none">
-      <line x1="0" y1="335"   x2="1200" y2="335"/>
-      <line x1="0" y1="339.5" x2="1200" y2="339.5"/>
-      <line x1="0" y1="345.5" x2="1200" y2="345.5"/>
-      <line x1="0" y1="353.5" x2="1200" y2="353.5"/>
-      <line x1="0" y1="364"   x2="1200" y2="364"/>
-      <line x1="0" y1="378"   x2="1200" y2="378"/>
-      <line x1="0" y1="396"   x2="1200" y2="396"/>
-    </g>
-  </g>
-
-  <g opacity="0.95">
-    <line x1="60" y1="332" x2="1140" y2="332" stroke="url(#lp-horizon)" stroke-width="1.25"/>
-    <line class="flowline" x1="60" y1="332" x2="1140" y2="332" stroke="url(#lp-horizon)"
-          stroke-width="1.25" stroke-dasharray="3 9" opacity="0.85"/>
-  </g>
-
-  <!-- mark: orbit ring open at one o'clock, tick mark on the arc -->
-  <g filter="url(#lp-glow-sm)">
-    <g stroke="url(#lp-mark)" stroke-width="7" stroke-linecap="round" fill="none">
-      <path d="M148.28 103.72 A40 40 0 1 1 130.35 93.36"/>
-      <line x1="94.54" y1="157.46" x2="81.82" y2="170.18"/>
-    </g>
-  </g>
-
+  <g transform="translate(66,56) scale(0.5781)">
+  <path d="M128 128 C114 106 100 90 80 90 C56 90 40 107 40 128 C40 149 56 166 80 166 C100 166 114 150 128 128 C142 106 156 90 176 90 C200 90 216 107 216 128 C216 149 200 166 176 166 C156 166 142 150 128 128 Z" pathLength="1000" fill="none" stroke="#2BE8C8"
+        stroke-opacity="0.32" stroke-width="15" stroke-linecap="round"/>
   <g filter="url(#lp-glow)">
-    <text class="disp" x="76" y="272" font-size="100" font-weight="800" letter-spacing="-4" fill="url(#lp-brand)">loopify</text>
+    <path class="lpcomet" d="M128 128 C114 106 100 90 80 90 C56 90 40 107 40 128 C40 149 56 166 80 166 C100 166 114 150 128 128 C142 106 156 90 176 90 C200 90 216 107 216 128 C216 149 200 166 176 166 C156 166 142 150 128 128 Z" pathLength="1000" fill="none"
+          stroke="url(#lp-ink)" stroke-width="15" stroke-linecap="round"/>
   </g>
-
+  <g class="lphead" filter="url(#lp-glow-sm)"><circle r="8" fill="#FFFFFF"/></g>
+  </g>
+  <g filter="url(#lp-glow)">
+    <text class="disp" x="76" y="286" font-size="111" font-weight="800"
+          letter-spacing="-3.9" fill="url(#lp-word)">loopify</text>
+  </g>
   <g clip-path="url(#lp-wordclip)">
     <g transform="skewX(-18)">
-      <rect class="sheen" x="-260" y="170" width="110" height="130" fill="url(#lp-sheen)" opacity="0.7"/>
+      <rect class="lpsheen" x="-46" y="175" width="51"
+            height="150" fill="url(#lp-sheen)" opacity="0.45"/>
     </g>
   </g>
-
-  <line x1="470" y1="112" x2="470" y2="272" stroke="url(#lp-rule)" stroke-width="1.5"/>
-
-  <g transform="translate(520,0)">
-    <text class="mono eyebrow" x="0" y="130">RECURRING RUNS, LOGGED</text>
-    <text class="disp head"   x="0" y="180">A loop you do not babysit</text>
-    <text class="disp sub"    x="0" y="214">Hand Claude a job that repeats.</text>
-    <text class="disp sub"    x="0" y="240">Come back to a log of what every tick did.</text>
-
-    <g transform="translate(0,282)">
-      <g class="d1"><circle cx="0"   cy="0" r="4.5" fill="#2BE8C8" filter="url(#lp-glow-sm)"/></g>
-      <g class="d2"><circle cx="22"  cy="0" r="4.5" fill="#00D4FF" filter="url(#lp-glow-sm)"/></g>
-      <g class="d3"><circle cx="44"  cy="0" r="4.5" fill="#2BE8C8" filter="url(#lp-glow-sm)"/></g>
-      <g class="d4"><circle cx="66"  cy="0" r="4.5" fill="#00D4FF" filter="url(#lp-glow-sm)"/></g>
-      <g class="d5"><circle cx="88"  cy="0" r="4.5" fill="#2BE8C8" filter="url(#lp-glow-sm)"/></g>
-      <g class="d6"><circle cx="110" cy="0" r="4.5" fill="#00D4FF" filter="url(#lp-glow-sm)"/></g>
-      <g class="d7"><circle cx="132" cy="0" r="4.5" fill="#2BE8C8" filter="url(#lp-glow-sm)"/></g>
-    </g>
+  <line x1="500" y1="100" x2="500" y2="300" stroke="url(#lp-rule)" stroke-width="1.5"/>
+  <g transform="translate(544,0)">
+    <text class="mono eyebrow" x="0" y="134">RECURRING RUNS, LOGGED</text>
+    <text class="disp head" x="0" y="186">A loop you do not babysit</text>
+    <text class="disp sub" x="0" y="222">Hand Claude a job that repeats.</text>
+    <text class="disp sub" x="0" y="249">Come back to a log of what every tick did.</text>
+    <g transform="translate(0,292)"><g class="lpp1"><circle cx="0" cy="0" r="4.5" fill="#2BE8C8" filter="url(#lp-glow-sm)"/></g><g class="lpp2"><circle cx="22" cy="0" r="4.5" fill="#2BE8C8" filter="url(#lp-glow-sm)"/></g><g class="lpp3"><circle cx="44" cy="0" r="4.5" fill="#2BE8C8" filter="url(#lp-glow-sm)"/></g><g class="lpp4"><circle cx="66" cy="0" r="4.5" fill="#2BE8C8" filter="url(#lp-glow-sm)"/></g><g class="lpp5"><circle cx="88" cy="0" r="4.5" fill="#2BE8C8" filter="url(#lp-glow-sm)"/></g><g class="lpp6"><circle cx="110" cy="0" r="4.5" fill="#2BE8C8" filter="url(#lp-glow-sm)"/></g><text class="mono tag" x="146" y="4">EVERY TICK LOGGED</text></g>
   </g>
-
-  <text class="mono tag" x="76" y="318" opacity="0.9">the brief and the line  ·  every tick logged  ·  runs locally</text>
+  <text class="mono tag" x="76" y="352">the brief and the line  &#183;  every tick logged  &#183;  runs locally</text>
 </svg>
