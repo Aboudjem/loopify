@@ -200,13 +200,14 @@ make test
 | `tests/test_ticks_lint.py`  | tick 日志格式                                     | 13/13   |
 | `tests/test_loop_status.py` | 每种结论、退出码，以及本 README 示例的逐字节一致  | 62/62   |
 | `tests/test_no_network.py`  | 发布的脚本不导入网络模块，也不调用 curl 或 wget   | 18/18   |
+| `tests/test_dated_facts.py` | 以旧版本核对的 `/loop` 事实，在每处出现时都注明该版本 | 5/5 |
 | `evals/loop_line_lint.py`   | 标准 line 通过八条规则                            | PASS    |
 
 CI 还会在固定版本的 Claude Code 上运行 `claude plugin validate . --strict`，并检查
 `npx skills@1.9.0 add . --list` 能找到这个 skill。
 
-我在 2026-11-17 用 Claude Code 2.1.326 及其文档核对了 `/loop` 的事实。有四条无法在 2.1.326 上重新确认，
-仍标注为 2.1.252（2026-09-01）。逐条对照表见
+我在 2026-11-17 用 Claude Code 2.1.326 及其文档核对了 `/loop` 的事实。有一条无法在 2.1.326 上重新确认：
+`/clear` 会清除计划。它仍标注为 2.1.252（2026-09-01）。逐条对照表见
 [docs/limits.md](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md#which-version-each-fact-was-checked-on)。
 
 ## 常见问题
@@ -257,7 +258,7 @@ loopify 用于会重复的任务。
 ---
 
 <sub>作者 <a href="https://github.com/Aboudjem">Adam Boudjemaa</a> · MIT。`/loop` 的行为于 2026-11-17
-依据 Claude Code 2.1.326 和官方文档核对。姊妹项目 <a href="https://github.com/Aboudjem/goalify">goalify</a> 为 `/goal` 做同样的事。
+依据 Claude Code 2.1.326 和官方文档核对，`/clear` 除外，它最后一次核对是在 2.1.252（2026-09-01）。<a href="https://github.com/Aboudjem/loopify/blob/main/docs/limits.md#which-version-each-fact-was-checked-on">逐条对照表</a>。姊妹项目 <a href="https://github.com/Aboudjem/goalify">goalify</a> 为 `/goal` 做同样的事。
 <a href="https://github.com/Aboudjem/loopify/issues">发现缺漏了吗？</a></sub>
 
 <sub>本译文由机器辅助翻译并经过校对，以英文版 <a href="../README.md">README.md</a> 为准。</sub>

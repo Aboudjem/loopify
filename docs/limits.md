@@ -89,8 +89,10 @@ fires that pile up behind it are collapsed into that one, not queued (docs: "No 
 Pre-approve what a tick runs before you paste the line. loopify prints the list of commands it probed,
 so you can allowlist them or turn on auto mode first.
 
-Running headless changes the shape of this. `--permission-mode acceptEdits` auto-accepts file edits, a few filesystem commands (`mkdir`, `touch`, `mv`, `cp`) and the read-only command set, and nothing else
-only; every Bash command a tick needs has to be named in `--allowedTools`, as in
+Running headless changes the shape of this. `--permission-mode acceptEdits` auto-accepts file edits
+and seven filesystem commands (`mkdir`, `touch`, `rm`, `rmdir`, `mv`, `cp`, `sed`), only on paths
+inside the working directory. It also runs the read-only command set, and nothing else. Every other
+Bash command a tick needs has to be named in `--allowedTools`, as in
 `--allowedTools "Bash(gh pr view:*),Bash(git commit:*)"`. `auto` is not a general answer either: it
 is gated by plan ("Auto mode is unavailable for your plan") and driven by a classifier.
 
@@ -127,6 +129,10 @@ There is a corner worth knowing. Day-shaped phrasing with no interval, plus an a
 session only", makes `/loop` refuse to schedule locally at all: you get no loop. That is why loopify
 keeps day words out of the line, including out of the file name inside the path.
 
+<sub>Re-checked on 2.1.326 (2026-11-17) in the `/loop` skill text inside the binary ("Offer cloud
+first"): the same 60-minute threshold, the same five day phrases, the same refusal, and seven runtime
+checks that all have to pass before the question is asked.</sub>
+
 ## Fixed mode runs the first cycle at once, and again at the next boundary
 
 Paste `/loop 20m …` at 11:19 and two ticks land close together: one straight away, one at 11:20.
@@ -135,6 +141,10 @@ Fixed mode creates the schedule and then runs the prompt immediately, and the sc
 
 This is normal rather than a fault, but it is worth knowing before you write a brief whose cycle is
 expensive or writes to something shared.
+
+<sub>Re-checked on 2.1.326 (2026-11-17): the `/loop` skill text inside the binary still says, after
+the schedule is created, "Then immediately execute the parsed prompt now". The docs page does not
+mention it either way.</sub>
 
 ## A fixed fire arrives with no skill instructions
 
@@ -252,9 +262,9 @@ constant or the message.
 | Self-paced wakeup clamped to 60 to 3600 seconds | 2.1.326, 2026-11-17 | binary |
 | The classifier-review wakeup string | 2.1.326, 2026-11-17 | binary |
 | `/clear` wipes the schedule | 2.1.252, 2026-09-01 | binary skill source; not found in the 2.1.326 docs or binary |
-| First fire at once in fixed mode | 2.1.252, 2026-09-01 | binary skill source |
-| The cloud-schedule question and its seven conditions | 2.1.252, 2026-09-01 | binary skill source |
-| `acceptEdits` scope under `claude -p` | 2.1.252, 2026-09-01 | docs and binary |
+| First fire at once in fixed mode | 2.1.326, 2026-11-17 | binary skill source: "Then immediately execute the parsed prompt now" |
+| The cloud-schedule question and its seven conditions | 2.1.326, 2026-11-17 | binary skill source: "Offer cloud first", seven checks in its guard |
+| `acceptEdits` scope under `claude -p` | 2.1.326, 2026-11-17 | https://code.claude.com/docs/en/permission-modes; binary list `["mkdir","touch","rm","rmdir","mv","cp","sed"]` |
 
 A row dated 2.1.252 was not re-checked on 2.1.326. It may still hold. Verify it before you rely on it.
 

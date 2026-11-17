@@ -206,13 +206,15 @@ make test
 | `tests/test_ticks_lint.py`  | The tick log format                                                                     | 13/13        |
 | `tests/test_loop_status.py` | Each status verdict, the exit codes, and this README's sample, byte for byte           | 62/62        |
 | `tests/test_no_network.py`  | No shipped script imports a network module or calls curl or wget                        | 18/18        |
+| `tests/test_dated_facts.py` | A `/loop` fact dated to an older version names that version wherever it is stated      | 5/5          |
 | `evals/loop_line_lint.py`   | The canonical line passes the eight line rules                                          | PASS         |
 
 CI also runs `claude plugin validate . --strict` on a pinned Claude Code, and checks that
 `npx skills@1.9.0 add . --list` finds the skill.
 
-I checked the `/loop` facts against Claude Code 2.1.326 and its docs on 2026-11-17. Four facts could
-not be re-confirmed on 2.1.326. They stay dated to 2.1.252 (2026-09-01). The per-fact table is in
+I checked the `/loop` facts against Claude Code 2.1.326 and its docs on 2026-11-17. One fact could
+not be re-confirmed on 2.1.326: `/clear` wiping the schedule. It stays dated to 2.1.252 (2026-09-01).
+The per-fact table is in
 [docs/limits.md](docs/limits.md#which-version-each-fact-was-checked-on).
 
 ## FAQ
@@ -268,6 +270,7 @@ for a job that finishes. loopify is for a job that repeats.
 ---
 
 <sub>Built by <a href="https://github.com/Aboudjem">Adam Boudjemaa</a> · MIT. `/loop` behavior checked
-against Claude Code 2.1.326 and the official docs on 2026-11-17. Sibling of
+against Claude Code 2.1.326 and the official docs on 2026-11-17, except `/clear`, last checked on
+2.1.252 (2026-09-01). <a href="docs/limits.md#which-version-each-fact-was-checked-on">Per-fact table</a>. Sibling of
 <a href="https://github.com/Aboudjem/goalify">goalify</a>, which does the same for `/goal`.
 <a href="https://github.com/Aboudjem/loopify/issues">Spot a gap?</a></sub>

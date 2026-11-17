@@ -4,6 +4,26 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project uses
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] - 2026-11-17
+
+Three `/loop` facts re-checked on Claude Code 2.1.326. One of them was wrong, and the skill now says the right thing.
+
+### Fixed
+
+- **`acceptEdits` scope corrected.** Under `--permission-mode acceptEdits`, Claude Code 2.1.326
+  auto-accepts seven filesystem commands: `mkdir`, `touch`, `rm`, `rmdir`, `mv`, `cp`, `sed`. The
+  skill, FAQ and limits page listed only four. They now list all seven, inside the working directory only.
+- **Two more facts confirmed on 2.1.326.** Fixed mode still runs the first cycle at once, and the
+  cloud-schedule question still has the same triggers and seven runtime checks. Both rows in the
+  per-fact table now read 2.1.326, with the binary text that shows it.
+- **The README footer is exact.** It says which fact is still dated (`/clear`, last checked on
+  2.1.252) and links the per-fact table. The four translations say the same.
+
+### Added
+
+- **`tests/test_dated_facts.py`.** It fails when a fact the limits table dates to an older version
+  is stated in SKILL.md, the FAQ or the limits page without that version nearby. `make test` runs it.
+
 ## [1.2.1] - 2026-11-17
 
 Fixes from an independent review of 1.2.0. No change to the brief contract or the line.

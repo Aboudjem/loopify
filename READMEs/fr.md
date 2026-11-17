@@ -211,13 +211,14 @@ make test
 | `tests/test_ticks_lint.py`  | Le format du journal des ticks                                                 | 13/13    |
 | `tests/test_loop_status.py` | Chaque verdict, les codes de sortie, et l'exemple du README à l'octet près     | 62/62    |
 | `tests/test_no_network.py`  | Aucun script livré n'importe un module réseau ni n'appelle curl ou wget        | 18/18    |
+| `tests/test_dated_facts.py` | Un fait sur `/loop` daté d'une version plus ancienne cite cette version partout où il est énoncé | 5/5 |
 | `evals/loop_line_lint.py`   | La ligne canonique passe les huit règles                                       | PASS     |
 
 La CI lance aussi `claude plugin validate . --strict` sur un Claude Code épinglé, et vérifie que
 `npx skills@1.9.0 add . --list` trouve le skill.
 
-J'ai vérifié les faits sur `/loop` avec Claude Code 2.1.326 et sa documentation le 2026-11-17. Quatre faits
-n'ont pas pu être reconfirmés sur 2.1.326. Ils restent datés de 2.1.252 (2026-09-01). Le tableau fait par fait
+J'ai vérifié les faits sur `/loop` avec Claude Code 2.1.326 et sa documentation le 2026-11-17. Un fait
+n'a pas pu être reconfirmé sur 2.1.326 : `/clear` qui efface la planification. Il reste daté de 2.1.252 (2026-09-01). Le tableau fait par fait
 est dans [docs/limits.md](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md#which-version-each-fact-was-checked-on).
 
 ## FAQ
@@ -273,7 +274,8 @@ goalify sert à une tâche qui finit. loopify sert à une tâche qui se répète
 ---
 
 <sub>Créé par <a href="https://github.com/Aboudjem">Adam Boudjemaa</a> · MIT. Le comportement de `/loop` est
-vérifié avec Claude Code 2.1.326 et la documentation officielle le 2026-11-17. Frère de
+vérifié avec Claude Code 2.1.326 et la documentation officielle le 2026-11-17, sauf `/clear`, vérifié pour
+la dernière fois sur 2.1.252 (2026-09-01). <a href="https://github.com/Aboudjem/loopify/blob/main/docs/limits.md#which-version-each-fact-was-checked-on">Tableau fait par fait</a>. Frère de
 <a href="https://github.com/Aboudjem/goalify">goalify</a>, qui fait la même chose pour `/goal`.
 <a href="https://github.com/Aboudjem/loopify/issues">Une lacune repérée ?</a></sub>
 

@@ -25,7 +25,7 @@ the skill's output is the brief plus the line. **`/loop` has no evaluator**: not
 job is done, and nothing reads the brief on the user's behalf. The per-tick definition of done and the
 tick log (`TICKS.md`) are the only proof there is. Every fact this repo states about `/loop` is
 checked against the shipped Claude Code binary and https://code.claude.com/docs/en/scheduled-tasks:
-on 2.1.326 (2026-11-17), except four facts still dated to 2.1.252 in docs/limits.md.
+on 2.1.326 (2026-11-17), except one fact (`/clear` wipes the schedule) still dated to 2.1.252 in docs/limits.md.
 
 ## How an agent should invoke / honor the skill
 

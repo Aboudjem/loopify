@@ -13,7 +13,7 @@ description: >-
 argument-hint: "[recurring job to prepare a /loop line for]"
 license: MIT
 metadata:
-  version: "1.2.1"
+  version: "1.2.2"
 ---
 
 # loopify
@@ -98,8 +98,9 @@ These constraints shape both artifacts; do not "simplify" them away.
 7. **Permissions are inherited from the session.** A permission prompt blocks the tick until someone
    answers, and in fixed mode a fire that lands
    meanwhile is delivered once, late, when the prompt is answered; extra fires behind it are not queued. Under `claude -p`, `--permission-mode
-   acceptEdits` auto-accepts file edits, a few filesystem commands (`mkdir`, `touch`, `mv`, `cp`) and
-   the read-only command set, nothing else; every other command a tick runs needs `--allowedTools
+   acceptEdits` auto-accepts file edits and seven filesystem commands (`mkdir`, `touch`, `rm`,
+   `rmdir`, `mv`, `cp`, `sed`) on paths inside the working directory, plus the read-only command set,
+   nothing else; every other command a tick runs needs `--allowedTools
    "Bash(gh pr view:*),…"`. `auto`
    is plan-gated and classifier-driven; the binary string "Scheduling a /loop wakeup requires classifier
    review" exists and when it fires is uncertain.

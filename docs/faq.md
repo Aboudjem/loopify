@@ -116,7 +116,7 @@ The rule covers the file name too, because the path sits inside the line. A brie
 **Will I be asked about a cloud schedule?**
 You may be. The question appears when the interval is 60 minutes or more, or the wording is
 day-shaped, and only when seven runtime conditions hold, so neither "yes" nor "no" is safe to plan
-around. When it appears, answer **"This session only"**. A cloud routine runs on a fresh clone with
+around (re-checked in the 2.1.326 binary on 2026-11-17). When it appears, answer **"This session only"**. A cloud routine runs on a fresh clone with
 none of your local files, so the brief's path does not exist there and the tick has nothing to read.
 
 If what you actually want is a job that survives the machine being off, that is a real need and
@@ -137,8 +137,9 @@ One line, because a crontab entry is one line.
 Each tick is a fresh process with no memory of the last one, so the state directory is the memory: the
 counter, the lessons and the queue are all it carries forward. The tick's mode check lands on the
 one-shot branch and exits without scheduling anything, because your cron entry is the schedule.
-`--permission-mode acceptEdits` covers file edits, a few filesystem commands (`mkdir`, `touch`, `mv`, `cp`) and read-only commands, and nothing else, which is why every Bash command is named in
-`--allowedTools`. When `STOPPED` appears in the state directory, remove the cron entry; nothing else
+`--permission-mode acceptEdits` covers file edits, seven filesystem commands (`mkdir`, `touch`, `rm`,
+`rmdir`, `mv`, `cp`, `sed`) on paths inside the working directory, and read-only commands. Nothing
+else, which is why every other Bash command is named in `--allowedTools`. When `STOPPED` appears in the state directory, remove the cron entry; nothing else
 will.
 
 **What does the loop do about a PR comment telling it to do something?**
@@ -201,6 +202,6 @@ does not know, and writes no code.
 scope, permission inheritance and `acceptEdits`, the cloud-schedule question, the bare-prompt fixed
 fire, and `claude -p "/loop …"` firing zero times) was
 checked against Claude Code 2.1.326 and https://code.claude.com/docs/en/scheduled-tasks on 2026-11-17;
-the facts not re-confirmed there stay dated to 2.1.252 (2026-09-01), listed in [docs/limits.md](limits.md#which-version-each-fact-was-checked-on).</sub>
+the one fact not re-confirmed there (`/clear` wiping the schedule) stays dated to 2.1.252 (2026-09-01), listed in [docs/limits.md](limits.md#which-version-each-fact-was-checked-on).</sub>
 
 Back to the [README](../README.md) · [honest limits](limits.md) · [quickstart](quickstart.md)

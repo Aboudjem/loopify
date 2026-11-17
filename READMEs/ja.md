@@ -206,13 +206,14 @@ make test
 | `tests/test_ticks_lint.py`  | tick ログの形式                                                             | 13/13   |
 | `tests/test_loop_status.py` | 各判定、終了コード、この README のサンプルのバイト一致                       | 62/62   |
 | `tests/test_no_network.py`  | 同梱スクリプトがネットワークモジュールを読み込まず curl や wget を呼ばない   | 18/18   |
+| `tests/test_dated_facts.py` | 古いバージョンで確認した `/loop` の事実は、書かれた場所すべてでそのバージョンを明記する | 5/5 |
 | `evals/loop_line_lint.py`   | 正規の line が 8 つのルールを通る                                           | PASS    |
 
 CI は固定版の Claude Code で `claude plugin validate . --strict` も実行し、
 `npx skills@1.9.0 add . --list` が skill を見つけることも確認します。
 
-`/loop` に関する事実は、2026-11-17 に Claude Code 2.1.326 とそのドキュメントで確認しました。4 つの事実は
-2.1.326 で再確認できず、2.1.252 (2026-09-01) の日付のままです。事実ごとの表は
+`/loop` に関する事実は、2026-11-17 に Claude Code 2.1.326 とそのドキュメントで確認しました。1 つの事実
+（`/clear` でスケジュールが消えること）は 2.1.326 で再確認できず、2.1.252 (2026-09-01) の日付のままです。事実ごとの表は
 [docs/limits.md](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md#which-version-each-fact-was-checked-on) にあります。
 
 ## FAQ
@@ -266,7 +267,7 @@ loopify は繰り返す仕事のためのものです。
 ---
 
 <sub>作者 <a href="https://github.com/Aboudjem">Adam Boudjemaa</a> · MIT。`/loop` の挙動は 2026-11-17 に Claude Code 2.1.326 と
-公式ドキュメントで確認しました。兄弟プロジェクトの
+公式ドキュメントで確認しました（`/clear` だけは 2.1.252、2026-09-01 が最後の確認です。<a href="https://github.com/Aboudjem/loopify/blob/main/docs/limits.md#which-version-each-fact-was-checked-on">事実ごとの表</a>）。兄弟プロジェクトの
 <a href="https://github.com/Aboudjem/goalify">goalify</a> は `/goal` に同じことをします。
 <a href="https://github.com/Aboudjem/loopify/issues">足りないところを見つけたら</a></sub>
 

@@ -42,8 +42,8 @@ To check on a running loop, `python3 skills/loopify/scripts/loop_status.py <STAT
 `STOPPED`, `NOT STARTED` or `BROKEN LOG`), then at most three things to do, then the detail. It is
 read-only and standard library only. `make test` runs every test suite of this repo.
 
-The `/loop` facts loopify is built on were checked against Claude Code 2.1.326 on 2026-11-17 (four
-facts, including `/clear`, stay dated to 2.1.252) using the shipped binary and
+The `/loop` facts loopify is built on were checked against Claude Code 2.1.326 on 2026-11-17 (one
+fact, `/clear` wiping the schedule, stays dated to 2.1.252) using the shipped binary and
 the scheduled-tasks docs (https://code.claude.com/docs/en/scheduled-tasks), not from memory. Grammar
 is `/loop [interval] <prompt>`. With an interval it is fixed: the prompt runs at once and then on a
 cron schedule, every later fire arriving as the bare prompt with no skill instructions, ended by
