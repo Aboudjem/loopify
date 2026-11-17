@@ -37,18 +37,20 @@ Do next:
 
 ## 安装
 
-在 Claude Code 中运行这两条命令：
+对于 Claude Code，在终端里运行这两条命令（不是在 Claude 会话里）：
 
 ```bash
 claude plugin marketplace add Aboudjem/10x
 claude plugin install loopify@10x
 ```
 
-其他智能体可以通过 [skills CLI](https://github.com/vercel-labs/skills) 用一行命令安装同一个 skill：
+其他智能体可以通过 [skills CLI](https://github.com/vercel-labs/skills) 用一行命令安装同一个 skill。用 `-a` 指定你的智能体，例如 `cursor`：
 
 ```bash
-npx skills add Aboudjem/loopify
+npx skills add Aboudjem/loopify -a cursor
 ```
+
+不加 `-a` 时，CLI 会为它在你机器上检测到的每个智能体安装。
 
 无需构建。这个 skill 是一个文件夹，里面有三个只用标准库的 Python 脚本。
 
@@ -129,7 +131,7 @@ Do next:
 Detail:
   ticks logged  7 (4 changed, 3 noop, 0 stopped)
   queue         2 open item(s)
-  lessons       5 line(s)
+  lessons       4 entries
   lock          none
   interval      20m (from the saved line)
   log format    passes ticks_lint
@@ -139,7 +141,17 @@ Detail:
 `--now` 固定时钟，让示例每次输出都一样。真实循环中不要加它。
 
 第 1 行永远是结论：`OK`、`NEEDS YOU`、`STALE`、`STOPPED`、`NOT STARTED` 或 `BROKEN LOG`。
-然后最多三件要做的事，再然后是细节。
+然后最多三件要做的事，再然后是细节。`lessons` 统计 `LESSONS.md` 里的条目数。
+
+退出码带着结论，脚本或 cron 任务可以据此行动：
+
+| 退出码 | 结论 | 含义 |
+| ------ | ---- | ---- |
+| `0` | `OK`、`STOPPED`、`NOT STARTED` | 不需要你处理 |
+| `1` | `NEEDS YOU`、`STALE`、`BROKEN LOG` | 去看看循环 |
+| `2` | 无 | 用法错误，或状态目录不存在 |
+
+`loop_status.py --help` 会打印同一张表。
 
 loopify 写的每份 brief 还会给你：
 
@@ -158,7 +170,7 @@ noop | stopped` 开头。`ticks_lint.py` 会检查它。
 | 智能体                   | 安装命令                                                              | 测试日期                               |
 | ------------------------ | --------------------------------------------------------------------- | -------------------------------------- |
 | Claude Code 2.1.326      | 从仓库的 marketplace 执行 `claude plugin install`，使用干净的配置目录 | 2026-11-17，插件已启用，脚本齐全       |
-| Claude Code (skills CLI) | `npx skills add Aboudjem/loopify -a claude-code`                      | 2026-11-17，已链接到 `.claude/skills/` |
+| Claude Code (skills CLI) | `npx skills add Aboudjem/loopify -a claude-code`                      | 2026-11-17，已复制到 `.claude/skills/` |
 | Cursor                   | `npx skills add Aboudjem/loopify -a cursor`                           | 2026-11-17，位于 `.agents/skills/`     |
 | Codex                    | `npx skills add Aboudjem/loopify -a codex`                            | 2026-11-17，位于 `.agents/skills/`     |
 | GitHub Copilot           | `npx skills add Aboudjem/loopify -a github-copilot`                   | 2026-11-17，位于 `.agents/skills/`     |
@@ -183,17 +195,19 @@ make test
 
 | 测试套件                    | 检查内容                                          | 结果    |
 | --------------------------- | ------------------------------------------------- | ------- |
-| `evals/check_skill.py`      | 以断言形式检查 skill 的契约                       | 160/160 |
+| `evals/check_skill.py`      | 以断言形式检查 skill 的契约                       | 161/161 |
 | `tests/test_manifests.py`   | 清单、版本、示例 brief、翻译、SVG、密钥、长破折号 | 170/170 |
 | `tests/test_ticks_lint.py`  | tick 日志格式                                     | 13/13   |
-| `tests/test_loop_status.py` | 每种结论，以及本 README 示例的逐字节一致          | 51/51   |
+| `tests/test_loop_status.py` | 每种结论、退出码，以及本 README 示例的逐字节一致  | 62/62   |
+| `tests/test_no_network.py`  | 发布的脚本不导入网络模块，也不调用 curl 或 wget   | 18/18   |
 | `evals/loop_line_lint.py`   | 标准 line 通过八条规则                            | PASS    |
 
 CI 还会在固定版本的 Claude Code 上运行 `claude plugin validate . --strict`，并检查
 `npx skills@1.9.0 add . --list` 能找到这个 skill。
 
-关于 `/loop` 的事实来自 Claude Code 2.1.252 二进制文件和官方文档。来源见
-[docs/limits.md](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md)。
+我在 2026-11-17 用 Claude Code 2.1.326 及其文档核对了 `/loop` 的事实。有四条无法在 2.1.326 上重新确认，
+仍标注为 2.1.252（2026-09-01）。逐条对照表见
+[docs/limits.md](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md#which-version-each-fact-was-checked-on)。
 
 ## 常见问题
 
@@ -213,14 +227,15 @@ brief 里的停止规则、tick 上限、七天过期，或者你自己。完整
 [docs/faq.md](https://github.com/Aboudjem/loopify/blob/main/docs/faq.md)。
 
 **它会把我的代码发到别处吗？**
-不会。loopify 和它的脚本不发起任何网络请求。tick 只做你的 brief 允许的事。
+不会。loopify 的脚本不发起任何网络请求：只要有脚本导入网络模块或调用 curl、wget，
+`tests/test_no_network.py` 就会失败。tick 只做你的 brief 允许的事。
 
 ## 限制
 
 > [!IMPORTANT]
 > 循环在运行，并不证明它在做正确的事。`/loop` 背后没有评估者。tick 日志和状态报告是唯一的证据。
 
-- **循环活在你粘贴它的那个会话里。** 关掉终端它就停止。`/clear` 也会清除计划。
+- **循环活在你粘贴它的那个会话里。** 关掉终端它就停止。在 2.1.252 上，`/clear` 也会清除计划。问一句 "what scheduled tasks do I have?" 来确认。
 - **每个循环 7 天后结束。** 一个会话最多容纳 50 个计划任务。这两条都是 Claude Code 的限制。重新粘贴 line 即可继续。
 - **预先批准 tick 要运行的命令。** 遇到权限提示的 tick 会一直等待回答。loopify 会打印需要允许的命令，
   比如 `gh pr view` 或 `git commit`。
@@ -241,8 +256,8 @@ loopify 用于会重复的任务。
 
 ---
 
-<sub>作者 <a href="https://github.com/Aboudjem">Adam Boudjemaa</a> · MIT。`/loop` 的行为依据 Claude Code 2.1.252
-二进制文件和官方文档重新推导。姊妹项目 <a href="https://github.com/Aboudjem/goalify">goalify</a> 为 `/goal` 做同样的事。
+<sub>作者 <a href="https://github.com/Aboudjem">Adam Boudjemaa</a> · MIT。`/loop` 的行为于 2026-11-17
+依据 Claude Code 2.1.326 和官方文档核对。姊妹项目 <a href="https://github.com/Aboudjem/goalify">goalify</a> 为 `/goal` 做同样的事。
 <a href="https://github.com/Aboudjem/loopify/issues">发现缺漏了吗？</a></sub>
 
 <sub>本译文由机器辅助翻译并经过校对，以英文版 <a href="../README.md">README.md</a> 为准。</sub>

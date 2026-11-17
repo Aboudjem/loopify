@@ -59,7 +59,7 @@ remove the job by hand.** Each recipe below says how.
 
 | Harness | Native recurring primitive | How to run one loopify tick | What does NOT carry over | Confidence |
 |---|---|---|---|---|
-| **Claude Code** (baseline) | `/loop` → `CronCreate`/`CronList`/`CronDelete` + `ScheduleWakeup` | the line loopify printed | none | confirmed (docs + the shipped 2.1.252 binary) |
+| **Claude Code** (baseline) | `/loop` → `CronCreate`/`CronList`/`CronDelete` + `ScheduleWakeup` | the line loopify printed | none | confirmed (docs + the shipped binary, re-checked on 2.1.326) |
 | **Kimi CLI** (`kimi`) | `CronCreate` / `CronList` / `CronDelete`, invoked by the model; there is no command to type | ask in plain language for the cycle, every 20 minutes | self-pacing (no `ScheduleWakeup` equivalent); the loop dies with the session, and does not reach a new one | confirmed (local binary strings + official docs) |
 | **GitHub Copilot CLI** (`copilot`) | `/every` and `/after`, behind an experimental flag | `/every 20m Run one cycle of …` | `/every` fires only while that session runs; no self-pacing | confirmed (GitHub Docs, fetched) |
 | **Cursor CLI** (`cursor-agent`) | `/loop`, Cursor 3.5 and newer | `/loop 20m Run one cycle of …` | a local schedule, so do not count on it outliving the session; cron granularity is not documented | confirmed (Cursor changelog, 2026-05-20) |

@@ -17,7 +17,7 @@ import tempfile
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCRIPTS = os.path.join(ROOT, "skills", "loopify", "scripts")
 sys.path.insert(0, SCRIPTS)
-from loop_status import build_report, parse_interval, parse_stamp, read_queue  # noqa: E402
+from loop_status import build_report, lesson_label, parse_interval, parse_stamp, read_queue  # noqa: E402
 
 failures = []
 _total = 0
@@ -167,6 +167,13 @@ check("read_queue finds three items with their fields",
       and items[2]["unblock"].startswith("unknown"))
 check("read_queue ignores a heading and an empty file", read_queue("# QUEUE\n") == [] and read_queue(None) == [])
 
+LESSONS = "# LESSONS: what this loop observed\n\n- 2026-09-01 tick 1: a lesson\n* 2026-09-01 tick 2: another\n\nprose, not an entry\n"
+check("lesson_label counts bullet entries, not the heading, blank lines or prose",
+      lesson_label(LESSONS) == "2 entries", lesson_label(LESSONS))
+check("lesson_label says 1 entry in the singular", lesson_label("# LESSONS\n- one\n") == "1 entry", lesson_label("# LESSONS\n- one\n"))
+check("lesson_label: a heading-only file has 0 entries", lesson_label("# LESSONS\n") == "0 entries")
+check("lesson_label: no file says so", lesson_label(None) == "no LESSONS.md")
+
 # --- the command line, as a user runs it ---
 SCRIPT = os.path.join(SCRIPTS, "loop_status.py")
 EXAMPLE = os.path.join("examples", "loop-state", "pr-babysitter")
@@ -178,6 +185,14 @@ check("CLI on the shipped example opens with the verdict",
       run.stdout[:200])
 readme = open(os.path.join(ROOT, "README.md"), encoding="utf-8").read()
 check("README.md shows the real output of the shipped example, byte for byte", run.stdout.strip() in readme)
+for name in ("README.md", "READMEs/es.md", "READMEs/fr.md", "READMEs/ja.md", "READMEs/zh-CN.md"):
+    text = open(os.path.join(ROOT, name), encoding="utf-8").read()
+    check(f"{name} sample still matches the real lessons count", "  lessons       4 entries" in text)
+help_run = subprocess.run([sys.executable, SCRIPT, "--help"], capture_output=True, text=True)
+check("--help exits 0 and documents exit codes 0, 1 and 2",
+      help_run.returncode == 0 and "Exit codes" in help_run.stdout
+      and all(f"\n  {c}  " in help_run.stdout for c in "012"), help_run.stdout[-400:])
+check("README.md documents the same exit codes", "| `0` |" in readme and "| `1` |" in readme and "| `2` |" in readme)
 run = subprocess.run([sys.executable, SCRIPT, os.path.join(ROOT, "no-such-dir")], capture_output=True, text=True)
 check("CLI on a missing directory exits 2 and says what to pass",
       run.returncode == 2 and "state directory" in run.stdout, run.stdout)

@@ -38,7 +38,7 @@ Son las primeras líneas de `loop_status.py` sobre el ejemplo incluido. El infor
 
 ## Instalación
 
-En Claude Code, ejecuta estos dos comandos:
+Para Claude Code, ejecuta estos dos comandos en tu terminal (no dentro de una sesión de Claude):
 
 ```bash
 claude plugin marketplace add Aboudjem/10x
@@ -46,11 +46,13 @@ claude plugin install loopify@10x
 ```
 
 Cualquier otro agente instala el mismo skill en una línea, con la
-[CLI de skills](https://github.com/vercel-labs/skills):
+[CLI de skills](https://github.com/vercel-labs/skills). Indica tu agente con `-a`, por ejemplo `cursor`:
 
 ```bash
-npx skills add Aboudjem/loopify
+npx skills add Aboudjem/loopify -a cursor
 ```
+
+Sin `-a`, la CLI instala para cada agente que detecta en tu máquina.
 
 No hay nada que compilar. El skill es una carpeta con tres scripts de Python de biblioteca estándar.
 
@@ -134,7 +136,7 @@ Do next:
 Detail:
   ticks logged  7 (4 changed, 3 noop, 0 stopped)
   queue         2 open item(s)
-  lessons       5 line(s)
+  lessons       4 entries
   lock          none
   interval      20m (from the saved line)
   log format    passes ticks_lint
@@ -144,7 +146,17 @@ Detail:
 `--now` fija el reloj para que el ejemplo salga siempre igual. No lo uses en un bucle real.
 
 La línea 1 es siempre el veredicto: `OK`, `NEEDS YOU`, `STALE`, `STOPPED`, `NOT STARTED` o
-`BROKEN LOG`. Luego tres acciones como máximo. Luego el detalle.
+`BROKEN LOG`. Luego tres acciones como máximo. Luego el detalle. `lessons` cuenta las entradas de `LESSONS.md`.
+
+El código de salida lleva el veredicto, para que un script o un cron pueda actuar:
+
+| Salida | Veredicto | Significado |
+| ------ | --------- | ----------- |
+| `0` | `OK`, `STOPPED`, `NOT STARTED` | Nada te espera |
+| `1` | `NEEDS YOU`, `STALE`, `BROKEN LOG` | Revisa el bucle |
+| `2` | ninguno | Error de uso, o la carpeta de estado no existe |
+
+`loop_status.py --help` imprime la misma tabla.
 
 Cada brief que escribe loopify también te da:
 
@@ -165,7 +177,7 @@ Cada fila es una instalación que hice el 2026-11-17, en una carpeta temporal va
 | Agente                      | Comando de instalación                                               | Probado                                         |
 | --------------------------- | -------------------------------------------------------------------- | ----------------------------------------------- |
 | Claude Code 2.1.326         | `claude plugin install` desde el marketplace del repo, config limpia | 2026-11-17, plugin activo, scripts presentes    |
-| Claude Code (CLI de skills) | `npx skills add Aboudjem/loopify -a claude-code`                     | 2026-11-17, skill enlazado en `.claude/skills/` |
+| Claude Code (CLI de skills) | `npx skills add Aboudjem/loopify -a claude-code`                     | 2026-11-17, skill copiado en `.claude/skills/` |
 | Cursor                      | `npx skills add Aboudjem/loopify -a cursor`                          | 2026-11-17, skill en `.agents/skills/`          |
 | Codex                       | `npx skills add Aboudjem/loopify -a codex`                           | 2026-11-17, skill en `.agents/skills/`          |
 | GitHub Copilot              | `npx skills add Aboudjem/loopify -a github-copilot`                  | 2026-11-17, skill en `.agents/skills/`          |
@@ -192,17 +204,19 @@ make test
 
 | Suite                       | Qué comprueba                                                                         | Resultado |
 | --------------------------- | ------------------------------------------------------------------------------------- | --------- |
-| `evals/check_skill.py`      | El contrato del skill, como aserciones                                                | 160/160   |
+| `evals/check_skill.py`      | El contrato del skill, como aserciones                                                | 161/161   |
 | `tests/test_manifests.py`   | Manifiestos, versiones, brief de ejemplo, traducciones, SVG, secretos, guiones largos | 170/170   |
 | `tests/test_ticks_lint.py`  | El formato del registro de ticks                                                      | 13/13     |
-| `tests/test_loop_status.py` | Cada veredicto, y el ejemplo del README byte a byte                                   | 51/51     |
+| `tests/test_loop_status.py` | Cada veredicto, los códigos de salida, y el ejemplo del README byte a byte            | 62/62     |
+| `tests/test_no_network.py`  | Ningún script publicado importa un módulo de red ni llama a curl o wget               | 18/18     |
 | `evals/loop_line_lint.py`   | La línea canónica pasa las ocho reglas                                                | PASS      |
 
 La CI también ejecuta `claude plugin validate . --strict` sobre un Claude Code fijado, y comprueba
 que `npx skills@1.9.0 add . --list` encuentra el skill.
 
-Los datos de `/loop` vienen del binario de Claude Code 2.1.252 y de la documentación. El rastro está
-en [docs/limits.md](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md).
+Comprobé los datos de `/loop` con Claude Code 2.1.326 y su documentación el 2026-11-17. Cuatro datos no
+se pudieron reconfirmar en 2.1.326. Siguen fechados en 2.1.252 (2026-09-01). La tabla dato por dato
+está en [docs/limits.md](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md#which-version-each-fact-was-checked-on).
 
 ## Preguntas frecuentes
 
@@ -222,7 +236,8 @@ La regla de parada del brief, el tope de ticks, la caducidad de siete días, o t
 está en [docs/faq.md](https://github.com/Aboudjem/loopify/blob/main/docs/faq.md).
 
 **¿Envía mi código a algún sitio?**
-No. loopify y sus scripts no hacen ninguna llamada de red. Un tick hace lo que tu brief permite.
+No. Los scripts de loopify no hacen ninguna llamada de red: `tests/test_no_network.py` falla si uno
+importa un módulo de red o llama a curl o wget. Un tick hace lo que tu brief permite.
 
 ## Límites
 
@@ -230,8 +245,8 @@ No. loopify y sus scripts no hacen ninguna llamada de red. Un tick hace lo que t
 > Que un bucle corra no prueba que haga lo correcto. No hay evaluador detrás de `/loop`. El
 > registro de ticks y el informe de estado son la única prueba.
 
-- **El bucle vive en la sesión donde lo pegas.** Cierra la terminal y se detiene. `/clear` borra
-  también la programación.
+- **El bucle vive en la sesión donde lo pegas.** Cierra la terminal y se detiene. En 2.1.252,
+  `/clear` también borraba la programación. Pregunta "what scheduled tasks do I have?" para comprobar la tuya.
 - **Todo bucle termina a los 7 días.** Una sesión admite como mucho 50 tareas programadas. Son
   límites de Claude Code. Vuelve a pegar la línea para seguir.
 - **Aprueba de antemano lo que ejecuta un tick.** Un tick que topa con una petición de permiso
@@ -255,7 +270,7 @@ para un trabajo que termina. loopify es para un trabajo que se repite.
 ---
 
 <sub>Hecho por <a href="https://github.com/Aboudjem">Adam Boudjemaa</a> · MIT. El comportamiento de `/loop` se
-volvió a derivar del binario de Claude Code 2.1.252 y de la documentación oficial. Hermano de
+comprobó con Claude Code 2.1.326 y la documentación oficial el 2026-11-17. Hermano de
 <a href="https://github.com/Aboudjem/goalify">goalify</a>, que hace lo mismo para `/goal`.
 <a href="https://github.com/Aboudjem/loopify/issues">¿Ves algo que falta?</a></sub>
 

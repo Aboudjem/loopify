@@ -4,6 +4,34 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project uses
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2026-11-17
+
+Fixes from an independent review of 1.2.0. No change to the brief contract or the line.
+
+### Fixed
+
+- **The `lessons` count now counts lessons.** The status report counted every line of
+  `LESSONS.md`, the heading too. It now counts the entries (bullet lines). The README sample and
+  its byte-for-byte test were updated from a real run.
+- **Exit codes are documented.** `loop_status.py --help` and the README both list them:
+  0 nothing needs you, 1 look at the loop, 2 usage error. A test pins all three.
+- **The install steps say where to run them.** The two `claude plugin` commands run in your
+  terminal. `npx skills add` now shows `-a <agent>`, since without it the CLI installs for every
+  agent it detects. The works-with table says the skill is copied, not linked.
+
+### Changed
+
+- **`/loop` facts re-checked on Claude Code 2.1.326.** The expiry, jitter, 50-task cap, no
+  catch-up, permission inheritance and the `loop.md` cut hold. Two corrections: `--resume` does not
+  restore a self-paced loop, and a `/loop 5m` task is not delayed. Four facts, `/clear` among them,
+  could not be re-confirmed and stay dated to 2.1.252. `docs/limits.md` ends with a per-fact table.
+
+### Added
+
+- **`tests/test_no_network.py`.** It fails if a shipped script imports a network module (socket,
+  urllib, http, requests, ssl, ftplib, smtplib and more) or calls curl or wget. The README's
+  "no network call" answer names it. `make test` runs it.
+
 ## [1.2.0] - 2026-11-17
 
 A status report that answers "is my loop alive, and does it need me?" in one command, and

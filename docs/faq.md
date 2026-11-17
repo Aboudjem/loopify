@@ -58,7 +58,8 @@ Seven things, and it is worth knowing which one you are relying on:
 - **Esc**, while a self-paced loop waits. It cancels the pending wakeup.
 - **Asking to cancel a fixed job**, in plain language: "cancel the pr-babysitter job". Esc does
   nothing to a fixed loop, so this is the request to make.
-- **`/clear`**, which wipes every scheduled task in the session.
+- **`/clear`**, which wiped every scheduled task in the session on 2.1.252 (not re-confirmed on 2.1.326:
+  check with "what scheduled tasks do I have?").
 - **Closing the session**, since a loop only fires while its session is open.
 
 To confirm a loop has actually stopped, ask "what scheduled tasks do I have?" and read the list. It
@@ -198,7 +199,8 @@ does not know, and writes no code.
 
 <sub>The `/loop` behavior described on this page (the seven-day expiry in both modes, the session
 scope, permission inheritance and `acceptEdits`, the cloud-schedule question, the bare-prompt fixed
-fire, and `claude -p "/loop …"` firing zero times) was re-derived from the shipped Claude Code
-2.1.252 binary and https://code.claude.com/docs/en/scheduled-tasks, 2026.</sub>
+fire, and `claude -p "/loop …"` firing zero times) was
+checked against Claude Code 2.1.326 and https://code.claude.com/docs/en/scheduled-tasks on 2026-11-17;
+the facts not re-confirmed there stay dated to 2.1.252 (2026-09-01), listed in [docs/limits.md](limits.md#which-version-each-fact-was-checked-on).</sub>
 
 Back to the [README](../README.md) · [honest limits](limits.md) · [quickstart](quickstart.md)

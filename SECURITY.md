@@ -64,7 +64,7 @@ other people wrote.
   brief carries a tick cap, a stop rule and a per-tick effort budget, and the tick cap also rides
   inside the line (the smaller of the two numbers wins). Be honest about what that is: the cap is a
   counter the loop maintains and obeys: **a discipline, not a hard limit**. The runtime will not stop
-  it for you. The hard stops are the 7-day expiry, closing the session, `/clear`, `Esc` for a
+  it for you. The hard stops are the 7-day expiry, closing the session, `/clear` (as of 2.1.252), `Esc` for a
   self-paced loop, and `CronDelete` for a fixed one.
 
 ## What counts as a security issue here
@@ -108,7 +108,7 @@ with credit to the reporter if wanted.
   a quiet loop's noop ticks collapse in the terminal, so the log is where to look.
 - **Verify a stop.** Ask "what scheduled tasks do I have?"; the list should be empty. `Esc` cancels a
   pending self-paced wakeup; a fixed-interval job needs `CronDelete` ("cancel the … job"); `/clear`
-  wipes every scheduled task in the session. If it keeps firing, close the session.
+  wiped every scheduled task in the session on 2.1.252 (not re-confirmed on 2.1.326). If it keeps firing, close the session.
 - **Remember the 7-day expiry.** Every loop dies 7 days after it is created, in both modes, and with
   the session. That is a ceiling on how long a loop can run unattended, not a promise it will run
   that long, and if you want it back, you paste the line again, which is a good moment to re-read the

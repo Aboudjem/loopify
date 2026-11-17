@@ -29,8 +29,8 @@ green) and the terminal folds a run of noop ticks into a single line. Read the l
 ## Every loop stops after seven days
 
 A `/loop` job is not permanent. Seven days after it starts it expires and stops firing, in either
-mode. The docs say so about the self-paced mode in one line: "The jitter rules don't apply to it, but
-the seven-day expiry does."
+mode. The docs say so about the self-paced mode in one line: "The seven-day expiry applies to the
+loop too." A recurring task fires one final time, then deletes itself.
 
 Nothing we found announces the expiry. The loop stops writing ticks, and as far as we can tell that
 is the only sign of it. The fix
@@ -47,12 +47,16 @@ fire does not happen and it is not made up afterwards: a missed fire is skipped,
 
 Things that end a loop early:
 
-- `/clear` wipes every scheduled task in the session, the loop with them.
+- `/clear` wiped every scheduled task in the session on Claude Code 2.1.252. The 2.1.326 docs no
+  longer say so, and I could not find it in the 2.1.326 binary. Treat it as unconfirmed: after a
+  `/clear`, ask "what scheduled tasks do I have?" and read the answer.
 - Closing the session.
 - `CLAUDE_CODE_DISABLE_CRON=1` in the environment turns scheduling off, so nothing is created at all.
 
-Things that do not end it: `--resume` and `--continue` bring back loops that have not expired, and
-backgrounding the session keeps them alive. One session holds at most 50 scheduled tasks.
+Things that do not end it: backgrounding the session keeps them alive. `--resume` and `--continue`
+bring back a fixed-interval loop that has not expired, but not a self-paced one: run `/loop` again for
+that. A restored loop skips the runs it missed while the session was closed. One session holds at most
+50 scheduled tasks.
 
 And the one that surprises people: `claude -p "/loop 20m Run one cycle of …"` does not put a loop in
 the background. It expands the skill, creates the job, and exits, and the job dies with the process.
@@ -97,14 +101,16 @@ makes it appear, so we cannot tell you when a tick will hit it.
 ## A fixed tick arrives late on purpose
 
 Fixed-interval fires carry jitter, a deliberate delay so that many schedules do not land at once. The
-docs give the size of it: up to 30 minutes late, or up to half the interval when the interval is more
-often than hourly. A 20-minute loop can therefore fire up to 10 minutes after the mark.
+docs give the size of it: up to half the gap to the next run, and at most 30 minutes late. A 20-minute
+loop can therefore fire up to 10 minutes after the mark. One exception: a loop that runs every five
+minutes (`/loop 5m`, written `*/5 * * * *`) is not delayed. Each run starts 15 seconds early instead.
 
 Write briefs that do not care. A cycle that has to happen at 09:00 exactly is not a `/loop` job.
 
-<sub>The 30-minute figure is the docs'. The binary's own `CronCreate` text gives a different rule (
-10 % of the period, up to 15 minutes) so the two disagree; the scheduler's own constants (`recurringFrac: 0.5`, a
-30-minute cap) implement the docs' rule, so that is the one to plan for. Jitter applies to fixed mode only; a self-paced loop sets its own delay.</sub>
+<sub>On 2.1.326 the docs and the binary agree: the scheduler's constants are `recurringFrac: 0.5` and
+`recurringCapMs: 1800000` (30 minutes). On 2.1.252 the `CronCreate` tool text still said 10 % of the
+period, up to 15 minutes; that text is gone in 2.1.326. Jitter applies to fixed mode only; a self-paced
+loop sets its own delay.</sub>
 
 ## You may be asked about a cloud schedule. "May", not "will"
 
@@ -177,7 +183,7 @@ again. Full details on the pointer: [the `.claude/loop.md` pointer](loop-md.md).
 Issue [#64744](https://github.com/anthropics/claude-code/issues/64744) is open: a loop that outlived
 Ctrl+C, with a daemon respawning behind it, and a reported "~$300 over a weekend". Quote that figure
 only with the version attached: it was filed against Claude Code **2.1.160**, and it is not a
-measurement of what 2.1.252 does. It is a reason to verify a stop rather than assume one, which is
+measurement of what 2.1.326 does. It is a reason to verify a stop rather than assume one, which is
 what "what scheduled tasks do I have?" is for.
 
 The two older re-fire reports, #51304 and #54086 (a one-shot slash command re-fired on every wakeup),
@@ -227,10 +233,29 @@ are the author's responsibility. That is the subject of [SECURITY.md](../SECURIT
 
 ---
 
-<sub>The `/loop` behavior on this page (the seven-day expiry in both modes, the session scope and
-50-task cap, permission inheritance and `acceptEdits`, the jitter numbers, the cloud-schedule
-question, the immediate first fire in fixed mode, and the 25,000-byte `loop.md` cut) was re-derived
-from the shipped Claude Code 2.1.252 binary and https://code.claude.com/docs/en/scheduled-tasks,
-2026.</sub>
+## Which version each fact was checked on
+
+The method is the same each time: read https://code.claude.com/docs/en/scheduled-tasks, then search
+the strings of the installed binary (`strings ~/.local/share/claude/versions/<version>`) for the
+constant or the message.
+
+| Fact | Last checked | Where |
+| ---- | ------------ | ----- |
+| Seven-day expiry, both modes | 2.1.326, 2026-11-17 | docs; binary `recurringMaxAgeMs: 604800000` |
+| Jitter: half the gap, 30 minutes at most, every five minutes not delayed | 2.1.326, 2026-11-17 | docs; binary `recurringFrac: 0.5`, `recurringCapMs: 1800000` |
+| 50 scheduled tasks per session | 2.1.326, 2026-11-17 | docs |
+| No catch-up for missed fires | 2.1.326, 2026-11-17 | docs |
+| `--resume` restores fixed loops, not self-paced ones | 2.1.326, 2026-11-17 | docs |
+| Permissions "Inherits from session" | 2.1.326, 2026-11-17 | docs |
+| `CLAUDE_CODE_DISABLE_CRON=1` | 2.1.326, 2026-11-17 | docs; binary |
+| `loop.md` cut at 25,000 bytes | 2.1.326, 2026-11-17 | docs |
+| Self-paced wakeup clamped to 60 to 3600 seconds | 2.1.326, 2026-11-17 | binary |
+| The classifier-review wakeup string | 2.1.326, 2026-11-17 | binary |
+| `/clear` wipes the schedule | 2.1.252, 2026-09-01 | binary skill source; not found in the 2.1.326 docs or binary |
+| First fire at once in fixed mode | 2.1.252, 2026-09-01 | binary skill source |
+| The cloud-schedule question and its seven conditions | 2.1.252, 2026-09-01 | binary skill source |
+| `acceptEdits` scope under `claude -p` | 2.1.252, 2026-09-01 | docs and binary |
+
+A row dated 2.1.252 was not re-checked on 2.1.326. It may still hold. Verify it before you rely on it.
 
 Back to the [README](../README.md) · [FAQ](faq.md) · [quickstart](quickstart.md)

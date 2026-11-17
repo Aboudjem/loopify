@@ -36,7 +36,7 @@ Those are the first lines of `loop_status.py` on the shipped example. The full r
 
 ## Install
 
-In Claude Code, run these two commands:
+For Claude Code, run these two commands in your terminal (not inside a Claude session):
 
 ```bash
 claude plugin marketplace add Aboudjem/10x
@@ -44,11 +44,13 @@ claude plugin install loopify@10x
 ```
 
 Any other agent installs the same skill in one line, through the
-[skills CLI](https://github.com/vercel-labs/skills):
+[skills CLI](https://github.com/vercel-labs/skills). Name your agent with `-a`, for example `cursor`:
 
 ```bash
-npx skills add Aboudjem/loopify
+npx skills add Aboudjem/loopify -a cursor
 ```
+
+Leave out `-a` and the CLI installs for every agent it detects on your machine.
 
 There is nothing to build. The skill is one folder with three standard-library Python scripts.
 
@@ -132,7 +134,7 @@ Do next:
 Detail:
   ticks logged  7 (4 changed, 3 noop, 0 stopped)
   queue         2 open item(s)
-  lessons       5 line(s)
+  lessons       4 entries
   lock          none
   interval      20m (from the saved line)
   log format    passes ticks_lint
@@ -142,7 +144,17 @@ Detail:
 `--now` pins the clock so the sample prints the same every time. Leave it out on a real loop.
 
 Line 1 is always the verdict: `OK`, `NEEDS YOU`, `STALE`, `STOPPED`, `NOT STARTED` or `BROKEN LOG`.
-Then at most three things to do. Then the detail.
+Then at most three things to do. Then the detail. `lessons` counts the entries in `LESSONS.md`.
+
+The exit code carries the verdict, so a script or a cron job can act on it:
+
+| Exit | Verdict | Meaning |
+| ---- | ------- | ------- |
+| `0` | `OK`, `STOPPED`, `NOT STARTED` | Nothing needs you |
+| `1` | `NEEDS YOU`, `STALE`, `BROKEN LOG` | Look at the loop |
+| `2` | none | Usage error, or the state directory does not exist |
+
+`loop_status.py --help` prints the same table.
 
 Every brief loopify writes also gives you:
 
@@ -163,7 +175,7 @@ Each row below is an install I ran on 2026-11-17, in an empty temp folder.
 | Agent                    | Install command                                                          | Tested                                          |
 | ------------------------ | ------------------------------------------------------------------------ | ----------------------------------------------- |
 | Claude Code 2.1.326      | `claude plugin install` from the repo marketplace, in a clean config dir | 2026-11-17, plugin enabled, scripts present     |
-| Claude Code (skills CLI) | `npx skills add Aboudjem/loopify -a claude-code`                         | 2026-11-17, skill linked into `.claude/skills/` |
+| Claude Code (skills CLI) | `npx skills add Aboudjem/loopify -a claude-code`                         | 2026-11-17, skill copied into `.claude/skills/` |
 | Cursor                   | `npx skills add Aboudjem/loopify -a cursor`                              | 2026-11-17, skill in `.agents/skills/`          |
 | Codex                    | `npx skills add Aboudjem/loopify -a codex`                               | 2026-11-17, skill in `.agents/skills/`          |
 | GitHub Copilot           | `npx skills add Aboudjem/loopify -a github-copilot`                      | 2026-11-17, skill in `.agents/skills/`          |
@@ -189,17 +201,19 @@ make test
 
 | Suite                       | What it checks                                                                          | Result today |
 | --------------------------- | --------------------------------------------------------------------------------------- | ------------ |
-| `evals/check_skill.py`      | The skill's contract, as assertions                                                     | 160/160      |
+| `evals/check_skill.py`      | The skill's contract, as assertions                                                     | 161/161      |
 | `tests/test_manifests.py`   | Manifests, version parity, the example brief, translations, SVGs, secrets, no long dash | 170/170      |
 | `tests/test_ticks_lint.py`  | The tick log format                                                                     | 13/13        |
-| `tests/test_loop_status.py` | Each status verdict, and this README's sample, byte for byte                            | 51/51        |
+| `tests/test_loop_status.py` | Each status verdict, the exit codes, and this README's sample, byte for byte           | 62/62        |
+| `tests/test_no_network.py`  | No shipped script imports a network module or calls curl or wget                        | 18/18        |
 | `evals/loop_line_lint.py`   | The canonical line passes the eight line rules                                          | PASS         |
 
 CI also runs `claude plugin validate . --strict` on a pinned Claude Code, and checks that
 `npx skills@1.9.0 add . --list` finds the skill.
 
-I re-derived the `/loop` facts from the shipped Claude Code 2.1.252 binary and the docs. The
-trail is in [docs/limits.md](docs/limits.md).
+I checked the `/loop` facts against Claude Code 2.1.326 and its docs on 2026-11-17. Four facts could
+not be re-confirmed on 2.1.326. They stay dated to 2.1.252 (2026-09-01). The per-fact table is in
+[docs/limits.md](docs/limits.md#which-version-each-fact-was-checked-on).
 
 ## FAQ
 
@@ -220,7 +234,8 @@ The stop rule in the brief, the tick cap, the seven-day expiry, or you. The full
 [docs/faq.md](docs/faq.md).
 
 **Does it send my code anywhere?**
-No. loopify and its scripts make no network call. What a tick does is what your brief allows.
+No. loopify's scripts make no network call: `tests/test_no_network.py` fails if one imports a network
+module or calls curl or wget. What a tick does is what your brief allows.
 
 ## Limits
 
@@ -228,8 +243,8 @@ No. loopify and its scripts make no network call. What a tick does is what your 
 > A running loop is not proof it is doing the right thing. No evaluator sits behind `/loop`. The
 > tick log and the status report are the only proof there is.
 
-- **The loop lives in the session you paste it into.** Close the terminal and it stops. `/clear`
-  wipes the schedule too.
+- **The loop lives in the session you paste it into.** Close the terminal and it stops. On 2.1.252,
+  `/clear` wiped the schedule too. Ask "what scheduled tasks do I have?" to check yours.
 - **Every loop ends at 7 days.** One session holds at most 50 scheduled tasks. Both are Claude Code
   limits. Paste the line again to carry on.
 - **Pre-approve what a tick runs.** A tick that hits a permission prompt waits there for an answer.
@@ -252,7 +267,7 @@ for a job that finishes. loopify is for a job that repeats.
 
 ---
 
-<sub>Built by <a href="https://github.com/Aboudjem">Adam Boudjemaa</a> · MIT. `/loop` behavior re-derived
-from the shipped Claude Code 2.1.252 binary and the official docs. Sibling of
+<sub>Built by <a href="https://github.com/Aboudjem">Adam Boudjemaa</a> · MIT. `/loop` behavior checked
+against Claude Code 2.1.326 and the official docs on 2026-11-17. Sibling of
 <a href="https://github.com/Aboudjem/goalify">goalify</a>, which does the same for `/goal`.
 <a href="https://github.com/Aboudjem/loopify/issues">Spot a gap?</a></sub>

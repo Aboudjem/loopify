@@ -37,18 +37,20 @@ Do next:
 
 ## インストール
 
-Claude Code で次の 2 つのコマンドを実行します。
+Claude Code では、次の 2 つのコマンドをターミナルで実行します (Claude のセッション内ではありません)。
 
 ```bash
 claude plugin marketplace add Aboudjem/10x
 claude plugin install loopify@10x
 ```
 
-他のエージェントは [skills CLI](https://github.com/vercel-labs/skills) で同じ skill を 1 行で入れられます。
+他のエージェントは [skills CLI](https://github.com/vercel-labs/skills) で同じ skill を 1 行で入れられます。`-a` でエージェントを指定します (例: `cursor`)。
 
 ```bash
-npx skills add Aboudjem/loopify
+npx skills add Aboudjem/loopify -a cursor
 ```
+
+`-a` を省くと、CLI はマシン上で検出したすべてのエージェントに入れます。
 
 ビルドは不要です。skill は 1 つのフォルダで、標準ライブラリだけの Python スクリプトが 3 つ入っています。
 
@@ -132,7 +134,7 @@ Do next:
 Detail:
   ticks logged  7 (4 changed, 3 noop, 0 stopped)
   queue         2 open item(s)
-  lessons       5 line(s)
+  lessons       4 entries
   lock          none
   interval      20m (from the saved line)
   log format    passes ticks_lint
@@ -142,7 +144,17 @@ Detail:
 `--now` は時計を固定し、サンプルが毎回同じになるようにします。実際のループでは付けません。
 
 1 行目は常に判定です: `OK`、`NEEDS YOU`、`STALE`、`STOPPED`、`NOT STARTED`、`BROKEN LOG`。
-次に最大 3 つのすること、その後に詳細が続きます。
+次に最大 3 つのすること、その後に詳細が続きます。`lessons` は `LESSONS.md` のエントリ数です。
+
+終了コードが判定を表すので、スクリプトや cron から使えます。
+
+| 終了コード | 判定 | 意味 |
+| ---------- | ---- | ---- |
+| `0` | `OK`、`STOPPED`、`NOT STARTED` | 対応不要 |
+| `1` | `NEEDS YOU`、`STALE`、`BROKEN LOG` | ループを確認する |
+| `2` | なし | 使い方の誤り、または状態ディレクトリがない |
+
+`loop_status.py --help` も同じ表を表示します。
 
 loopify が書く brief には、さらに次のものが入っています。
 
@@ -162,7 +174,7 @@ noop | stopped` で始まります。`ticks_lint.py` で検査できます。
 | エージェント             | インストールコマンド                                                    | テスト日                                |
 | ------------------------ | ----------------------------------------------------------------------- | --------------------------------------- |
 | Claude Code 2.1.326      | リポジトリの marketplace から `claude plugin install`、クリーンな設定で | 2026-11-17、plugin 有効、スクリプトあり |
-| Claude Code (skills CLI) | `npx skills add Aboudjem/loopify -a claude-code`                        | 2026-11-17、`.claude/skills/` にリンク  |
+| Claude Code (skills CLI) | `npx skills add Aboudjem/loopify -a claude-code`                        | 2026-11-17、`.claude/skills/` にコピー  |
 | Cursor                   | `npx skills add Aboudjem/loopify -a cursor`                             | 2026-11-17、`.agents/skills/` に配置    |
 | Codex                    | `npx skills add Aboudjem/loopify -a codex`                              | 2026-11-17、`.agents/skills/` に配置    |
 | GitHub Copilot           | `npx skills add Aboudjem/loopify -a github-copilot`                     | 2026-11-17、`.agents/skills/` に配置    |
@@ -189,17 +201,19 @@ make test
 
 | スイート                    | 検査内容                                                                    | 結果    |
 | --------------------------- | --------------------------------------------------------------------------- | ------- |
-| `evals/check_skill.py`      | skill の契約をアサーションで                                                | 160/160 |
+| `evals/check_skill.py`      | skill の契約をアサーションで                                                | 161/161 |
 | `tests/test_manifests.py`   | マニフェスト、バージョン、サンプル brief、翻訳、SVG、秘密情報、長いダッシュ | 170/170 |
 | `tests/test_ticks_lint.py`  | tick ログの形式                                                             | 13/13   |
-| `tests/test_loop_status.py` | 各判定と、この README のサンプルのバイト一致                                | 51/51   |
+| `tests/test_loop_status.py` | 各判定、終了コード、この README のサンプルのバイト一致                       | 62/62   |
+| `tests/test_no_network.py`  | 同梱スクリプトがネットワークモジュールを読み込まず curl や wget を呼ばない   | 18/18   |
 | `evals/loop_line_lint.py`   | 正規の line が 8 つのルールを通る                                           | PASS    |
 
 CI は固定版の Claude Code で `claude plugin validate . --strict` も実行し、
 `npx skills@1.9.0 add . --list` が skill を見つけることも確認します。
 
-`/loop` に関する事実は、Claude Code 2.1.252 のバイナリとドキュメントから導いたものです。経緯は
-[docs/limits.md](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md) にあります。
+`/loop` に関する事実は、2026-11-17 に Claude Code 2.1.326 とそのドキュメントで確認しました。4 つの事実は
+2.1.326 で再確認できず、2.1.252 (2026-09-01) の日付のままです。事実ごとの表は
+[docs/limits.md](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md#which-version-each-fact-was-checked-on) にあります。
 
 ## FAQ
 
@@ -219,7 +233,8 @@ brief の停止ルール、tick 上限、7 日の期限、またはあなたで�
 [docs/faq.md](https://github.com/Aboudjem/loopify/blob/main/docs/faq.md) にあります。
 
 **コードがどこかに送られますか?**
-いいえ。loopify とそのスクリプトはネットワーク通信をしません。tick は brief が許すことだけをします。
+いいえ。loopify のスクリプトはネットワーク通信をしません。ネットワークモジュールの読み込みや curl、wget の
+呼び出しがあると `tests/test_no_network.py` が失敗します。tick は brief が許すことだけをします。
 
 ## 制限
 
@@ -227,7 +242,7 @@ brief の停止ルール、tick 上限、7 日の期限、またはあなたで�
 > ループが動いていても、正しいことをしている証拠にはなりません。`/loop` の後ろに評価者はいません。
 > tick ログと状態レポートだけが証拠です。
 
-- **ループは貼り付けたセッションの中で生きます。** ターミナルを閉じると止まります。`/clear` でもスケジュールが消えます。
+- **ループは貼り付けたセッションの中で生きます。** ターミナルを閉じると止まります。2.1.252 では `/clear` でもスケジュールが消えました。"what scheduled tasks do I have?" と聞いて確認してください。
 - **すべてのループは 7 日で終わります。** 1 セッションのスケジュール済みタスクは最大 50 です。どちらも Claude Code
   の制限です。続けるには line を貼り直します。
 - **tick が実行するコマンドを事前に許可してください。** 許可の確認で止まった tick は、答えを待ち続けます。
@@ -250,8 +265,8 @@ loopify は繰り返す仕事のためのものです。
 
 ---
 
-<sub>作者 <a href="https://github.com/Aboudjem">Adam Boudjemaa</a> · MIT。`/loop` の挙動は Claude Code 2.1.252 の
-バイナリと公式ドキュメントから導き直しました。兄弟プロジェクトの
+<sub>作者 <a href="https://github.com/Aboudjem">Adam Boudjemaa</a> · MIT。`/loop` の挙動は 2026-11-17 に Claude Code 2.1.326 と
+公式ドキュメントで確認しました。兄弟プロジェクトの
 <a href="https://github.com/Aboudjem/goalify">goalify</a> は `/goal` に同じことをします。
 <a href="https://github.com/Aboudjem/loopify/issues">足りないところを見つけたら</a></sub>
 
