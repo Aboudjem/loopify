@@ -169,7 +169,7 @@ def main():
     checks.append(("no /goal-style language (sentinel word, closeout turn, archive gate, 4,000)",
                    not any(t in low for t in ("sentinel word", "closeout turn", "archive gate", "4,000")), ""))
 
-    # --- Facts about /loop (binary 2.1.252 + docs), all must be stated ---
+    # --- Facts about /loop (binary + docs, checked on 2.1.326), all must be stated ---
     facts = {
         "7-day expiry, both modes": "7-day" in low and ("both modes" in low or "self-paced too" in low),
         "session-scoped / open session": "open session" in low or "session-scoped" in low,
@@ -186,9 +186,10 @@ def main():
         "acceptEdits auto-accepts file edits only": "acceptedits" in low and ("edits only" in low or "file edit" in low),
         "--allowedTools for headless Bash": "--allowedtools" in low,
         "classifier review string labelled uncertain": "classifier" in low and "uncertain" in low,
-        "jitter: cite docs (30 minutes), footnote the binary (10 %)": "30 min" in low and ("10 %" in low or "10%" in low),
+        "jitter: half the gap, 30 minutes at most, every five minutes not delayed": "30 min" in low and "half the gap" in low and "every five minutes" in low,
+        "self-paced loop not restored on --resume": "not a self-paced loop" in low,
         "fixed mode fires the first cycle at once": "at once" in low or "immediately" in low,
-        "/clear wipes the schedule": "/clear" in low and ("wipes" in low or "kills the schedule" in low),
+        "/clear wipes the schedule, dated to the version it was derived on": "/clear" in low and "wipes" in low and "2.1.252" in low,
     }
     for clause, ok in facts.items():
         checks.append((f"fact: {clause}", ok, ""))

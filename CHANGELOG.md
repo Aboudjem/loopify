@@ -4,6 +4,73 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project uses
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.3] - 2026-11-17
+
+A clearer first screen and truer wording. No change to the skill's behaviour, the brief or the line.
+
+### Changed
+
+- **The README opens with the problem.** Under the tagline "Stop babysitting your loop." you get the
+  install, the status command with `--now` next to its sample, then the situation it solves.
+- **A `Why use it` block.** Four benefits, each with its proof: the one-line verdict, the tick log
+  and `STALE`, the stop rule and the 7-day expiry, and the commands loopify tells you to pre-approve.
+- **The honest limit sits next to the promise.** The loop lives in your open session, ends at 7 days,
+  and the log is the only proof.
+- **New listing description.** The plugin manifests now say what loopify writes and what the status
+  command reports.
+- **True wording.** Nothing forces a tick to log, so the docs now say a tick is told to log, and a
+  missing entry shows as `STALE`.
+- **New social preview.** `assets/social-preview.png` carries the new headline, sub-line and the
+  `/loopify` command. The four translations mirror every README change.
+
+## [1.2.2] - 2026-11-17
+
+Three `/loop` facts re-checked on Claude Code 2.1.326. One of them was wrong, and the skill now says the right thing.
+
+### Fixed
+
+- **`acceptEdits` scope corrected.** Under `--permission-mode acceptEdits`, Claude Code 2.1.326
+  auto-accepts seven filesystem commands: `mkdir`, `touch`, `rm`, `rmdir`, `mv`, `cp`, `sed`. The
+  skill, FAQ and limits page listed only four. They now list all seven, inside the working directory only.
+- **Two more facts confirmed on 2.1.326.** Fixed mode still runs the first cycle at once, and the
+  cloud-schedule question still has the same triggers and seven runtime checks. Both rows in the
+  per-fact table now read 2.1.326, with the binary text that shows it.
+- **The README footer is exact.** It says which fact is still dated (`/clear`, last checked on
+  2.1.252) and links the per-fact table. The four translations say the same.
+
+### Added
+
+- **`tests/test_dated_facts.py`.** It fails when a fact the limits table dates to an older version
+  is stated in SKILL.md, the FAQ or the limits page without that version nearby. `make test` runs it.
+
+## [1.2.1] - 2026-11-17
+
+Fixes from an independent review of 1.2.0. No change to the brief contract or the line.
+
+### Fixed
+
+- **The `lessons` count now counts lessons.** The status report counted every line of
+  `LESSONS.md`, the heading too. It now counts the entries (bullet lines). The README sample and
+  its byte-for-byte test were updated from a real run.
+- **Exit codes are documented.** `loop_status.py --help` and the README both list them:
+  0 nothing needs you, 1 look at the loop, 2 usage error. A test pins all three.
+- **The install steps say where to run them.** The two `claude plugin` commands run in your
+  terminal. `npx skills add` now shows `-a <agent>`, since without it the CLI installs for every
+  agent it detects. The works-with table says the skill is copied, not linked.
+
+### Changed
+
+- **`/loop` facts re-checked on Claude Code 2.1.326.** The expiry, jitter, 50-task cap, no
+  catch-up, permission inheritance and the `loop.md` cut hold. Two corrections: `--resume` does not
+  restore a self-paced loop, and a `/loop 5m` task is not delayed. Four facts, `/clear` among them,
+  could not be re-confirmed and stay dated to 2.1.252. `docs/limits.md` ends with a per-fact table.
+
+### Added
+
+- **`tests/test_no_network.py`.** It fails if a shipped script imports a network module (socket,
+  urllib, http, requests, ssl, ftplib, smtplib and more) or calls curl or wget. The README's
+  "no network call" answer names it. `make test` runs it.
+
 ## [1.2.0] - 2026-11-17
 
 A status report that answers "is my loop alive, and does it need me?" in one command, and

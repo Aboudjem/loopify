@@ -109,8 +109,8 @@ then delete. A loop you started **by pasting the line** is unaffected either way
 <sub>The `loop.md` behavior on this page (project file over user file, bare and interval-only use
 only, ignored when a prompt is typed, edits landing on the next tick, the 25,000-byte cut at the last
 newline, an empty file counting as absent, and the full-then-reminder delivery of its contents) was
-re-derived from the shipped Claude Code 2.1.252 binary and
-https://code.claude.com/docs/en/scheduled-tasks, 2026.</sub>
+derived from the shipped Claude Code 2.1.252 binary (2026-09-01); the 25,000-byte cut was re-checked
+in https://code.claude.com/docs/en/scheduled-tasks against 2.1.326 on 2026-11-17.</sub>
 
 Back to the [README](../README.md) · [FAQ](faq.md) · [honest limits](limits.md) ·
 [quickstart](quickstart.md)

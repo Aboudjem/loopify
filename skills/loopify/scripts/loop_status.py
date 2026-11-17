@@ -24,9 +24,13 @@ The interval comes from --interval, or from LINE-<slug>.txt beside the state dir
 loopify writes with the brief. Without an interval the report cannot tell a live loop from a dead
 one, and it says so.
 
-Exit 0 = OK, STOPPED or NOT STARTED. Exit 1 = NEEDS YOU, STALE or BROKEN LOG. Exit 2 = usage, or
-the state directory does not exist. Read-only: it never writes to the state directory.
-No third-party deps; standard library only.
+Exit codes, so a script or a cron job can act on the verdict:
+  0  OK, STOPPED or NOT STARTED: nothing needs you
+  1  NEEDS YOU, STALE or BROKEN LOG: look at the loop
+  2  usage error, or the state directory does not exist
+
+The "lessons" detail line counts the entries (bullet lines) in LESSONS.md, not its heading.
+Read-only: it never writes to the state directory. Standard library only, no network call.
 """
 import datetime
 import os
@@ -83,6 +87,14 @@ def human(seconds):
     if seconds < 172800:
         return f"{seconds / 3600:.1f} h"
     return f"{seconds / 86400:.1f} days"
+
+
+def lesson_label(text):
+    """Count the lesson entries in LESSONS.md: its bullet lines, not its heading or blank lines."""
+    if text is None:
+        return "no LESSONS.md"
+    n = sum(1 for l in text.splitlines() if re.match(r"^\s*[-*]\s+\S", l))
+    return f"{n} entr{'y' if n == 1 else 'ies'}"
 
 
 def read_ticks(text):
@@ -221,7 +233,7 @@ def build_report(state_dir, now=None, interval=None):
     detail = [
         ("ticks logged", f"{len(entries)} ({counts['changed']} changed, {counts['noop']} noop, {counts['stopped']} stopped)"),
         ("queue", f"{n_queue} open item(s)"),
-        ("lessons", f"{len([l for l in (lessons or '').splitlines() if l.strip()])} line(s)" if lessons is not None else "no LESSONS.md"),
+        ("lessons", lesson_label(lessons)),
         ("lock", "present: a tick is mid-cycle, or one crashed" if lock else "none"),
         ("interval", f"{interval} (from {interval_source})" if step else "unknown: cannot tell a live loop from a dead one"),
         ("log format", "passes ticks_lint" if lint_ok else f"{len(lint_failures)} failure(s) in ticks_lint"),
