@@ -55,8 +55,9 @@ Do next:
 
 - **一眼看清。** 一行状态给出 `OK`、`NEEDS YOU`、`STALE`、`STOPPED`、`NOT STARTED` 或 `BROKEN LOG`，
   再告诉你下一步做什么。证据：上面的示例，`make test` 会检查每个判定和退出码。
-- **每个 tick 都看得到。** 每个 tick 往 `TICKS.md` 写一条记录，缺失的那条会显示为 `STALE`。
-  证据：两个间隔都没有新记录时，`loop_status.py` 会输出 `STALE`。
+- **每个 tick 都看得到。** 每个 tick 往 `TICKS.md` 写一条记录。只要间隔已知，缺失的那条会显示为 `STALE`。
+  loopify 会保存那一行，状态命令从中读取间隔。
+  证据：超过两个间隔都没有新记录时，`loop_status.py` 会输出 `STALE`。
 - **它有终点。** 停止规则就写在那一行里，而且每个循环 7 天后到期。
   证据：loopify 在输出这一行之前，会用八条规则检查它（`loop_line_lint.py`）。
 - **更少卡住的 tick。** loopify 会列出需要预先批准的命令，例如 `gh pr view`。
@@ -246,7 +247,7 @@ tick 需要细节：路径、命令、卡住时怎么办。`/loop` 需要一个�
 line 带着它的路径。
 
 **怎么知道循环还活着？**
-对状态目录运行 `loop_status.py`。如果两个间隔内都没有新的 tick，它会显示 `STALE`。你也可以问 Claude
+对状态目录运行 `loop_status.py`。如果超过两个间隔都没有新的 tick，它会显示 `STALE`。你也可以问 Claude
 "what scheduled tasks do I have?"。
 
 **什么会让循环停止？**

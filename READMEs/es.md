@@ -59,8 +59,9 @@ registro es la única prueba.
 - **Sabes de un vistazo.** Una línea de estado dice `OK`, `NEEDS YOU`, `STALE`, `STOPPED`,
   `NOT STARTED` o `BROKEN LOG`, y luego qué hacer. Prueba: el ejemplo de arriba, y `make test`
   comprueba cada veredicto y cada código de salida.
-- **Ves cada tick.** Cada tick escribe una entrada en `TICKS.md`, y una que falta aparece como
-  `STALE`. Prueba: `loop_status.py` dice `STALE` tras dos intervalos sin entrada nueva.
+- **Ves cada tick.** Cada tick escribe una entrada en `TICKS.md`. Una que falta aparece como `STALE`
+  cuando el intervalo es conocido: loopify guarda tu línea, y el comando de estado lee el intervalo
+  de ella. Prueba: `loop_status.py` dice `STALE` tras más de dos intervalos sin entrada nueva.
 - **Tiene un final.** Una regla de parada viaja en la línea, y cada bucle expira a los 7 días.
   Prueba: loopify revisa tu línea con ocho reglas antes de imprimirla (`loop_line_lint.py`).
 - **Menos ticks atascados.** loopify imprime los comandos que conviene aprobar antes, como
@@ -258,8 +259,8 @@ El tick necesita detalle: rutas, comandos, qué hacer si algo se bloquea. `/loop
 corto que reenvía en cada tick. El brief guarda el detalle y la línea lleva su ruta.
 
 **¿Cómo sé si el bucle sigue vivo?**
-Ejecuta `loop_status.py` sobre la carpeta de estado. Dice `STALE` cuando no llega ningún tick en dos
-intervalos. También puedes preguntar a Claude "what scheduled tasks do I have?".
+Ejecuta `loop_status.py` sobre la carpeta de estado. Dice `STALE` cuando no llega ningún tick en más de
+dos intervalos. También puedes preguntar a Claude "what scheduled tasks do I have?".
 
 **¿Qué detiene un bucle?**
 La regla de parada del brief, el tope de ticks, la caducidad de siete días, o tú. La lista completa

@@ -57,8 +57,9 @@ only proof.
 - **Know at a glance.** One status line says `OK`, `NEEDS YOU`, `STALE`, `STOPPED`, `NOT STARTED`
   or `BROKEN LOG`, then what to do next. Proof: the sample above, and `make test` checks every
   verdict and exit code.
-- **See every tick.** Each tick writes one entry to `TICKS.md`, and a missing one shows as `STALE`.
-  Proof: `loop_status.py` says `STALE` after two intervals with no new entry.
+- **See every tick.** Each tick writes one entry to `TICKS.md`. A missing one shows as `STALE` when the
+  interval is known: loopify saves your line, and the status command reads the interval from it.
+  Proof: `loop_status.py` says `STALE` after more than two intervals with no new entry.
 - **It has an end.** A stop rule rides in the line, and every loop expires at 7 days. Proof:
   loopify lints your line against eight rules before printing it (`loop_line_lint.py`).
 - **Fewer stuck ticks.** loopify prints the commands to pre-approve, such as `gh pr view`. Proof:
@@ -257,8 +258,8 @@ The tick needs detail: paths, commands, what to do when blocked. `/loop` needs o
 re-sends every tick. The brief holds the detail, the line carries its path.
 
 **How do I know the loop is still alive?**
-Run `loop_status.py` on the state directory. It says `STALE` when no tick has landed for two
-intervals. You can also ask Claude "what scheduled tasks do I have?".
+Run `loop_status.py` on the state directory. It says `STALE` when no tick has landed for more
+than two intervals. You can also ask Claude "what scheduled tasks do I have?".
 
 **What stops a loop?**
 The stop rule in the brief, the tick cap, the seven-day expiry, or you. The full list is in

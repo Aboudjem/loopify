@@ -60,8 +60,9 @@ vérifie : le journal est la seule preuve.
 - **Savoir d'un coup d'œil.** Une ligne de statut dit `OK`, `NEEDS YOU`, `STALE`, `STOPPED`,
   `NOT STARTED` ou `BROKEN LOG`, puis quoi faire. Preuve : l'exemple ci-dessus, et `make test` vérifie
   chaque verdict et chaque code de sortie.
-- **Voir chaque tick.** Chaque tick écrit une entrée dans `TICKS.md`, et une entrée manquante
-  apparaît comme `STALE`. Preuve : `loop_status.py` dit `STALE` après deux intervalles sans entrée.
+- **Voir chaque tick.** Chaque tick écrit une entrée dans `TICKS.md`. Une entrée manquante apparaît
+  comme `STALE` quand l'intervalle est connu : loopify enregistre votre ligne, et la commande de statut
+  y lit l'intervalle. Preuve : `loop_status.py` dit `STALE` après plus de deux intervalles sans entrée.
 - **Elle a une fin.** Une règle d'arrêt voyage dans la ligne, et chaque boucle expire au bout de
   7 jours. Preuve : loopify vérifie votre ligne contre huit règles avant de l'afficher (`loop_line_lint.py`).
 - **Moins de ticks bloqués.** loopify affiche les commandes à pré-approuver, comme `gh pr view`.
@@ -263,7 +264,7 @@ prompt court renvoyé à chaque tick. Le brief porte le détail, la ligne porte 
 
 **Comment savoir si la boucle tourne encore ?**
 Lancez `loop_status.py` sur le dossier d'état. Il dit `STALE` quand aucun tick n'est arrivé depuis
-deux intervalles. Vous pouvez aussi demander à Claude « what scheduled tasks do I have? ».
+plus de deux intervalles. Vous pouvez aussi demander à Claude « what scheduled tasks do I have? ».
 
 **Qu'est-ce qui arrête une boucle ?**
 La règle d'arrêt du brief, le plafond de ticks, l'expiration à sept jours, ou vous. La liste
