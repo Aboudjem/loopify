@@ -20,8 +20,8 @@ every 20 minutes, tick 1 is the 09:00 check and tick 2 is the 09:20 check.
 
 ## 0. What you need before you start
 
-- **Claude Code 2.1.252 or newer.** That is the version loopify's `/loop` behavior was verified
-  against: the interval grammar, the 7-day expiry, what `Esc` does and does not stop. Older builds
+- **Claude Code 2.1.252 or newer.** loopify's `/loop` behavior was first verified on 2.1.252 and
+  re-checked on 2.1.326 (2026-11-17): the interval grammar, the 7-day expiry, what `Esc` does and does not stop. Older builds
   may differ. `/loop` is built in; there is nothing to install for it.
 - **A job that repeats.** Keeping a release pull request healthy while reviews come in, watching a
   deploy until it settles, sweeping new bug reports, keeping a branch green overnight. If the job
@@ -150,9 +150,9 @@ doing solid work and a loop doing nothing look much the same there. Read the log
 
 **How to stop it.** Self-paced: press `Esc` while it is waiting. Fixed: ask in plain language:
 *"cancel the pr-babysitter job."* Either way, confirm with *"what scheduled tasks do I have?"* and
-expect an empty list. If it somehow keeps firing, closing the session ends it. `/clear` also wipes
-every scheduled task in the session, which is worth remembering in both directions: it is a way to
-stop a loop, and it is a way to lose one by accident.
+expect an empty list. If it somehow keeps firing, closing the session ends it. On 2.1.252, `/clear` also
+wiped every scheduled task in the session: a way to stop a loop, and a way to lose one by accident.
+The 2.1.326 docs no longer say so, so check the list after a `/clear`.
 
 **It stops at 7 days regardless.** Both modes expire seven days after they are created, and the loop
 also dies whenever the session does. Paste the line again to restart. If the loop stopped itself by

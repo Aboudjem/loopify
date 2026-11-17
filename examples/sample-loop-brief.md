@@ -184,8 +184,8 @@ go to QUEUE.md for the human.
 - `/loop` has no evaluator: nothing judges "done". The per-tick definition of done and TICKS.md are the
   proof. A running loop is not proof it is doing the right thing: read the tick log. A quiet loop's
   noop ticks collapse in the terminal, so the log, not the screen, is where to look.
-- The loop lives in one session: it fires only while that session is open and idle, `/clear` wipes it,
-  and it dies at the 7-day expiry (both modes). If TICKS.md has no new entry after two intervals (40
+- The loop lives in one session: it fires only while that session is open and idle, `/clear` wipes it
+  (as of 2.1.252: confirm with "what scheduled tasks do I have?"), and it dies at the 7-day expiry (both modes). If TICKS.md has no new entry after two intervals (40
   minutes), the loop is dead: paste the line again.
 - Cost has no native cap: the tick cap, the stop rule and the per-tick budget above are the only bounds.
   30 ticks × 20 minutes ends inside one working day.

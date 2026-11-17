@@ -13,7 +13,7 @@ description: >-
 argument-hint: "[recurring job to prepare a /loop line for]"
 license: MIT
 metadata:
-  version: "1.2.0"
+  version: "1.2.3"
 ---
 
 # loopify
@@ -64,9 +64,9 @@ default") also writes the `.claude/loop.md` pointer.
 
 ## How `/loop` actually works (verify before you contradict this)
 
-Re-derived from the shipped Claude Code 2.1.252 binary (the `/loop` skill source) and
-https://code.claude.com/docs/en/scheduled-tasks. These constraints shape both artifacts; do not
-"simplify" them away.
+Checked against Claude Code 2.1.326 (binary and https://code.claude.com/docs/en/scheduled-tasks) on
+2026-11-17. A fact marked "(2.1.252)" was derived on 2.1.252 and could not be re-confirmed on 2.1.326.
+These constraints shape both artifacts; do not "simplify" them away.
 
 1. **Grammar.** `/loop [interval] <prompt>`. A leading token matching `^\d+[smhd]$` is the interval;
    otherwise a trailing `every <N><unit>` clause; otherwise the whole input is the prompt and the loop
@@ -84,20 +84,23 @@ https://code.claude.com/docs/en/scheduled-tasks. These constraints shape both ar
    key, Bedrock, Vertex, Foundry, or a subscription in overage) never pick ~300 s; on a 1-hour TTL
    there is no cliff, and 3600 s sits on its boundary. If the next tick waits on an event, arm ONE
    `Monitor` (persistent). On later ticks list running tasks first and skip arming; cancel it on stop.
-5. **7-day expiry, both modes.** Docs: "The jitter rules don't apply to it, but the seven-day expiry
-   does." Jitter (fixed mode only): the docs say up to 30 min late, or half the interval sub-hourly;
-   the binary's `CronCreate` text says 10 % of the period, max 15 min, but the scheduler's own constants
-   (`recurringFrac: 0.5`, a 30-minute cap) implement the docs' rule. Cite the docs; footnote the binary
-   text.
+5. **7-day expiry, both modes.** Docs: "The seven-day expiry applies to the loop too." A recurring
+   task fires one final time, then deletes itself (binary: `recurringMaxAgeMs: 604800000`). Jitter
+   (fixed mode only): up to half the gap to the next run, at most 30 min late (binary:
+   `recurringFrac: 0.5`, `recurringCapMs: 1800000`; docs agree). One exception: a task that runs
+   every five minutes (`*/5 * * * *`, what `/loop 5m` creates) is not delayed; each run starts 15 s early.
 6. **Session-scoped.** Fires only while the session is open and idle; no catch-up; `/clear` wipes the
-   schedule; `--resume`/`--continue` restore unexpired loops; backgrounding keeps them alive; 50 tasks
-   max; `CLAUDE_CODE_DISABLE_CRON=1` disables. `claude -p "/loop …"` creates the job and exits: it
+   schedule (2.1.252; the 2.1.326 docs no longer say so, so confirm with "what scheduled tasks do I
+   have?"); `--resume`/`--continue` restore unexpired fixed-interval tasks but NOT a self-paced loop
+   (run `/loop` again); backgrounding keeps them alive; 50 tasks max; `CLAUDE_CODE_DISABLE_CRON=1`
+   disables. `claude -p "/loop …"` creates the job and exits: it
    **fires zero times**.
 7. **Permissions are inherited from the session.** A permission prompt blocks the tick until someone
    answers, and in fixed mode a fire that lands
    meanwhile is delivered once, late, when the prompt is answered; extra fires behind it are not queued. Under `claude -p`, `--permission-mode
-   acceptEdits` auto-accepts file edits, a few filesystem commands (`mkdir`, `touch`, `mv`, `cp`) and
-   the read-only command set, nothing else; every other command a tick runs needs `--allowedTools
+   acceptEdits` auto-accepts file edits and seven filesystem commands (`mkdir`, `touch`, `rm`,
+   `rmdir`, `mv`, `cp`, `sed`) on paths inside the working directory, plus the read-only command set,
+   nothing else; every other command a tick runs needs `--allowedTools
    "Bash(gh pr view:*),…"`. `auto`
    is plan-gated and classifier-driven; the binary string "Scheduling a /loop wakeup requires classifier
    review" exists and when it fires is uncertain.
@@ -317,8 +320,8 @@ human.
 - `/loop` has no evaluator: nothing judges "done". The per-tick definition of done and TICKS.md are the
   proof. A running loop is not proof it is doing the right thing: read the tick log. A quiet loop's
   noop ticks collapse in the terminal, so the log, not the screen, is where to look.
-- The loop lives in one session: it fires only while that session is open and idle, `/clear` wipes it,
-  and it dies at the 7-day expiry (both modes). If TICKS.md has no new entry after two intervals, the
+- The loop lives in one session: it fires only while that session is open and idle, `/clear` wipes it
+  (as of 2.1.252: confirm with "what scheduled tasks do I have?"), and it dies at the 7-day expiry (both modes). If TICKS.md has no new entry after two intervals, the
   loop is dead: paste the line again.
 - Cost has no native cap: the tick cap, the stop rule and the per-tick budget above are the only bounds.
 - Unattended rails stand: the loop STAGES what it cannot safely do (QUEUE.md); the queue is output, not
@@ -421,7 +424,7 @@ No terminal open?     cron/launchd → claude -p "Run one cycle of <ABSOLUTE PAT
 
 Fixed mode runs the first cycle at once and again at the next :00/:20/:40: two ticks close together is normal.
 Stops at the 7-day expiry: paste the line again (delete <STATE DIR>/STOPPED first if it stopped itself).
-Stop early: Esc while it waits (self-paced) or "cancel the pr-babysitter job" (fixed). Confirm with "what scheduled tasks do I have?"; the list should be empty; if it keeps firing, close the session. /clear kills the schedule.
+Stop early: Esc while it waits (self-paced) or "cancel the pr-babysitter job" (fixed). Confirm with "what scheduled tasks do I have?"; the list should be empty; if it keeps firing, close the session. /clear wiped the schedule as of 2.1.252; confirm with the same question.
 Still running? The status command says STALE when TICKS.md has no new entry after two intervals: the loop is dead, paste the line again.
 A running loop is not proof it is doing the right thing: read <STATE DIR>/TICKS.md.
 ```

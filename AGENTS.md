@@ -24,8 +24,8 @@ The repo is the skill at `skills/loopify/SKILL.md`, the `/loopify` author. There
 the skill's output is the brief plus the line. **`/loop` has no evaluator**: nothing decides that the
 job is done, and nothing reads the brief on the user's behalf. The per-tick definition of done and the
 tick log (`TICKS.md`) are the only proof there is. Every fact this repo states about `/loop` is
-re-derived from the shipped Claude Code 2.1.252 binary and
-https://code.claude.com/docs/en/scheduled-tasks.
+checked against the shipped Claude Code binary and https://code.claude.com/docs/en/scheduled-tasks:
+on 2.1.326 (2026-11-17), except one fact (`/clear` wipes the schedule) still dated to 2.1.252 in docs/limits.md.
 
 ## How an agent should invoke / honor the skill
 
@@ -131,7 +131,8 @@ well-formed XML with no `<script>` and no external reference. All relative Markd
 Install loopify, then say "loopify this: \<the job that repeats\>". It reads the project, asks you the
 few real decisions, writes a standing brief to an absolute path under `.loop/`, seeds the state
 directory next to it, and prints one line to paste into `/loop`. Each tick re-reads the brief, runs
-exactly one cycle, and appends what it did to `TICKS.md`.
+exactly one cycle, and is told to append what it did to `TICKS.md`. A tick that never lands shows
+as `STALE` in `loop_status.py`.
 
 **Does it run the loop itself?**
 No. loopify only authors the brief and the line. You paste the line; the loop runs in your session.
@@ -150,7 +151,7 @@ screen. If `TICKS.md` has no new entry after two intervals, the loop is dead.
 Whichever comes first: the brief's own stop rule (the job condition), the tick cap, or the 7-day
 expiry, which applies to both modes. By hand: `Esc` while a self-paced loop waits cancels the pending
 wakeup; a fixed-interval job needs `CronDelete` ("cancel the … job"), because `Esc` does not stop it;
-and `/clear` wipes every scheduled task in the session. Verify with "what scheduled tasks do I have?"
+and `/clear` wiped every scheduled task in the session on 2.1.252 (not re-confirmed on 2.1.326). Verify with "what scheduled tasks do I have?"
 The list should be empty.
 
 **Does it work outside Claude Code?**

@@ -42,14 +42,16 @@ To check on a running loop, `python3 skills/loopify/scripts/loop_status.py <STAT
 `STOPPED`, `NOT STARTED` or `BROKEN LOG`), then at most three things to do, then the detail. It is
 read-only and standard library only. `make test` runs every test suite of this repo.
 
-The `/loop` facts loopify is built on are re-derived from the shipped Claude Code 2.1.252 binary and
+The `/loop` facts loopify is built on were checked against Claude Code 2.1.326 on 2026-11-17 (one
+fact, `/clear` wiping the schedule, stays dated to 2.1.252) using the shipped binary and
 the scheduled-tasks docs (https://code.claude.com/docs/en/scheduled-tasks), not from memory. Grammar
 is `/loop [interval] <prompt>`. With an interval it is fixed: the prompt runs at once and then on a
 cron schedule, every later fire arriving as the bare prompt with no skill instructions, ended by
-`CronDelete` or the expiry. `Esc` does not stop it; `/clear` and closing the session end it too. Without an interval it is self-paced: the model
+`CronDelete` or the expiry. `Esc` does not stop it; closing the session ends it too. Without an interval it is self-paced: the model
 schedules its own next wakeup, clamped to [60, 3600] seconds, and `Esc` while it waits cancels the
 pending one. The 7-day expiry applies to both modes. Loops are session-scoped: they fire only while
-the session is open and idle, there is no catch-up, `/clear` wipes them, and `claude -p "/loop …"`
+the session is open and idle, there is no catch-up, `/clear` wiped them on 2.1.252 (not re-confirmed on 2.1.326), a self-paced
+loop is not restored by `--resume`, and `claude -p "/loop …"`
 creates the job and exits, so it fires zero times. There is no native cost cap, which is why every
 brief carries one.
 
@@ -69,7 +71,7 @@ brief carries one.
 
 loopify ships as a Claude Code plugin (in the 10x marketplace), through the skills CLI, and as a
 drop-in skill. Either way you get `/loopify`, which authors the brief and the line; you start the loop
-yourself with Claude Code's built-in `/loop` (Claude Code 2.1.252,
+yourself with Claude Code's built-in `/loop` (checked on Claude Code 2.1.326,
 https://code.claude.com/docs/en/scheduled-tasks).
 
 - Plugin (recommended): `claude plugin marketplace add Aboudjem/10x` then `claude plugin install loopify@10x`.
