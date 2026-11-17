@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-loopify skill eval — machine-checkable static assertions on skills/loopify/SKILL.md.
+loopify skill eval: machine-checkable static assertions on skills/loopify/SKILL.md.
 
 This is the deterministic half of the eval suite. It encodes the design lock (the contract
 the adversarial gate approved on 2026-09-01) as pass/fail checks so a regression is caught in
 CI. It was written BEFORE the skill existed and run once against the missing file (RED: not found, exit 1);
-see evals/RED-baseline.md. The behavioral half — a cold model asked to "loopify" a job with
-no skill installed — is recorded in the same file.
+see evals/RED-baseline.md. The behavioral half (a cold model asked to "loopify" a job with
+no skill installed) is recorded in the same file.
 
 Usage:
     python3 evals/check_skill.py [path-to-SKILL.md]   # default: skills/loopify/SKILL.md
@@ -41,7 +41,7 @@ LOCKED_FRAGMENTS = [
     ("persistence gate, sentence 2", "runs write only under the state directory"),
     ("persistence gate, sentence 3", "proposed brief edits go to queue.md for the human."),
     ("exactly one cycle", "run exactly one cycle"),
-    ("7-day restart note", "the loop also dies at the 7-day expiry — paste the line again"),
+    ("7-day restart note", "the loop also dies at the 7-day expiry: paste the line again"),
     ("never ~300 s (5-minute TTL)", "never ~300 s"),
     ("one wakeup only", "one wakeup only"),
     ("LESSONS.md cap", "≤ 150 lines"),
@@ -158,8 +158,8 @@ def main():
 
     # --- Overview + vocabulary lock ---
     checks.append(("story appears VERBATIM in the body", STORY.lower() in low, ""))
-    checks.append(("vocabulary lock: the brief — a file", "the brief — a file" in low, ""))
-    checks.append(("vocabulary lock: the line — a string", "the line — a string" in low, ""))
+    checks.append(("vocabulary lock: the brief, a file", "the brief, a file" in low, ""))
+    checks.append(("vocabulary lock: the line, a string", "the line, a string" in low, ""))
     checks.append(("vocabulary: a tick, a cycle, the state directory are defined",
                    "a tick" in low and "a cycle" in low and "state directory" in low, ""))
     checks.append(("never calls the line a condition",
@@ -235,7 +235,9 @@ def main():
         "stop rule is dual (wall-clock / tick cap) plus a job condition": "whichever comes first" in tmpl_low and "job condition" in tmpl_low,
         "pacing: 1200–1800 s idle": "1200–1800 s" in tmpl_low or "1200-1800 s" in tmpl_low,
         "pacing: 3600 s sits on the 1-hour cache boundary": "1-hour cache boundary" in tmpl_low,
-        "report-on-stop is Done / Proof / Next": "done / proof / next" in tmpl_low,
+        "report-on-stop opens with a Result: verdict line": "line 1 is the verdict" in tmpl_low and "result:" in tmpl_low,
+        "report-on-stop is Next / Done / Proof, the human's steps first": "next / done / proof" in tmpl_low,
+        "the status report is named in the template handoff": "loop_status.py" in tmpl_low,
         "honest limit: a running loop is not proof": "not proof it is doing the right thing" in tmpl_low,
         "honest limit: staleness check (two intervals)": "two intervals" in tmpl_low,
         "template handoff carries the line with the path inside": "run one cycle of <absolute path>" in tmpl_low,
@@ -255,6 +257,7 @@ def main():
         "rule 8: the line's mode matches Standing decision 1": "standing decision 1" in low and "match" in low,
         "the code form of the lint is named": "loop_line_lint.py" in body,
         "the TICKS.md lint is named": "ticks_lint.py" in body,
+        "the status report is named": "loop_status.py" in body,
         "beyond the eight: a span past the 7-day expiry is flagged": "expire at 7 days in both" in low,
     }
     for clause, ok in rules.items():
@@ -270,6 +273,10 @@ def main():
     checks.append(("pointer caveat: one default per project", "one default per project" in low, ""))
     handoff = {
         "prints the whole line inline": "inline" in low,
+        "verdict first: line 1 is the status, READY": "line 1 is the status" in low and "status: ready" in low,
+        "exactly three numbered steps under Do next": "do next:" in low and "exactly three numbered steps" in low,
+        "step 3 is the status report command": "scripts/loop_status.py <absolute state dir>" in low,
+        "defaults taken without asking are confirmed first": "with defaults to confirm" in low,
         "Permissions line (pre-approve the tick's commands)": "permissions:" in low and "pre-approve" in low,
         "self-paced alternative on one line": "self-paced instead" in low,
         "headless recipe: claude -p + acceptEdits + --allowedTools": "claude -p" in low and "--permission-mode acceptedits" in low and "--allowedtools" in low,

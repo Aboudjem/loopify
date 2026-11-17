@@ -42,12 +42,30 @@ jobs:
           fi
           echo "Tag $GITHUB_REF_NAME matches plugin.json."
 
+      - name: Release notes from the CHANGELOG
+        env:
+          VERSION: ${{ steps.version.outputs.value }}
+        run: |
+          # The notes are the CHANGELOG section of this version, so a release never ships
+          # with a one-line body. Fail when the section is missing or too short.
+          awk -v v="$VERSION" '
+            $0 ~ "^## \\[" v "\\]" { on = 1; next }
+            on && /^## \[/ { exit }
+            on { print }
+          ' CHANGELOG.md > release-notes.md
+          if [ "$(wc -w < release-notes.md)" -lt 20 ]; then
+            echo "CHANGELOG.md has no real section for $VERSION:"
+            cat release-notes.md
+            exit 1
+          fi
+          cat release-notes.md
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.version.outputs.value }}
           name: v${{ steps.version.outputs.value }}
-          generate_release_notes: true
+          body_path: release-notes.md
           draft: false
           prerelease: false
 

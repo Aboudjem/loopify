@@ -1,6 +1,6 @@
 # The `.claude/loop.md` pointer
 
-Optional, and written only when you ask for it — `/loopify --default <job>`, or "make it the project
+Optional, and written only when you ask for it: `/loopify --default <job>`, or "make it the project
 default" in the question batch. This page covers what the file is, what loopify puts in it, and what
 changes in the project once it exists.
 
@@ -22,9 +22,9 @@ Four rules govern it:
 - **It is read only for a bare `/loop`,** or an interval-only one such as `/loop 20m`. Type any
   prompt after `/loop` and the file is ignored completely.
 - **Edits take effect on the next tick,** not on the tick that is running when you save.
-- **It is cut at 25,000 bytes** — at the last newline before the cut, with a warning line added. A
+- **It is cut at 25,000 bytes**, at the last newline before the cut, with a warning line added. A
   file that is empty or only whitespace counts as absent, and Claude Code falls back to its built-in
-  maintenance prompt — continue unfinished work, tend the branch's PR, then cleanup passes.
+  maintenance prompt: continue unfinished work, tend the branch's PR, then cleanup passes.
 
 That 25,000-byte cut is a property of `loop.md` and of nothing else. It is not a limit on the brief,
 which a tick opens with a file tool like any other file.
@@ -34,7 +34,7 @@ which a tick opens with a file tool like any other file.
 A pointer, four lines long (five at the outside):
 
 ```markdown
-# loopify default loop — written by loopify 2026-09-01
+# loopify default loop, written by loopify 2026-09-01
 Run one cycle of `/Users/you/acme/.loop/pr-babysitter.md` · read it first, obey its stop rule, log the tick.
 Bare `/loop` (or `/loop 20m`) runs this. Typing any prompt after `/loop` ignores this file.
 One default per project (`.claude/loop.md` beats `~/.claude/loop.md`); edit this pointer to change it.
@@ -53,7 +53,7 @@ Changing which brief is the default means editing this pointer.
 
 **It is ignored the moment you type a prompt.** `/loop 20m Run one cycle of …` never looks at
 `loop.md`. The pointer changes what a bare `/loop` does, and changes nothing about the line loopify
-printed for you — that line keeps working exactly as before, and keeps naming the brief itself.
+printed for you: that line keeps working exactly as before, and keeps naming the brief itself.
 
 ## What a bare `/loop` does once the pointer exists
 
@@ -76,7 +76,7 @@ pointer.
 ## Why the pointer starts with a verb
 
 `Run one cycle of` is doing real work in that second line. The pointer's contents become the tick's
-whole prompt, so a pointer holding only a path hands the tick a file name and no instruction — the
+whole prompt, so a pointer holding only a path hands the tick a file name and no instruction: the
 same failure as pasting a bare path into `/loop`. The verb is what turns it into something a tick can
 act on.
 
@@ -89,7 +89,7 @@ everyone else's. It points into `.loop/`, which loopify adds to `.gitignore`, so
 not in the repository at all. Commit the pointer and a colleague's bare `/loop` aims at a file they do
 not have.
 
-Commit it when everyone genuinely shares the path — a container, or a dev box where every checkout
+Commit it when everyone genuinely shares the path: a container, or a dev box where every checkout
 sits at the same absolute location. Outside that, keep it local.
 
 ## How to remove the pointer
@@ -97,7 +97,7 @@ sits at the same absolute location. Outside that, keep it local.
 Delete `.claude/loop.md`. There is nothing else to undo: the brief and its state directory are
 untouched, and the line loopify printed keeps working, because the brief's path is inside the line
 rather than in the pointer. A bare `/loop` afterwards falls back to `~/.claude/loop.md` if you have
-one, and to Claude Code's built-in maintenance prompt if you do not — continue unfinished work, tend
+one, and to Claude Code's built-in maintenance prompt if you do not: continue unfinished work, tend
 the branch's PR, then cleanup passes.
 
 One timing detail. A loop you started **from a bare `/loop`** reads the pointer again on later fires,
@@ -106,9 +106,9 @@ then delete. A loop you started **by pasting the line** is unaffected either way
 
 ---
 
-<sub>The `loop.md` behavior on this page — project file over user file, bare and interval-only use
+<sub>The `loop.md` behavior on this page (project file over user file, bare and interval-only use
 only, ignored when a prompt is typed, edits landing on the next tick, the 25,000-byte cut at the last
-newline, an empty file counting as absent, and the full-then-reminder delivery of its contents — was
+newline, an empty file counting as absent, and the full-then-reminder delivery of its contents) was
 re-derived from the shipped Claude Code 2.1.252 binary and
 https://code.claude.com/docs/en/scheduled-tasks, 2026.</sub>
 

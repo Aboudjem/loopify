@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-The loop-line lint — the eight rules a loopify line must pass, as code.
+The loop-line lint: the eight rules a loopify line must pass, as code.
 
-The same rules are written in prose in skills/loopify/SKILL.md ("Loop-line rules"); this file
-is the executable form, used by tests/test_manifests.py against the shipped example and usable
-on any line you are about to paste:
+The same rules are written in prose in SKILL.md, next to this folder ("Loop-line rules"). This
+file is the executable form. Run it on any line you are about to paste:
 
-    python3 evals/loop_line_lint.py "/loop 20m Run one cycle of /abs/path/.loop/job.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick."
+    python3 scripts/loop_line_lint.py "/loop 20m Run one cycle of /abs/path/.loop/job.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick."
 
-Exit 0 = passes; 1 = at least one rule failed (each failure printed). Notes are advisory.
+The verdict is the first line printed. Each failed rule follows, then the shape to copy.
+Exit 0 = passes; 1 = at least one rule failed. Notes are advisory.
 No third-party deps; standard library only. Every threshold below is sourced in SKILL.md.
 """
 import re
@@ -18,7 +18,7 @@ MAX_CHARS = 220
 INTERVAL_RE = re.compile(r"^(\d+)([smhd])$")
 # The five phrasings the shipped /loop skill treats as daily cadence (Claude Code 2.1.252,
 # "Offer cloud first" block). With daily phrasing and no parsed interval, "This session only"
-# makes /loop refuse to schedule locally — the user ends with nothing scheduled.
+# makes /loop refuse to schedule locally: the user ends with nothing scheduled.
 DAILY_PHRASES = ("every morning", "daily", "every day", "each night", "every weekday")
 # A recurring loop expires 7 days after it is created, in both modes (docs/limits.md,
 # re-derived from the shipped Claude Code 2.1.252 binary). A line that asks for longer is not
@@ -27,7 +27,9 @@ EXPIRY_DAYS = 7
 SPAN_RE = re.compile(r"\b(\d+)\s*(d|days?|w|wks?|weeks?|mo|months?)\b", re.I)
 SPAN_DAYS = {"d": 1, "day": 1, "days": 1, "w": 7, "wk": 7, "wks": 7, "week": 7, "weeks": 7,
              "mo": 30, "month": 30, "months": 30}
-ABS_PATH_RE = re.compile(r"Run one cycle of (\S+?\.md)(?=[\s,.;:·—–-]|$)")
+# The path ends at whitespace, at punctuation, or at a long dash (named by code point here).
+_DASHES = chr(0x2014) + chr(0x2013)
+ABS_PATH_RE = re.compile(r"Run one cycle of (\S+?\.md)(?=[\s,.;:·" + _DASHES + r"-]|$)")
 
 
 def interval_minutes(token):
@@ -56,16 +58,16 @@ def lint_loop_line(line, expected_mode=None):
         failures.append("rule 1: the prompt must start with the verb `Run` "
                         "(after the interval token in fixed mode)")
 
-    # 2. `Run one cycle of <ABSOLUTE PATH>` — absolute, never ~/ or relative, never bare
+    # 2. `Run one cycle of <ABSOLUTE PATH>`: absolute, never ~/ or relative, never bare
     m = ABS_PATH_RE.search(prompt)
     if not m:
         failures.append("rule 2: must say `Run one cycle of <path>.md`")
     else:
         path = m.group(1)
         if path.startswith("~"):
-            failures.append(f"rule 2: `{path}` is a ~ path — the tick reads files by absolute path; expand it")
+            failures.append(f"rule 2: `{path}` is a ~ path: the tick reads files by absolute path; expand it")
         elif not path.startswith("/"):
-            failures.append(f"rule 2: `{path}` is relative — use the absolute path")
+            failures.append(f"rule 2: `{path}` is relative: use the absolute path")
 
     # 3. carries the stop rule (a tick-cap number) and the words "log the tick"
     if "stop rule" not in prompt:
@@ -83,20 +85,20 @@ def lint_loop_line(line, expected_mode=None):
     low = raw.lower()
     for phrase in DAILY_PHRASES:
         if phrase in low or phrase.replace(" ", "-") in low:
-            failures.append(f"rule 5: contains daily phrasing `{phrase}` — /loop may refuse to schedule it locally")
+            failures.append(f"rule 5: contains daily phrasing `{phrase}`: /loop may refuse to schedule it locally")
     if re.search(r"(?<!\\)\$", raw):
-        failures.append("rule 5: contains a bare `$` — escape or reword")
+        failures.append("rule 5: contains a bare `$`: escape or reword")
 
     # 6. never a one-shot slash command as the prompt
     if prompt.startswith("/"):
-        failures.append("rule 6: the prompt is a slash command — a one-shot command re-run every tick "
+        failures.append("rule 6: the prompt is a slash command: a one-shot command re-run every tick "
                         "does its one-shot work every tick")
 
     # 7. ≥ 60 min → the handoff must add the cloud-question caveat
     if mode == "fixed":
         mins = interval_minutes(first)
         if mins is not None and mins >= 60:
-            notes.append("rule 7: interval ≥ 60 min — the handoff must add: you may be asked whether "
+            notes.append("rule 7: interval ≥ 60 min: the handoff must add: you may be asked whether "
                          "to make this a cloud schedule; answer `This session only` (a cloud routine "
                          "has no local files, so the brief's path does not exist there)")
 
@@ -118,16 +120,26 @@ def lint_loop_line(line, expected_mode=None):
     return not failures, failures, notes
 
 
+SHAPE = ("/loop 20m Run one cycle of /abs/path/.loop/<slug>.md · read it first, "
+         "obey its stop rule (<N> ticks or <job condition>), log the tick.")
+
+
 def main(argv):
-    if len(argv) < 2:
+    if len(argv) < 2 or argv[1] in ("-h", "--help"):
         print(__doc__)
-        return 2
+        return 2 if len(argv) < 2 else 0
     ok, failures, notes = lint_loop_line(argv[1], argv[2] if len(argv) > 2 else None)
+    size = len(argv[1].strip())
+    if ok:
+        print(f"PASS: loop-line lint ({size} chars)")
+    else:
+        print(f"FAIL: loop-line lint ({size} chars, {len(failures)} rule failure(s))")
     for f in failures:
         print(f"FAIL: {f}")
     for n in notes:
         print(f"NOTE: {n}")
-    print(f"{'PASS' if ok else 'FAIL'}: loop-line lint ({len(argv[1].strip())} chars)")
+    if not ok:
+        print(f"Shape to copy: {SHAPE}")
     return 0 if ok else 1
 
 

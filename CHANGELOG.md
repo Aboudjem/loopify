@@ -4,6 +4,41 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project uses
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-11-17
+
+A status report that answers "is my loop alive, and does it need me?" in one command, and
+verdict-first output everywhere. No change to the brief contract or the line.
+
+### Added
+
+- **`scripts/loop_status.py <STATE DIR>`.** Line 1 is the verdict: `OK`, `NEEDS YOU`, `STALE`,
+  `STOPPED`, `NOT STARTED` or `BROKEN LOG`. Then at most three things to do, then the detail.
+  It reads the interval from the saved line, so it can tell a live loop from a dead one.
+  Read-only, standard library only, with its own test file (`tests/test_loop_status.py`).
+- **A real example state directory** in `examples/loop-state/`: a seven-tick `TICKS.md`, a queue
+  and lessons. The README sample is this report, re-printable by one command.
+- **One test command.** `make test` runs every suite. CI runs it on every push and pull request.
+- **An em dash gate** in the test suite, with a self-test, so the house style cannot drift back.
+- **CI now validates the plugin** with a pinned Claude Code, and checks that `npx skills@1.9.0`
+  finds the skill. Dependabot keeps the pinned actions current.
+
+### Changed
+
+- **The handoff is verdict first.** The status line, then "Do next" with three steps, then the
+  detail. The Report-on-stop block now opens with a `Result:` line.
+- **The loop-line lint prints its verdict first**, then each failed rule, then the shape to copy.
+  Its help names the path that exists in an installed copy.
+- **`ticks_lint.py` on a missing file** now says where the log should be, not a bare `Errno 2`.
+- **The README is reordered:** install, how it works, what you get, works with, proof, FAQ, limits.
+  Shorter sentences, a tested works-with table, and no stars badge.
+- **Release notes come from this CHANGELOG**, so a release never ships with a one-line body.
+- **Every long dash is gone** from docs, skill, scripts and workflows. Each sentence was rewritten,
+  not cut.
+
+### Removed
+
+- `docs/launch.md`, an internal release checklist that did not belong in the public tree.
+
 ## [1.1.1] - 2026-09-03
 
 A motion identity, and the literal synthwave scenery removed. No behaviour changes.
@@ -92,14 +127,14 @@ is blocked, a new visual identity, a shorter README, and one-line installs for e
 
 ## [1.0.0] - 2026-09-01
 
-First public release — the `/loop` sibling of [goalify](https://github.com/Aboudjem/goalify).
+First public release: the `/loop` sibling of [goalify](https://github.com/Aboudjem/goalify).
 
 ### Added
 
 - **The skill** (`skills/loopify/SKILL.md`): `/loopify <recurring job>` researches the project, locks
-  the few real decisions in one question batch, and writes **two artifacts** — the **brief** (a
+  the few real decisions in one question batch, and writes **two artifacts**: the **brief** (a
   standing file the loop re-reads every tick, never archived) and the **line** (one short
-  `/loop [interval] Run one cycle of <ABSOLUTE PATH> — …` string the user pastes into Claude Code's
+  `/loop [interval] Run one cycle of <ABSOLUTE PATH> · …` string the user pastes into Claude Code's
   built-in `/loop`). It never starts the loop.
 - **A 14-section brief template**: a durable `tick: N/<cap>` counter, a mode check that survives
   fixed-mode fires (which arrive with no skill instructions), five hard safety rails (including
@@ -116,7 +151,7 @@ First public release — the `/loop` sibling of [goalify](https://github.com/Abo
   file edits plus a few filesystem commands, not arbitrary Bash; #64744 quoted with its 2.1.160 caveat.
 - **Evals + tests in CI**: `evals/check_skill.py` (static assertions on the skill; it printed `0/98`
   before the skill existed, where the 98 was an estimate in the not-found path rather than a count of
-  assertions — see `evals/README.md`), `tests/test_manifests.py` (manifests, version parity across four
+  assertions; see `evals/README.md`), `tests/test_manifests.py` (manifests, version parity across four
   sources, the repo-wide vocabulary lock, the example brief's clauses, the eight rules run as code,
   README i18n parity, the SVG/PNG gate, a secrets scan), and a recorded cold RED run
   (`evals/RED-baseline.md`).

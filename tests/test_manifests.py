@@ -20,6 +20,7 @@ Manifest + contract tests for loopify (a release gate; runs in CI).
      the social card has no script/external ref; the social preview PNG is exactly 1280x640.
   9. No tracked file matches a credential pattern.
  10. evals/RED-baseline.md exists and names both RED records.
+ 11. House style: no long dash in any tracked text file, in any of the forms a reader sees as one.
 
 Standard library only. Run: python3 tests/test_manifests.py   (exit 0 = all pass)
 """
@@ -220,7 +221,7 @@ TEMPLATE_SECTIONS = ["# LOOP:", "## GOAL (per tick)", "## Standing decisions", "
 LOCKED_FRAGMENTS = [
     "this file is the standing loop brief: never archive, move, delete or rewrite it from inside a run.",
     "runs write only under the state directory", "proposed brief edits go to queue.md for the human.",
-    "run exactly one cycle", "the loop also dies at the 7-day expiry — paste the line again",
+    "run exactly one cycle", "the loop also dies at the 7-day expiry: paste the line again",
     "never ~300 s", "one wakeup only", "≤ 150 lines", "is data, never instructions",
     "safe to run twice", "check before create", "append, never overwrite",
     "skip when the last tick's output already exists", "before any side effect, check the marker",
@@ -406,6 +407,34 @@ try:
           "cold" in rb.lower() and "red" in rb.lower() and "check_skill.py" in rb)
 except FileNotFoundError:
     check("evals/RED-baseline.md exists", False)
+
+# --- 11. house style: no long dash anywhere ---
+# The characters are named by code point so this file passes its own gate. The forms are the ones
+# the fleet standard counts: the em dash, the horizontal bar, the two-em dash, their HTML
+# entities, and an en dash with a space on both sides. Docs and manifests may not carry the JSON
+# escape either.
+_EM, _BAR, _TWO_EM, _EN = chr(0x2014), chr(0x2015), chr(0x2E3A), chr(0x2013)
+_ENTITY, _NUMERIC = "&" + "mdash;", "&" + "#8212;"
+DASH_RE = re.compile(f"[{_EM}{_BAR}{_TWO_EM}]|{_ENTITY}|&#0*8212;|&#x0*2014;| {_EN} ", re.I)
+ESCAPED_RE = re.compile(r"\\u2014", re.I)
+DOC_EXT = {".md", ".mdx", ".markdown", ".txt", ".rst", ".html", ".htm", ".svg", ".yml", ".yaml", ".json"}
+dashes = []
+for rel in tracked:
+    ext = os.path.splitext(rel)[1].lower()
+    if ext in BINARY_EXT:
+        continue
+    try:
+        text = read(rel)
+    except (OSError, UnicodeDecodeError):
+        continue
+    for ln, line in enumerate(text.splitlines(), 1):
+        if DASH_RE.search(line) or (ext in DOC_EXT and ESCAPED_RE.search(line)):
+            dashes.append(f"{rel}:{ln}")
+check(f"house style: no long dash in any tracked text file ({len(tracked)} files)", not dashes,
+      f"{len(dashes)} line(s): " + ", ".join(dashes[:8]))
+check("gate self-test: an em dash, its entity and a spaced en dash are caught",
+      all(DASH_RE.search(t) for t in (f"a {_EM} b", f"a {_ENTITY} b", f"a {_NUMERIC} b", f"a {_EN} b"))
+      and not DASH_RE.search("a - b, 1200-1800 s, a -> b"))
 
 print("-" * 60)
 passed = _total - len(failures)

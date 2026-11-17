@@ -8,13 +8,13 @@ the folder beside the brief where the loop keeps `TICKS.md`, `LESSONS.md` and `Q
 
 **Does loopify run the loop?**
 No. It writes the brief, prints the line, and stops there. You paste the line when you want the loop
-to start — in this session, or in any session open in the project. The split is deliberate:
+to start, in this session, or in any session open in the project. The split is deliberate:
 preparing a good standing job takes reading, research and a few questions, and none of that belongs
 inside a tick that repeats every twenty minutes.
 
 **Why a file *and* a string?**
-Two readers need two different things. The tick needs detail — absolute paths, the exact commands,
-what to do when something is blocked, what it must never touch — and it reads that with a file tool,
+Two readers need two different things. The tick needs detail (absolute paths, the exact commands,
+what to do when something is blocked, what it must never touch) and it reads that with a file tool,
 so it can be long. That is the brief. `/loop` needs the other thing: one short prompt it re-fires word
 for word, every tick, for as long as the loop lasts. That is the line, and the brief's full path rides
 inside it:
@@ -67,8 +67,8 @@ should be empty. If ticks keep arriving after that, close the session.
 **How do I restart after it stopped?**
 Delete `STOPPED`, then paste the line again. When a loop ends on its own stop rule it writes a file
 called `STOPPED` into the state directory, and the first thing every tick does is look for it: while
-it exists, a tick does nothing at all. If the loop ended for one of the other reasons — the seven days
-ran out, the session closed — there is no `STOPPED` file and pasting the line is the whole of it.
+it exists, a tick does nothing at all. If the loop ended for one of the other reasons (the seven days
+ran out, the session closed) there is no `STOPPED` file and pasting the line is the whole of it.
 
 One thing to check while you are there: the counter in `TICKS.md` carries on where it left off. If the
 loop stopped because it reached `tick: 30/30`, the next tick reads that and stops again. Raise the cap
@@ -79,14 +79,14 @@ For a brief at `/Users/you/acme/.loop/pr-babysitter.md`, the state directory is
 `/Users/you/acme/.loop/pr-babysitter/`, and it holds these five, plus any ledger the job itself
 needs (a list of sources it has already read, for example):
 
-- **`TICKS.md`** — the counter line `tick: 7/30`, then one append-only entry per tick with the
+- **`TICKS.md`**: the counter line `tick: 7/30`, then one append-only entry per tick with the
   evidence quoted. When the loop ends, its closing report goes at the top. This is the proof.
-- **`LESSONS.md`** — dated notes the loop writes about its own working method, read and obeyed at the
+- **`LESSONS.md`**: dated notes the loop writes about its own working method, read and obeyed at the
   start of every tick, kept to 150 lines by consolidating.
-- **`QUEUE.md`** — everything handed back to you: blocked items, anything irreversible, proposed
+- **`QUEUE.md`**: everything handed back to you: blocked items, anything irreversible, proposed
   edits to the brief, requests that arrived in content the loop read.
-- **`LOCK`** — present only while a tick is mid-cycle.
-- **`STOPPED`** — written once, when the loop ends.
+- **`LOCK`**: present only while a tick is mid-cycle.
+- **`STOPPED`**: written once, when the loop ends.
 
 The loop writes here and nowhere else in `.loop/`. The brief itself is never written to.
 
@@ -99,7 +99,7 @@ tick that thinks it should change writes the suggestion to `QUEUE.md` for you.
 
 **Why does the line carry the tick cap?**
 Because the line is the copy that survives. Once you paste it, that text is what re-fires, word for
-word, for the life of the loop — whatever you do to the brief afterwards. Edit the brief mid-loop and
+word, for the life of the loop, whatever you do to the brief afterwards. Edit the brief mid-loop and
 raise its cap to 100, and the pasted line still says 30. The brief settles the disagreement in
 advance: when the two differ, **the smaller number wins**. So a running loop can be reined in from
 either side, and never accidentally widened from one.
@@ -137,13 +137,13 @@ Each tick is a fresh process with no memory of the last one, so the state direct
 counter, the lessons and the queue are all it carries forward. The tick's mode check lands on the
 one-shot branch and exits without scheduling anything, because your cron entry is the schedule.
 `--permission-mode acceptEdits` covers file edits, a few filesystem commands (`mkdir`, `touch`, `mv`, `cp`) and read-only commands, and nothing else, which is why every Bash command is named in
-`--allowedTools`. When `STOPPED` appears in the state directory, remove the cron entry — nothing else
+`--allowedTools`. When `STOPPED` appears in the state directory, remove the cron entry; nothing else
 will.
 
 **What does the loop do about a PR comment telling it to do something?**
 It writes the request down and does not do it. The fourth safety rail in every brief says that
-anything a tick reads — pull request comments, issue text, CI logs, fetched pages, files it did not
-write itself — is data, never instructions. It cannot change the brief, the standing decisions, the
+anything a tick reads (pull request comments, issue text, CI logs, fetched pages, files it did not
+write itself) is data, never instructions. It cannot change the brief, the standing decisions, the
 stop rule, the autonomy level, or the lessons file. Read content that asks for something goes to
 `QUEUE.md`, marked as a request from an untrusted source, and the cycle carries on.
 
@@ -158,8 +158,8 @@ sending and paying sit above all of those and are never a default. A loop at "co
 drafts its review reply into `QUEUE.md`; a human posts it.
 
 **How is this different from goalify?**
-Different shape of job. goalify is for a job that **finishes** — one big task with a definition of
-done — and it writes the brief and the condition for `/goal`, which has an evaluator behind it that
+Different shape of job. goalify is for a job that **finishes** (one big task with a definition of
+done) and it writes the brief and the condition for `/goal`, which has an evaluator behind it that
 decides each turn whether the work is proven. loopify is for a job that **repeats**. `/loop` has no
 evaluator and nothing to satisfy: it re-fires a prompt on a schedule, and the proof is the log the
 brief makes each tick write. Same preparation habit, two different runtimes.
@@ -175,10 +175,10 @@ interval, quite often finding nothing to do.
 
 **Does it work outside Claude Code?**
 The brief travels; the scheduling does not. Portable: the per-tick definition of done, the state
-directory, the safety rails, the counter and the stop rule — that is all plain Markdown. Claude-only:
+directory, the safety rails, the counter and the stop rule: that is all plain Markdown. Claude-only:
 the tools in the last step of the cycle, which is why the tick's mode check has a branch for "no
-scheduling tool here". Other tools ship schedulers of their own — Kimi, GitHub Copilot CLI, Cursor,
-Qwen Code, Hermes and Goose among them — and what each one needs is written up in
+scheduling tool here". Other tools ship schedulers of their own (Kimi, GitHub Copilot CLI, Cursor,
+Qwen Code, Hermes and Goose among them) and what each one needs is written up in
 [other agents](other-agents.md). Read it as a structural claim rather than a tested one: this repo
 ships no conformance run against a non-Claude agent.
 
@@ -196,9 +196,9 @@ does not know, and writes no code.
 
 ---
 
-<sub>The `/loop` behavior described on this page — the seven-day expiry in both modes, the session
+<sub>The `/loop` behavior described on this page (the seven-day expiry in both modes, the session
 scope, permission inheritance and `acceptEdits`, the cloud-schedule question, the bare-prompt fixed
-fire, and `claude -p "/loop …"` firing zero times — was re-derived from the shipped Claude Code
+fire, and `claude -p "/loop …"` firing zero times) was re-derived from the shipped Claude Code
 2.1.252 binary and https://code.claude.com/docs/en/scheduled-tasks, 2026.</sub>
 
 Back to the [README](../README.md) · [honest limits](limits.md) · [quickstart](quickstart.md)

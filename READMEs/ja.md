@@ -1,14 +1,13 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Aboudjem/loopify/main/assets/hero-dark.svg">
-    <img src="https://raw.githubusercontent.com/Aboudjem/loopify/main/assets/hero-light.svg" alt="loopify：見張らなくていいループ。繰り返す作業を Claude に渡して、各ティックが何をしたかのログを見に戻る。" width="100%">
+    <img src="https://raw.githubusercontent.com/Aboudjem/loopify/main/assets/hero-light.svg" alt="loopify: 見張らなくていいループ。繰り返す仕事を Claude に任せて、各 tick が何をしたかのログに戻ってくる。" width="100%">
   </picture>
 </p>
 
 <p align="center">
   <a href="https://github.com/Aboudjem/loopify/actions/workflows/validate.yml"><img src="https://github.com/Aboudjem/loopify/actions/workflows/validate.yml/badge.svg" alt="validate"></a>
   <a href="https://github.com/Aboudjem/loopify/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg" alt="MIT license"></a>
-  <a href="https://github.com/Aboudjem/loopify/stargazers"><img src="https://img.shields.io/github/stars/Aboudjem/loopify?color=2BE8C8&labelColor=0A0F1C" alt="stars"></a>
 </p>
 
 <p align="center">
@@ -16,60 +15,62 @@
 </p>
 
 <p align="center">
-  <strong>繰り返す作業を Claude に渡してください。戻ってきたら、見張らなければいけないループではなく、各ティックが何をしたかのログがあります。</strong>
+  <strong>繰り返す仕事を Claude に任せましょう。戻ってきたら、見張るべきループではなく、各 tick が何をしたかのログがあります。</strong>
 </p>
 
 <p align="center">
-  <a href="#できること">できること</a> · <a href="#インストール">インストール</a> · <a href="#使い方">使い方</a> · <a href="#各エディタで使う">各エディタで使う</a> · <a href="#知っておくこと">知っておくこと</a> · <a href="#もっと詳しく">もっと詳しく</a>
+  <a href="#インストール">インストール</a> · <a href="#しくみ">しくみ</a> · <a href="#得られるもの">得られるもの</a> · <a href="#対応エージェント">対応エージェント</a> · <a href="#検証">検証</a> · <a href="#faq">FAQ</a> · <a href="#制限">制限</a>
 </p>
 
 <p align="center"><sub>この翻訳は英語の原文より古い場合があります。<!-- may-lag --></sub></p>
+
+loopify は Claude Code の `/loop` に渡すプロンプトを書きます。繰り返す仕事を説明すると、ループが毎 tick
+読み直す brief と、各 tick の記録が手に入ります。
+
+```text
+STATUS: NEEDS YOU · tick 7/30 · last tick 2026-09-01T09:40 (changed, 10 min ago) · 2 queued
+Do next:
+1. QUEUE.md, tick 4: Post the drafted reply on the `fetchAll` rename thread of PR #412
+```
+
+これは同梱のサンプルに `loop_status.py` を実行した出力の先頭です。全文は[得られるもの](#得られるもの)にあります。
+
+## インストール
+
+Claude Code で次の 2 つのコマンドを実行します。
 
 ```bash
 claude plugin marketplace add Aboudjem/10x
 claude plugin install loopify@10x
 ```
 
-## できること
-
-本当の意味で終わらない作業があります。リリース用のプルリクエストは午後じゅう見ていないといけませんし、
-新しいバグ報告は夜のあいだにたまり、誰かが読む前にひととおり目を通しておきたくなります。Claude Code
-には、作業を繰り返すためのコマンド `/loop` がすでにあります。プロンプトと間隔を渡せば、セッションが
-開いているあいだ、そのプロンプトを何度も実行してくれます。ただし、そのプロンプト自体は用意してくれません。
-
-loopify がそのプロンプトを書きます。あなたは作業を一度だけ、普通の言葉で説明します。loopify は Claude
-があなたの意図をまだ把握しているうちにプロジェクトを読み、本当に決めるべき数点（どのくらいの頻度で、
-いつ止めるか、何に触ってよいか）を尋ね、2 つのものを書きます。
-
-- **ブリーフ、ファイル。** 作業の 1 巡分です。何を読むか、何を変更してよいか、絶対にしてはいけないこと、
-  いつ止めるか、起きたことをどこに書くか。ループは毎回の実行の最初にこのファイルを新しく開くので、
-  実行と実行のあいだで失われるものはなく、ループが動いている最中でも編集できます。
-- **ライン、1 つの文字列。** これを `/loop` に貼り付けます。ブリーフのパスが中に入っているので、
-  どの実行もどこを見ればよいか分かります。停止ルールも入っているので、ループはあなたの条件で終わります。
-
-1 回の実行が 1 **ティック**です。ティックごとに Claude はブリーフを読み直し、作業を 1 巡し、起きたことを
-`TICKS.md` というログに書きます。あなたが起きている必要はありません。ログを読む必要はあります。
-
-[goalify](https://github.com/Aboudjem/goalify) を使ったことがあれば、感覚は同じです。goalify は終わる
-作業のためのもので、1 つの大きなタスク、1 つの完了の定義、そして `/goal` です。loopify は繰り返す作業の
-ためのものです。
-
-## インストール
-
-上の 2 つのコマンドは 10x マーケットプレイスを追加し、Claude Code にプラグインを入れます。loopify は
-Claude Code 2.1.252 で動作を確認しています。ほかのエージェントでも、
-[skills CLI](https://github.com/vercel-labs/skills) で同じスキルディレクトリを 1 行で入れられます。
+他のエージェントは [skills CLI](https://github.com/vercel-labs/skills) で同じ skill を 1 行で入れられます。
 
 ```bash
 npx skills add Aboudjem/loopify
 ```
 
-## 使い方
+ビルドは不要です。skill は 1 つのフォルダで、標準ライブラリだけの Python スクリプトが 3 つ入っています。
 
-### 1. 作業を説明する
+## しくみ
 
-Claude Code のチャットで `/loopify` と入力し、何を繰り返すか伝えます。loopify は README、最近のコミット、
-開いているプルリクエストを読んでから、短い質問をまとめて 1 度だけ尋ねます。
+終わらない仕事があります。リリースの pull request は午後じゅう見張る必要があります。新しいバグ報告は夜のうちに
+たまります。Claude Code にはすでに `/loop` があり、セッションが開いている間プロンプトを繰り返し実行します。
+ただし、プロンプトは書いてくれません。
+
+loopify がそれを書きます。プロジェクトを読み、大事な判断だけを尋ね、2 つのものを書きます。
+
+- **brief(ファイル)。** 仕事 1 回分です。何を読むか、何を変えてよいか、絶対にしないこと、いつ止まるか。
+  ループは毎回これを開き直すので、実行中でも編集できます。
+- **line(1 本の文字列)。** `/loop` に貼り付けます。brief のパスと停止ルールが入っています。
+
+1 回の実行を **tick** と呼びます。毎 tick、Claude は brief を読み直し、1 回分の仕事をして、結果を
+`TICKS.md` に書きます。
+
+### 1. 仕事を説明する
+
+Claude Code で `/loopify` と入力し、繰り返したいことを伝えます。loopify は README、最近のコミット、
+開いている pull request を読みます。それから短い質問をまとめて 1 回します。
 
 ```text
 /loopify keep our release PR healthy, check it every 20 minutes
@@ -80,27 +81,26 @@ Claude Code のチャットで `/loopify` と入力し、何を繰り返すか�
 
 `/Users/you/acme/` はあなたのプロジェクトの代わりです。loopify は実際のパスを表示します。
 
-### 2. ラインを貼り付ける
+### 2. line を貼り付ける
 
 ```text
 /loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 ```
 
-Claude はすぐに 1 巡を実行し、そのあとはそのセッションの中で 20 分ごとに、プルリクエストがマージされるか
-30 ティックが過ぎるか、早いほうまで続けます。間隔を書かなければ、Claude が自分でペースを決めます。
-よくある間違いは 2 つです。
+Claude はすぐに 1 回実行し、その後はそのセッションで 20 分ごとに実行します。PR がマージされるか、
+30 tick に達するか、早いほうで止まります。よくある間違いは次の 2 つです。
 
 ```text loop-antipattern
-# これはダメ："every morning" のような書き方だと /loop がクラウドスケジュールを提案することがあり、停止ルールもありません
+# not this: "every morning" can make /loop offer a cloud schedule instead, and nothing says when to stop
 /loop every morning keep the release PR healthy
 
-# パスだけもダメ：ティックはファイル名だけを受け取り、指示を受け取りません
+# and not the path alone: the tick gets a filename and no instruction
 /loop 20m /Users/you/acme/.loop/pr-babysitter.md
 ```
 
-### 3. ログを読む
+### 3. ログを読む、または状態を聞く
 
-`TICKS.md` にはティックごとに 1 件、何が変わったかとその証拠が入り、先頭にカウンターがあります。
+`TICKS.md` には tick ごとに 1 エントリがあり、先頭にカウンターがあります。
 
 ```text
 tick: 7/30
@@ -110,80 +110,149 @@ tick: 7/30
 - reviews: 1 new thread answered (rename), reply drafted in QUEUE.md
 ```
 
-ループが安全に実行できなかったことは、`QUEUE.md` であなたを待っています。
+ループが安全にできなかったことは `QUEUE.md` で待っています。1 つのコマンドで 3 つのファイルを読み、
+次にすることを教えてくれます。次の節を見てください。
 
-## 手に入るもの
+## 得られるもの
 
-- **動かないブリーフ。** 毎ティック読み直され、アーカイブされず、ループに書き換えられません。どのくらいの
-  頻度で動くか、いつ止まるか、何に触ってよいかは、最初のティックより前に決まります。
-- **ライン自体に入った停止ルールとティック上限。** 作業を終えたループは止まり、上限に達したループも止まります。
-- **無人実行のためのガードレール。** アカウントなし、支払いなし、あなたが言わないかぎり push も投稿も
-  しません。ループが読むもの、たとえばプルリクエストのコメントは、データであって指示ではありません。
-- **すべてのブリーフに入る「繰り返しても安全」の条項。** ブリーフには、ティックが動く前に探す目印が書かれて
-  いるので、もう一度走ったティックは作業がすでに済んでいることを判断できます。
-- **形の決まったログ。** `TICKS.md` の各エントリは同じヘッダー
-  `## tick <n> · <ISO timestamp> · changed | noop | stopped` で始まり、
-  `skills/loopify/scripts/ticks_lint.py` で検査できます。`QUEUE.md` のブロックされた項目には `reason:` 行と
-  `unblock:` 行が付きます。
-- **学ぶループ。** `LESSONS.md` はうまくいったことと時間を無駄にしたことを残し、ループは毎ティックそれを
-  読み直します。
+これはこのリポジトリのサンプル状態フォルダに対する、状態レポートの実際の出力です。
 
-## 各エディタで使う
+```bash
+python3 skills/loopify/scripts/loop_status.py examples/loop-state/pr-babysitter --now 2026-09-01T09:50
+```
 
-Claude Code、Cursor、Codex、Copilot、Gemini CLI、そして `npx skills add` 経由で 70 以上のほかの
-エージェントで動きます。
+```text
+STATUS: NEEDS YOU · tick 7/30 · last tick 2026-09-01T09:40 (changed, 10 min ago) · 2 queued
+Do next:
+1. QUEUE.md, tick 4: Post the drafted reply on the `fetchAll` rename thread of PR #412
+   unblock: post the reply below on the thread, then delete this item
+2. QUEUE.md, tick 5: `e2e` fails in checkout.spec.ts line 88: expected total 42.00, received 41.99
+   unblock: fix the rounding in src/cart/total.ts or mark the PR as blocked
+3. Read tick 7 in examples/loop-state/pr-babysitter/TICKS.md and check its evidence.
+Detail:
+  ticks logged  7 (4 changed, 3 noop, 0 stopped)
+  queue         2 open item(s)
+  lessons       5 line(s)
+  lock          none
+  interval      20m (from the saved line)
+  log format    passes ticks_lint
+  state dir     examples/loop-state/pr-babysitter
+```
 
-| どこで | どうやって |
-| --- | --- |
-| Claude Code | `claude plugin install loopify@10x` |
-| Cursor、Codex、Gemini CLI、OpenCode、Windsurf、Zed、Kimi Code CLI | `npx skills add Aboudjem/loopify -a <agent>` |
-| VS Code と GitHub Copilot | `npx skills add Aboudjem/loopify -a github-copilot` |
-| そのほか全部 | `skills/loopify/` をエージェントのスキルディレクトリにコピー |
+`--now` は時計を固定し、サンプルが毎回同じになるようにします。実際のループでは付けません。
 
-loopify は標準ライブラリだけの Python スクリプト 2 本が隣にある 1 つのスキルディレクトリなので、動かす
-サーバーもコンパイルするものもありません。`-a` のコード、エージェントごとの 2 つのインストール先、手動
-コピーの手順は [docs/editors.md](https://github.com/Aboudjem/loopify/blob/main/docs/editors.md) にあります。
+1 行目は常に判定です: `OK`、`NEEDS YOU`、`STALE`、`STOPPED`、`NOT STARTED`、`BROKEN LOG`。
+次に最大 3 つのすること、その後に詳細が続きます。
 
-ブリーフは持ち運べますが、ラインは持ち運べません。ラインは Claude Code の `/loop` 行であり、ブリーフの
-スケジュール手順は Claude Code のツールを指します。ブリーフにはその場合の分岐があります。1 巡だけ実行し、
-記録し、終了して、次のティックは外部のスケジューラに任せます。
-[docs/other-agents.md](https://github.com/Aboudjem/loopify/blob/main/docs/other-agents.md) が Kimi、
-Copilot CLI、Cursor、Qwen Code、Hermes、Goose、素の cron を扱っています。
+loopify が書く brief には、さらに次のものが入っています。
 
-## 知っておくこと
+- **line の中の停止ルールと tick 上限。** 仕事を終えたループは止まります。上限に達したループも止まります。
+- **無人実行のためのガードレール。** アカウント操作、支払い、push や投稿は、許可がない限りしません。
+  PR のコメントなどループが読むものはデータであり、指示ではありません。
+- **繰り返しても安全な条項。** brief は、tick が動く前に確認するマーカーを指定します。2 回動いた tick は、
+  仕事が済んでいることに気づけます。
+- **形が決まったログ。** 各エントリは `## tick <n> · <ISO timestamp> · changed |
+noop | stopped` で始まります。`ticks_lint.py` で検査できます。
+- **学ぶループ。** `LESSONS.md` は、うまくいったことと時間の無駄だったことを残します。
+
+## 対応エージェント
+
+下の各行は、2026-11-17 に空の一時フォルダで実際に行ったインストールです。
+
+| エージェント             | インストールコマンド                                                    | テスト日                                |
+| ------------------------ | ----------------------------------------------------------------------- | --------------------------------------- |
+| Claude Code 2.1.326      | リポジトリの marketplace から `claude plugin install`、クリーンな設定で | 2026-11-17、plugin 有効、スクリプトあり |
+| Claude Code (skills CLI) | `npx skills add Aboudjem/loopify -a claude-code`                        | 2026-11-17、`.claude/skills/` にリンク  |
+| Cursor                   | `npx skills add Aboudjem/loopify -a cursor`                             | 2026-11-17、`.agents/skills/` に配置    |
+| Codex                    | `npx skills add Aboudjem/loopify -a codex`                              | 2026-11-17、`.agents/skills/` に配置    |
+| GitHub Copilot           | `npx skills add Aboudjem/loopify -a github-copilot`                     | 2026-11-17、`.agents/skills/` に配置    |
+| Gemini CLI               | `npx skills add Aboudjem/loopify -a gemini-cli`                         | 2026-11-17、`.agents/skills/` に配置    |
+
+「テスト」とは、ファイルが配置され、インストールされたコピーから 3 つのスクリプトが動いたことを指します。
+そのエージェントの中でループを動かしたという意味ではありません。
+
+文書化のみ(テストなし): OpenCode、Windsurf、Zed、Kimi Code CLI、`skills/loopify/` の手動コピー。
+[docs/editors.md](https://github.com/Aboudjem/loopify/blob/main/docs/editors.md) を参照してください。
+
+brief は持ち運べますが、line はできません。line は Claude Code の `/loop` 用です。他の環境では brief が
+1 回分を実行して記録し、終了します。次の tick は外部のスケジューラーが起動します。
+[docs/other-agents.md](https://github.com/Aboudjem/loopify/blob/main/docs/other-agents.md) は Kimi、
+Copilot CLI、Cursor、Goose、cron を扱います。
+
+## 検証
+
+下の数字はすべて `make test` が表示します。CI は push と pull request のたびにこれを実行します。
+
+```bash
+make test
+```
+
+| スイート                    | 検査内容                                                                    | 結果    |
+| --------------------------- | --------------------------------------------------------------------------- | ------- |
+| `evals/check_skill.py`      | skill の契約をアサーションで                                                | 160/160 |
+| `tests/test_manifests.py`   | マニフェスト、バージョン、サンプル brief、翻訳、SVG、秘密情報、長いダッシュ | 170/170 |
+| `tests/test_ticks_lint.py`  | tick ログの形式                                                             | 13/13   |
+| `tests/test_loop_status.py` | 各判定と、この README のサンプルのバイト一致                                | 51/51   |
+| `evals/loop_line_lint.py`   | 正規の line が 8 つのルールを通る                                           | PASS    |
+
+CI は固定版の Claude Code で `claude plugin validate . --strict` も実行し、
+`npx skills@1.9.0 add . --list` が skill を見つけることも確認します。
+
+`/loop` に関する事実は、Claude Code 2.1.252 のバイナリとドキュメントから導いたものです。経緯は
+[docs/limits.md](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md) にあります。
+
+## FAQ
+
+**loopify がループを開始してくれますか?**
+いいえ。brief を書き、line を表示して止まります。始めたいときに line を貼り付けてください。
+
+**なぜ 1 つのプロンプトではなく、ファイルと文字列の 2 つなのですか?**
+tick には詳細が必要です。パス、コマンド、詰まったときの対処などです。`/loop` には毎 tick 送り直す短い
+プロンプトが必要です。brief が詳細を持ち、line がそのパスを運びます。
+
+**ループがまだ動いているか、どうやって分かりますか?**
+状態フォルダに `loop_status.py` を実行します。2 インターバルの間 tick がなければ `STALE` と表示します。
+Claude に "what scheduled tasks do I have?" と聞くこともできます。
+
+**何がループを止めるのですか?**
+brief の停止ルール、tick 上限、7 日の期限、またはあなたです。全リストは
+[docs/faq.md](https://github.com/Aboudjem/loopify/blob/main/docs/faq.md) にあります。
+
+**コードがどこかに送られますか?**
+いいえ。loopify とそのスクリプトはネットワーク通信をしません。tick は brief が許すことだけをします。
+
+## 制限
 
 > [!IMPORTANT]
-> ループが動いていることは、正しいことをしている証拠にはなりません。ティックログを読んでください。
-> `/loop` の裏に評価器はいないので、ブリーフのティックごとのチェックリストと `TICKS.md` が唯一の証拠です。
+> ループが動いていても、正しいことをしている証拠にはなりません。`/loop` の後ろに評価者はいません。
+> tick ログと状態レポートだけが証拠です。
 
-- **ループは貼り付けたセッションの中で生きています。** そのセッションが開いているあいだだけ動きます。
-  ターミナルを閉じれば止まりますし、`/clear` でもスケジュールは消えます。Claude Code をバックグラウンドで
-  動かせば、ウィンドウなしで生かしておけます。
-- **どのループも 7 日で終わり**、1 セッションが持てるスケジュール済みタスクは最大 50 件です。どちらも
-  スケジュール実行に関する Claude Code 側の制限で、loopify の制限ではありません。続けるにはラインをもう
-  一度貼り付けてください。
-- **ティックが実行するものを事前に許可しておく。** loopify は `gh pr view` や `git commit` など、ループに
-  必要なコマンドを表示します。許可のプロンプトに当たったティックは、誰かが答えるまでそこで待ちます。
+- **ループは貼り付けたセッションの中で生きます。** ターミナルを閉じると止まります。`/clear` でもスケジュールが消えます。
+- **すべてのループは 7 日で終わります。** 1 セッションのスケジュール済みタスクは最大 50 です。どちらも Claude Code
+  の制限です。続けるには line を貼り直します。
+- **tick が実行するコマンドを事前に許可してください。** 許可の確認で止まった tick は、答えを待ち続けます。
+  loopify は `gh pr view` や `git commit` など、許可すべきコマンドを表示します。
+- **状態レポートにはインターバルが必要です。** 生きたループと止まったループを区別するためです。保存された line か
+  `--interval` から読みます。
 
-## もっと詳しく
+出典付きの全リスト: [docs/limits.md](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md)。
 
-- [クイックスタート](https://github.com/Aboudjem/loopify/blob/main/docs/quickstart.md)、最初のループを
-  順番に、ターミナルを開かない場合も
-- [エディタへのインストール](https://github.com/Aboudjem/loopify/blob/main/docs/editors.md)、
-  エージェントコードと skills CLI の 2 つのパス
-- [完全な実例](https://github.com/Aboudjem/loopify/blob/main/examples/sample-loop-brief.md)、末尾に
-  ラインが付いたブリーフ 1 本まるごと
-- [正直な限界](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md)、loopify が約束しないことと、
-  その根拠となるバイナリまたは公式ドキュメント
-- [ほかのエージェント](https://github.com/Aboudjem/loopify/blob/main/docs/other-agents.md)、同じブリーフを
-  Kimi、Cursor、Goose、素の cron で
-- [FAQ](https://github.com/Aboudjem/loopify/blob/main/docs/faq.md) · [`loop.md` ポインタ](https://github.com/Aboudjem/loopify/blob/main/docs/loop-md.md) · [変更履歴](https://github.com/Aboudjem/loopify/blob/main/CHANGELOG.md) · [コントリビュート](https://github.com/Aboudjem/loopify/blob/main/CONTRIBUTING.md) · [スキル本体](https://github.com/Aboudjem/loopify/blob/main/skills/loopify/SKILL.md)
+## さらに詳しく
+
+- [クイックスタート](https://github.com/Aboudjem/loopify/blob/main/docs/quickstart.md): 最初のループを一歩ずつ
+- [エディターへのインストール](https://github.com/Aboudjem/loopify/blob/main/docs/editors.md): エージェントコードと 2 つの方法
+- [完全な例](https://github.com/Aboudjem/loopify/blob/main/examples/sample-loop-brief.md): 末尾に line が付いた brief 全体
+- [他のエージェント](https://github.com/Aboudjem/loopify/blob/main/docs/other-agents.md): Kimi、Cursor、Goose、cron での同じ brief
+- [FAQ](https://github.com/Aboudjem/loopify/blob/main/docs/faq.md) · [`loop.md` ポインター](https://github.com/Aboudjem/loopify/blob/main/docs/loop-md.md) · [Changelog](https://github.com/Aboudjem/loopify/blob/main/CHANGELOG.md) · [コントリビュート](https://github.com/Aboudjem/loopify/blob/main/CONTRIBUTING.md) · [skill 本体](https://github.com/Aboudjem/loopify/blob/main/skills/loopify/SKILL.md)
+
+[goalify](https://github.com/Aboudjem/goalify) を使ったことがあれば、なじみやすいはずです。goalify は終わる仕事のため、
+loopify は繰り返す仕事のためのものです。
 
 ---
 
-<sub>作者 <a href="https://github.com/Aboudjem">Adam Boudjemaa</a> · MIT。`/loop` の挙動は、配布されている
-Claude Code 2.1.252 のバイナリと公式ドキュメントから 2026 年に導き出したものです。`/goal` に対して同じことを
-する <a href="https://github.com/Aboudjem/goalify">goalify</a> の姉妹プロジェクトです。
+<sub>作者 <a href="https://github.com/Aboudjem">Adam Boudjemaa</a> · MIT。`/loop` の挙動は Claude Code 2.1.252 の
+バイナリと公式ドキュメントから導き直しました。兄弟プロジェクトの
+<a href="https://github.com/Aboudjem/goalify">goalify</a> は `/goal` に同じことをします。
 <a href="https://github.com/Aboudjem/loopify/issues">足りないところを見つけたら</a></sub>
 
 <sub>この翻訳は機械支援によるもので、レビュー済みです。正典は英語版の <a href="../README.md">README.md</a> です。</sub>

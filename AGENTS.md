@@ -1,4 +1,4 @@
-# AGENTS.md — loopify
+# AGENTS.md: loopify
 
 Instructions for AI agents and coding assistants working in or invoking this repository. Plain
 Markdown, no required fields (per the AGENTS.md convention: the agent parses the text below).
@@ -11,10 +11,10 @@ standing brief plus the one `/loop` line that starts it**. In one session it rea
 what ONE cycle of the job does, researches the domain, locks the few real decisions (one question
 batch, genuine forks only), and writes **two artifacts**:
 
-1. **The brief — a file.** A standing loop brief at an absolute path, `<project>/.loop/<slug>.md`. The
+1. **The brief, a file.** A standing loop brief at an absolute path, `<project>/.loop/<slug>.md`. The
    loop re-reads it at the start of every tick. It is never archived, moved, deleted or rewritten by a
    run; runs write only under the **state directory**, `<project>/.loop/<slug>/`.
-2. **The line — a string.** One short `/loop [interval] Run one cycle of <ABSOLUTE PATH> · …` string
+2. **The line, a string.** One short `/loop [interval] Run one cycle of <ABSOLUTE PATH> · …` string
    the user pastes into Claude Code's built-in `/loop`. The brief's absolute path rides inside it.
 
 A **tick** is one fire of the loop. A **cycle** is one pass of the brief per tick. loopify never starts
@@ -34,8 +34,8 @@ https://code.claude.com/docs/en/scheduled-tasks.
   recurring job", "check the deploy every 10 minutes". Claude Code matches these to the skill's
   `description` and loads `SKILL.md`.
 - Install: the plugin (`claude plugin marketplace add Aboudjem/10x`, then
-  `claude plugin install loopify@10x`); the skills CLI (`npx skills add Aboudjem/loopify`); or by hand
-  — `git clone https://github.com/Aboudjem/loopify`, then copy `skills/loopify` into
+  `claude plugin install loopify@10x`); the skills CLI (`npx skills add Aboudjem/loopify`); or by hand:
+  `git clone https://github.com/Aboudjem/loopify`, then copy `skills/loopify` into
   `~/.claude/skills/`. The runner is Claude Code's built-in `/loop`; loopify does not ship its own.
 - **This skill AUTHORS two handoff artifacts; it does not run the job.** If the user wants the work
   done immediately in the current session, that is `autopilot` / `ultrawork` / `ralph`, not loopify.
@@ -45,8 +45,8 @@ https://code.claude.com/docs/en/scheduled-tasks.
 
 These are non-negotiable. Do not look for loopholes; violating the letter violates the spirit.
 
-1. **Two phases, never mixed.** In PREPARE you read the project, decide, and author the two artifacts
-   — you do NOT run a cycle. RUN happens later, one cycle per tick, after the user pastes the line.
+1. **Two phases, never mixed.** In PREPARE you read the project, decide, and author the two artifacts.
+   You do NOT run a cycle. RUN happens later, one cycle per tick, after the user pastes the line.
 2. **No hallucination.** Verify project state with evidence before scoping. Probe the cycle's commands
    read-only once so they resolve in this repo. Research subagents cite sources and label uncertainty;
    a separate skeptic re-derives load-bearing claims from primaries, not from another agent's summary.
@@ -57,7 +57,7 @@ These are non-negotiable. Do not look for loopholes; violating the letter violat
    `QUEUE.md` and leaves the brief alone.
 5. **Never hand `/loop` a bare path.** The line always carries the verb: `Run one cycle of <ABSOLUTE
    PATH> · read it first, obey its stop rule (…), log the tick.` A tick handed only a path has nothing
-   to do with it. Print the whole line inline — never a file launcher, never a placeholder.
+   to do with it. Print the whole line inline, never a file launcher, never a placeholder.
 6. **Every line carries a tick cap and a stop rule.** There is no native cost cap behind `/loop`, so
    the tick cap, the stop rule and the per-tick budget in the brief are the only bounds that exist. If
    the brief and the line disagree on the cap, the smaller number wins.
@@ -70,7 +70,7 @@ These are non-negotiable. Do not look for loopholes; violating the letter violat
 8. **Don't over-ask.** One question batch, at most four questions, genuine forks only: cadence/mode ·
    stop rule · autonomy level · make it the project default. Skip the batch entirely if there are none.
 9. **Decline when a loop is the wrong tool.** A job that FINISHES belongs to goalify and `/goal`. A
-   one-time reminder is a plain scheduled task — ask Claude directly ("remind me at 3pm to …"), no
+   one-time reminder is a plain scheduled task: ask Claude directly ("remind me at 3pm to …"), no
    brief needed. Work that must survive the machine being off or the session closing belongs to cloud
    Routines (`/schedule`), Desktop scheduled tasks, or GitHub Actions: `/loop` is session-scoped.
 
@@ -82,36 +82,41 @@ usage metrics.
 
 ## Where things live
 
-- `skills/loopify/SKILL.md` — the skill: the two-phase model, the PREPARE procedure, how `/loop`
+- `skills/loopify/SKILL.md`, the skill: the two-phase model, the PREPARE procedure, how `/loop`
   actually works, the 15-section brief template, the eight loop-line rules, the mode-choice rule, the
   `.claude/loop.md` pointer option, the handoff format, hard rules, common mistakes.
-- `evals/` — `check_skill.py` (deterministic assertions on `SKILL.md`, in CI), `loop_line_lint.py`
+- `evals/`: `check_skill.py` (deterministic assertions on `SKILL.md`, in CI), `loop_line_lint.py`
   (the eight loop-line rules as code, and a CLI you can run on any line before pasting it; the
   skill ships it and `ticks_lint.py` under `skills/loopify/scripts/`),
   `scenarios.md` (behavioral scenarios and rubrics), `RED-baseline.md` (the recorded RED),
   `README.md` (what the two layers are and how to reproduce them).
-- `tests/test_manifests.py` — manifest validity, version parity across six manifests, the repo-wide
+- `tests/test_manifests.py`: manifest validity, version parity across six manifests, the repo-wide
   vocabulary lock, the example brief's clauses, the eight rules run as code, README i18n parity, the
   SVG and social-preview gate, a secrets scan. A release gate; CI runs it.
 - `tests/test_ticks_lint.py`, the TICKS.md lint (`skills/loopify/scripts/ticks_lint.py`) against a
   good log, a rotated one, and one malformed fixture per rule. A release gate; CI runs it.
-- `examples/` — `sample-loop-brief.md` (an illustrative standing brief in the shape loopify produces)
-  and `loop.md` (the ≤ 5-line `.claude/loop.md` pointer).
-- `assets/` — the animated SVGs and the social preview card.
-- `docs/` — `quickstart.md`, `limits.md`, `faq.md`, `other-agents.md` (the cross-harness table),
-  `loop-md.md` (the pointer and its two caveats), `launch.md` (the launch checklist and drafts). A
-  local build
+- `tests/test_loop_status.py`, the status report (`skills/loopify/scripts/loop_status.py`): each
+  verdict on a real temp state directory, and the README sample byte for byte. A release gate.
+- `Makefile`: `make test` is the one test command. It runs every suite above; CI runs it.
+- `examples/`: `sample-loop-brief.md` (an illustrative standing brief in the shape loopify produces)
+  and `loop.md` (the ≤ 5-line `.claude/loop.md` pointer), and `loop-state/` (a seven-tick example
+  state directory the README status sample is printed from).
+- `assets/`: the animated SVGs and the social preview card.
+- `docs/`: `quickstart.md`, `limits.md`, `faq.md`, `other-agents.md` (the cross-harness table),
+  `loop-md.md` (the pointer and its two caveats), `editors.md` (install per agent). A local build
   journal lives in `docs/audit/`, which `.gitignore` excludes.
-- `READMEs/` — the zh-CN, ja, es and fr translations of `README.md`.
-- `README.md` — human-facing overview. `llms.txt` — the machine-readable map of this repo.
-  `CHANGELOG.md` — release history. `LICENSE` — MIT.
+- `READMEs/`: the zh-CN, ja, es and fr translations of `README.md`.
+- `README.md`: human-facing overview. `llms.txt`: the machine-readable map of this repo.
+  `CHANGELOG.md`: release history. `LICENSE`: MIT.
 
 ## Validate before claiming done
 
 ```bash
+make test                                              # exit 0: every suite below, in one command
 python3 evals/check_skill.py skills/loopify/SKILL.md   # exit 0, all checks pass
 python3 tests/test_manifests.py                        # exit 0, all checks pass
 python3 tests/test_ticks_lint.py                      # exit 0, all checks pass
+python3 tests/test_loop_status.py                     # exit 0, all checks pass
 python3 evals/loop_line_lint.py "<the line you are about to print>"   # exit 0
 claude plugin validate . --strict                      # if the CLI is on this machine
 ```
@@ -138,7 +143,7 @@ under the state directory; a run that wants the brief changed proposes the edit 
 
 **Is a running loop proof it is doing the right thing?**
 No. Nothing judges it. Read `TICKS.md`: the counter and the per-tick evidence are the only proof there
-is, and a quiet loop's noop ticks collapse in the terminal, so the log is where to look — not the
+is, and a quiet loop's noop ticks collapse in the terminal, so the log is where to look, not the
 screen. If `TICKS.md` has no new entry after two intervals, the loop is dead.
 
 **What stops a loop?**
@@ -146,13 +151,13 @@ Whichever comes first: the brief's own stop rule (the job condition), the tick c
 expiry, which applies to both modes. By hand: `Esc` while a self-paced loop waits cancels the pending
 wakeup; a fixed-interval job needs `CronDelete` ("cancel the … job"), because `Esc` does not stop it;
 and `/clear` wipes every scheduled task in the session. Verify with "what scheduled tasks do I have?"
-— the list should be empty.
+The list should be empty.
 
 **Does it work outside Claude Code?**
 It is a spec-correct Agent Skill (`name` + `description` frontmatter + Markdown), and the Agent Skills
 open standard is portable across agents that support it. The brief's per-tick definition of done, the
 state directory, the rails, the counter and the stop rule carry anywhere. The SCHEDULE step's tools
-(`ScheduleWakeup`, `CronList`/`CronDelete`, `Monitor`) are Claude-only — elsewhere the tick runs the
+(`ScheduleWakeup`, `CronList`/`CronDelete`, `Monitor`) are Claude-only. Elsewhere the tick runs the
 mode check's headless branch and an outside scheduler fires the next one. `docs/other-agents.md` has
 the per-harness table. This repo ships no conformance run against a non-Claude agent; the brief
 travels as a spec.

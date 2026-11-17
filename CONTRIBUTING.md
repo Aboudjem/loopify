@@ -36,6 +36,8 @@ tests/
                         run as code, i18n parity, the SVG/PNG gate (runs in CI)
   test_ticks_lint.py    the TICKS.md lint against good, rotated and malformed logs
                         (runs in CI)
+  test_loop_status.py   each status verdict, and the README sample byte for byte
+                        (runs in CI)
 examples/
   sample-loop-brief.md  an illustrative standing brief in the shape loopify produces
   loop.md               the <= 5-line .claude/loop.md pointer
@@ -66,23 +68,23 @@ carries most of the failures the skill exists to prevent: a **one-shot slash com
 re-invoked every tick; **no standing brief**, so nothing survives the session that produced it; **no
 state directory**, so a tick has no memory of the last one; **no tick counter and no tick cap**; **no
 stop rule** ("for as long as the loop is left running"); **no tick log**, so there is no proof of what
-any tick did; **autonomy set too high by default** — it pushed commits and replied on the PR; and it
+any tick did; **autonomy set too high by default**: it pushed commits and replied on the PR; and it
 **did not know how to stop a loop** ("I'm not fully certain of the exact keystroke"). The deterministic
 half of the baseline was recorded the same day, before `skills/loopify/SKILL.md` existed:
 `check_skill.py` printed `0/98`, where the 98 was an estimate in the not-found path and not a count
 of assertions that ran (see [`evals/RED-baseline.md`](evals/RED-baseline.md)), and
 `test_manifests.py` printed `4/17`.
 
-1. **RED — watch it fail.** Before you write skill text, run the scenario against a model that does
+1. **RED: watch it fail.** Before you write skill text, run the scenario against a model that does
    *not* have your change (or doesn't have the skill at all) and record what it does wrong, verbatim.
-   Test the weak case too — the skill must hold on cheaper models, not only the strongest one. Ticks
+   Test the weak case too: the skill must hold on cheaper models, not only the strongest one. Ticks
    are the weak case by construction: a fixed-mode fire arrives as a bare prompt with **no skill
    instructions in context**, so anything the tick needs must be in the brief.
-2. **GREEN — write the minimum that fixes it.** Add the clause, rail or gate that makes that exact
+2. **GREEN: write the minimum that fixes it.** Add the clause, rail or gate that makes that exact
    failure stop. Re-run the same scenario and show it now behaves. If the change is statically
    checkable, add an assertion to `evals/check_skill.py` (or `tests/test_manifests.py` if it spans
    the repo).
-3. **REFACTOR — tighten.** Clean up wording, keep the skill body under 500 lines, deduplicate —
+3. **REFACTOR: tighten.** Clean up wording, keep the skill body under 500 lines, deduplicate,
    without changing behavior. Re-run to confirm.
 
 A PR that adds behavior but cites no baseline failure it fixes will be sent back for a RED step.
@@ -96,20 +98,20 @@ These mirror the skill's rules in `AGENTS.md` / `SKILL.md`. Don't look for looph
   becomes a shortcut models follow instead of reading the body). Keep the disambiguation: goalify and
   `/goal` for a job that finishes, `autopilot` / `ultrawork` / `ralph` for work wanted right now.
 - **Tool references must resolve in a fresh tick.** A tick is a stranger to the session that authored
-  the brief. Use a capability plus a fallback, or a fully-qualified tool name — never a vague noun.
+  the brief. Use a capability plus a fallback, or a fully-qualified tool name, never a vague noun.
 - **The persistence gate stays low-freedom.** The brief is standing: never archived, moved, deleted or
   rewritten from inside a run, and runs write only under the state directory. Do not soften the
   wording and do not add an escape hatch.
 - **The vocabulary lock.** The **brief** is a file; the **line** is a string; a **tick** is one fire; a
   **cycle** is one pass of the brief; state lives in the **state directory**. Never call the line a
-  "condition" — that word implies an evaluator `/loop` does not have — and never say that it judges,
+  "condition" (that word implies an evaluator `/loop` does not have) and never say that it judges,
   evaluates or checks whether anything is done. `tests/test_manifests.py` scans every tracked text file
   (Markdown, JSON, YAML and source; `tests/` and `evals/` are skipped, because they implement the lock)
   and fails the build on three families. First, *condition* used as the name of the line, in four
   shapes: straight after `/loop`; joined to *loop* by a space or a hyphen; the possessive form; and
   goalify's pairing, brief and the condition, which is allowed only on a line that also names goalify,
-  since that contrast is the point of the exception. Second, the affirmative verbs — judges, evaluates,
-  checks whether — when they are applied to `/loop`. Third, a bare path handed to `/loop` with no verb.
+  since that contrast is the point of the exception. Second, the affirmative verbs (judges, evaluates,
+  checks whether) when they are applied to `/loop`. Third, a bare path handed to `/loop` with no verb.
   Nothing else is caught, so a new way of getting it wrong needs a new pattern rather than a reader's
   goodwill. The `loop-antipattern` marker below is how you write about a banned form on purpose, and
   the test counts every use of it.
@@ -137,10 +139,13 @@ These mirror the skill's rules in `AGENTS.md` / `SKILL.md`. Don't look for looph
 ## How to test locally
 
 ```bash
-# 1. Both deterministic suites must pass.
+# 1. Every suite must pass. One command runs them all, the same one CI runs:
+make test
+# or one at a time:
 python3 evals/check_skill.py skills/loopify/SKILL.md      # expect: exit 0, all checks pass
 python3 tests/test_manifests.py                           # expect: exit 0, all checks pass
 python3 tests/test_ticks_lint.py                          # expect: exit 0, all checks pass
+python3 tests/test_loop_status.py                         # expect: exit 0, all checks pass
 
 # 2. Lint any line you changed or added, the same way the skill does.
 python3 evals/loop_line_lint.py "/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick."
@@ -152,7 +157,7 @@ cp -r skills/loopify ~/.claude/skills/loopify
 
 For a behavioral change, re-run the relevant `evals/scenarios.md` case cold (RED) and with the skill
 (GREEN) and paste the before/after into your PR. If your change touches what a tick does, read a real
-`TICKS.md` afterwards — a loop that runs is not a loop that works.
+`TICKS.md` afterwards: a loop that runs is not a loop that works.
 
 ## Commit and PR etiquette
 
@@ -163,7 +168,7 @@ For a behavioral change, re-run the relevant `evals/scenarios.md` case cold (RED
 - In the PR description include: the RED baseline (the failure you observed), the GREEN fix, and how
   you verified it (`check_skill.py` output and/or a sample run).
 - Never commit `.loop/` state, a real absolute path from your machine, or anything from `docs/audit/`.
-- Be kind in review — see [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+- Be kind in review; see [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
 ## CI must pass
 
@@ -173,4 +178,4 @@ safety gate (SVG and HTML, including the reduced-motion guard), the Markdown rel
 `claude plugin validate` when the CLI is present on the runner. It must be green before merge. If CI
 fails, read the log and push a fix; don't ask for a merge override.
 
-Thanks again — careful contributions to a tool people leave running unattended genuinely matter.
+Thanks again. Careful contributions to a tool people leave running unattended genuinely matter.

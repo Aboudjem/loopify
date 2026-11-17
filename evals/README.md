@@ -3,9 +3,9 @@
 Two layers, both built test-first (RED → GREEN → REFACTOR). The recorded baselines live in
 [`RED-baseline.md`](RED-baseline.md).
 
-## 1. Deterministic — runs in CI
+## 1. Deterministic: runs in CI
 
-### `check_skill.py` — the design lock as assertions on `SKILL.md`
+### `check_skill.py`: the design lock as assertions on `SKILL.md`
 
 Encodes the locked design as pass/fail checks on `skills/loopify/SKILL.md`. It is the regression
 guard: if a future edit drops the WHEN-only description, the vocabulary lock, a `/loop` fact, one of
@@ -16,7 +16,7 @@ rule, the handoff clauses or a PREPARE rule, CI goes red.
 python3 evals/check_skill.py skills/loopify/SKILL.md      # GREEN: exit 0
 ```
 
-The GREEN count is whatever the current run prints — **136/136** on the run recorded 2026-09-01 at
+The GREEN count is whatever the current run prints: **136/136** on the run recorded 2026-09-01 at
 v1.0.0. The number moves whenever an assertion is added, which is the point; the exit code is the
 gate, not the number.
 
@@ -55,7 +55,7 @@ history because it has one. loopify is at its first public release, so there is 
 the skill to score. When v1.1.0 lands, the RED target becomes `git show v1.0.0:skills/loopify/SKILL.md`
 and this section should be rewritten to use it.
 
-### `test_manifests.py` — the release gate
+### `test_manifests.py`: the release gate
 
 Manifest validity, version parity across `SKILL.md`, `plugin.json`, `marketplace.json` and
 `CHANGELOG.md`, the repo-wide vocabulary lock (with the `loop-antipattern` exemption count pinned),
@@ -66,7 +66,7 @@ against the shipped line, README i18n parity, the SVG and social-preview gate, a
 python3 tests/test_manifests.py                           # GREEN: exit 0
 ```
 
-Its RED, recorded the same day against an empty scaffold: **4/17 checks passed, 13 failed** — the three
+Its RED, recorded the same day against an empty scaffold: **4/17 checks passed, 13 failed**: the three
 gate self-tests passed and the secrets scan passed vacuously; everything that needed a real file failed.
 
 ### `ticks_lint.py`: the pinned per-tick header as code
@@ -82,7 +82,7 @@ python3 skills/loopify/scripts/ticks_lint.py <STATE DIR>/TICKS.md   # exit 0 whe
 python3 tests/test_ticks_lint.py                                    # the fixtures, in CI
 ```
 
-### `loop_line_lint.py` — the eight rules as code, and a tool you can run
+### `loop_line_lint.py`: the eight rules as code, and a tool you can run
 
 The same eight rules the skill applies in prose before printing a line. Run it on any line you are
 about to paste:
@@ -92,14 +92,14 @@ python3 evals/loop_line_lint.py "/loop 20m Run one cycle of /Users/you/acme/.loo
 # PASS: loop-line lint (144 chars)
 
 python3 evals/loop_line_lint.py "/loop 20m /deploy-now"
-# FAIL: rule 6: the prompt is a slash command — a one-shot command re-run every tick does its one-shot work every tick
+# FAIL: rule 6: the prompt is a slash command: a one-shot command re-run every tick does its one-shot work every tick
 ```
 
-An optional second argument is the brief's mode (`fixed` or `self-paced`), which turns on rule 8 — the
+An optional second argument is the brief's mode (`fixed` or `self-paced`), which turns on rule 8: the
 line's mode must match the brief's Standing decision 1. Exit 0 = passes, 1 = at least one rule failed.
 Notes (rule 7, the cloud caveat for intervals of 60 minutes or more) are advisory and do not fail.
 
-## 2. Behavioral — `scenarios.md` (judged transcripts)
+## 2. Behavioral: `scenarios.md` (judged transcripts)
 
 Three scenarios: the core case (a job that repeats), one that must be declined (a one-time reminder),
 and one that must be redirected to goalify (a job that finishes). Each has a RED expectation and a
@@ -109,12 +109,12 @@ GREEN rubric of seven dimensions, all checkable from a transcript.
 sonnet, both 2026-09-01: one cold RED run with no skill installed, and one judged with-skill GREEN run
 scored **7/7** by a separate opus judge, `green_beats_red: true`. Both are written up in
 [`RED-baseline.md`](RED-baseline.md), §2 and §3. The caveat travels with them: **one model, one
-scenario, and no interactive question batch** — the two genuine forks were answered by the skill's own
+scenario, and no interactive question batch**: the two genuine forks were answered by the skill's own
 defaults rather than by a user, so the batch itself is untested, and S2 (must decline) and S3 (must
 redirect) have no with-skill transcript on any model. So the eval baseline for v1.0.0 is a static suite
 (136 assertions, plus the release gate and the line lint), one cold RED run, and one judged GREEN run
-of the same scenario. Recording the full matched set — each scenario, cold and with the skill, on at
-least two model tiers, scored by a separate judge — is the top open task for the next release.
+of the same scenario. Recording the full matched set (each scenario, cold and with the skill, on at
+least two model tiers, scored by a separate judge) is the top open task for the next release.
 
 To run it yourself: prompt a model twice per scenario, once with no skill and once with
 `skills/loopify/SKILL.md` active, against a real project (for S1, a repo with an open PR and CI makes

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-The TICKS.md lint - the log format a loopify brief pins, as code.
+The TICKS.md lint: the log format a loopify brief pins, as code.
 
 TICKS.md is the deliverable a human actually reads, so its shape is fixed rather than free prose:
 a durable counter on the first line, then one append-only entry per tick under a header the same
@@ -17,7 +17,8 @@ Five checks:
   4. every header carries an ISO-8601 timestamp in its second field;
   5. every header's status is one of changed | noop | stopped, and so is the last one.
 
-Exit 0 = the log obeys the format; 1 = at least one check failed (each failure printed).
+The verdict is the first line printed; each failure follows.
+Exit 0 = the log obeys the format; 1 = at least one check failed.
 No third-party deps; standard library only.
 """
 import re
@@ -115,19 +116,24 @@ def lint_ticks(text):
 
 
 def main(argv):
-    if len(argv) < 2:
+    if len(argv) < 2 or argv[1] in ("-h", "--help"):
         print(__doc__)
-        return 2
+        return 2 if len(argv) < 2 else 0
     try:
         with open(argv[1], encoding="utf-8") as f:
             text = f.read()
     except OSError as e:
-        print(f"FAIL: {e}")
+        print(f"FAIL: ticks lint cannot read {argv[1]} ({e.strerror or e})")
+        print("Pass the tick log of a loop: <project>/.loop/<slug>/TICKS.md. "
+              "It exists once loopify has saved a brief.")
         return 1
     ok, failures = lint_ticks(text)
+    if ok:
+        print(f"PASS: ticks lint ({argv[1]})")
+    else:
+        print(f"FAIL: ticks lint ({argv[1]}, {len(failures)} failure(s))")
     for f in failures:
         print(f"FAIL: {f}")
-    print(f"{'PASS' if ok else 'FAIL'}: ticks lint ({argv[1]})")
     return 0 if ok else 1
 
 

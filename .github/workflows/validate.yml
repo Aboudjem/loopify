@@ -92,7 +92,7 @@ jobs:
           # consecutive hyphens. The stricter pattern below rejects all three.
           if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name or ""):
               print(f"FAIL: 'name' must match ^[a-z0-9]+(-[a-z0-9]+)*$ "
-                    f"— no leading, trailing or consecutive hyphens (got: {name!r})")
+                    f"with no leading, trailing or consecutive hyphens (got: {name!r})")
               ok = False
           elif len(name) > 64:
               print(f"FAIL: 'name' must be <= 64 chars (got {len(name)})")
@@ -115,31 +115,21 @@ jobs:
           print("PASS: frontmatter check passed")
           PY
 
-      # (b) SKILL EVAL — the design lock encoded as assertions (RED->GREEN regression guard)
-      - name: Skill eval (check_skill.py)
+      # (b) THE TEST COMMAND: `make test` is the one declared test command (see the Makefile).
+      #     It runs the skill eval, the manifest and contract tests, the ticks lint tests, the
+      #     status report tests and the loop-line lint on the canonical line.
+      - name: Tests (make test)
         shell: bash
-        run: python3 evals/check_skill.py skills/loopify/SKILL.md
+        run: make test
 
-      # (b2) MANIFEST + CONTRACT TESTS — AGENTS.md calls this a release gate, so CI must run it.
-      #      Covers plugin/marketplace validity, version parity across all six manifests, the
-      #      repo-wide vocabulary lock, the shipped example brief's clauses, the eight loop-line
-      #      rules run as code, README i18n parity, and the SVG / social-preview gate.
-      - name: Manifest and contract tests (test_manifests.py)
-        shell: bash
-        run: python3 tests/test_manifests.py
-
-      # (b2b) TICKS LINT TESTS: the per-tick header in TICKS.md is a pinned format, so the lint
-      #       that reads it is a gate too. Plain python3, same as the suites above; no pytest.
-      - name: Ticks lint tests (test_ticks_lint.py)
-        shell: bash
-        run: python3 tests/test_ticks_lint.py
-
-      # (b3) LOOP-LINE LINT — the canonical line must keep passing the eight rules as code.
-      #      Same lint the skill runs before it prints a line.
-      - name: Loop-line lint (canonical line)
+      # (b2) SKILLS CLI: the pinned skills CLI must find the skill in this repo, so
+      #      `npx skills add Aboudjem/loopify` keeps working for every other agent.
+      - name: Skills CLI finds the skill
         shell: bash
         run: |
-          python3 evals/loop_line_lint.py "/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick."
+          npx --yes skills@1.9.0 add . --list > skills-list.log 2>&1 || { cat skills-list.log; exit 1; }
+          cat skills-list.log
+          grep -q "loopify" skills-list.log
 
       # (c) NO-SECRETS CHECK (all tracked files)
       - name: No secrets
@@ -193,7 +183,7 @@ jobs:
           print(f"PASS: no credentials matched {len(PATTERNS)} secret patterns in tracked files")
           PY
 
-      # (d) MARKUP SAFETY GATE — every shipped SVG *and* the social card must stay
+      # (d) MARKUP SAFETY GATE: every shipped SVG *and* the social card must stay
       #     GitHub-safe: no <script>, no external references, well-formed XML for SVGs.
       #     Animated SVGs must also honour prefers-reduced-motion.
       - name: Markup safety (no <script>, no external refs, reduced motion)
@@ -291,13 +281,30 @@ jobs:
           print(f"PASS: all {checked} relative markdown link(s) resolve")
           PY
 
-      # (f) PLUGIN VALIDATION — the Claude CLI is not on a stock GitHub runner, so this is
-      #     best-effort here and mandatory locally before a release (see docs/launch.md).
-      - name: Plugin validate (if CLI present)
+      # (f) PLUGIN VALIDATION: the real loader, on a pinned Claude Code. No login is needed to
+      #     validate a manifest. Bump the version by hand, after the same command passes locally.
+      - name: Set up Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22"
+
+      - name: Install Claude Code (pinned)
         shell: bash
+        env:
+          CLAUDE_CODE_VERSION: "2.1.326"
         run: |
-          if command -v claude >/dev/null; then
-            claude plugin validate . --strict && claude plugin validate ./.claude-plugin/plugin.json --strict
-          else
-            echo "claude CLI not on the runner — validated locally; see docs/launch.md"
-          fi
+          # The native binary is an optional dependency whose download can stall,
+          # so check that it runs and retry from a clean state.
+          for attempt in 1 2 3; do
+            timeout -k 10 300 npm install -g --include=optional "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}" || true
+            if claude --version; then exit 0; fi
+            npm uninstall -g @anthropic-ai/claude-code || true
+            npm cache clean --force || true
+            sleep $((attempt * 10))
+          done
+          echo "::error::Claude Code did not install after 3 attempts."
+          exit 1
+
+      - name: claude plugin validate (strict)
+        shell: bash
+        run: claude plugin validate . --strict && claude plugin validate ./.claude-plugin/plugin.json --strict
