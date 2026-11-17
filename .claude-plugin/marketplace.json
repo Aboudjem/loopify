@@ -4,14 +4,14 @@
     "name": "Adam Boudjemaa"
   },
   "metadata": {
-    "description": "Writes the brief and the one line for Claude Code's /loop. One status command reads the tick log and says OK, NEEDS YOU or STALE."
+    "description": "Check a repeating Claude Code job in one line: OK, NEEDS YOU or STALE. loopify writes the brief and the /loop line, stop rule included."
   },
   "plugins": [
     {
       "name": "loopify",
       "source": "./",
-      "description": "Writes the brief and the one line for Claude Code's /loop. One status command reads the tick log and says OK, NEEDS YOU or STALE.",
-      "version": "1.2.3"
+      "description": "Check a repeating Claude Code job in one line: OK, NEEDS YOU or STALE. loopify writes the brief and the /loop line, stop rule included.",
+      "version": "1.2.4"
     }
   ]
 }

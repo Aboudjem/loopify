@@ -41,8 +41,8 @@ from loop_line_lint import lint_loop_line  # noqa: E402
 failures = []
 _total = 0
 
-STORY = ("Hand Claude a job that repeats. Come back to a log of what every tick did, "
-         "not a loop you have to babysit.")
+# The README's one-liner (v1.2.4). SKILL.md keeps its own story, checked by evals/check_skill.py.
+STORY = "Check a repeating agent job in one line."
 CANON = ("/loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, "
          "obey its stop rule (30 ticks or the PR merges), log the tick.")
 
@@ -318,7 +318,7 @@ def _h2_count(text):
 try:
     readme = read("README.md")
     h2 = _h2_count(readme)
-    check("README.md carries the story verbatim", STORY in readme)
+    check("README.md carries the one-liner verbatim", STORY in readme)
     check("README.md carries the canonical line verbatim", CANON in readme)
     check("README.md has the language switcher at the top", "READMEs/zh-CN.md" in readme[:1500])
     for lang in ("zh-CN", "ja", "es", "fr"):

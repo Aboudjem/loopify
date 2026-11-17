@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" fill="none" role="img"
-     aria-label="loopify: Hand Claude a job that repeats.">
+     aria-label="loopify. Your loop, in one line. Chips: No babysitting, Fewer stuck ticks, Stops by itself. A ring of 30 tick dots with 7 done, the 7th amber. The install command and the status line STATUS: NEEDS YOU, tick 7/30.">
   <title>loopify</title>
   <defs>
     <linearGradient id="lp-ground" x1="0" y1="0" x2="0.4" y2="1">
@@ -7,103 +7,77 @@
       <stop offset="55%" stop-color="#0A0F1C"/>
       <stop offset="100%" stop-color="#080C18"/>
     </linearGradient>
-    <radialGradient id="lp-bloomA" cx="0.15" cy="0.13" r="0.44">
+    <radialGradient id="lp-bloomA" cx="0.12" cy="0.10" r="0.48">
       <stop offset="0%" stop-color="#2BE8C8" stop-opacity="0.26"/>
       <stop offset="100%" stop-color="#2BE8C8" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="lp-bloomB" cx="0.88" cy="0.85" r="0.50">
+    <radialGradient id="lp-bloomB" cx="0.85" cy="0.30" r="0.42">
       <stop offset="0%" stop-color="#00D4FF" stop-opacity="0.26"/>
       <stop offset="100%" stop-color="#00D4FF" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="lp-bloomC" cx="0.52" cy="0.04" r="0.36">
-      <stop offset="0%" stop-color="#5B9DFF" stop-opacity="0.16"/>
-      <stop offset="100%" stop-color="#5B9DFF" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="lp-wash" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0%"   stop-color="#3DFFDA" stop-opacity="0.20"/>
-      <stop offset="42%"  stop-color="#00D4FF" stop-opacity="0.124"/>
-      <stop offset="76%"  stop-color="#5B9DFF" stop-opacity="0.046"/>
-      <stop offset="100%" stop-color="#5B9DFF" stop-opacity="0"/>
-    </radialGradient>
-    <clipPath id="lp-frame"><rect width="1280" height="640"/></clipPath>
-    <linearGradient id="lp-ink" gradientUnits="userSpaceOnUse" x1="36" y1="170" x2="220" y2="86">
-      <stop class="lpk1" offset="0%"   stop-color="#3DFFDA"/>
-      <stop class="lpk2" offset="52%"  stop-color="#2BE8C8"/>
-      <stop class="lpk3" offset="100%" stop-color="#00D4FF"/>
-    </linearGradient>
-    <filter id="lp-glow" x="-45%" y="-45%" width="190%" height="190%">
-      <feGaussianBlur stdDeviation="6.5" result="b"/>
-      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-    <filter id="lp-glow-sm" x="-150%" y="-150%" width="400%" height="400%">
-      <feGaussianBlur stdDeviation="4.2" result="b"/>
-      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-    <linearGradient id="lp-word" x1="0" y1="0" x2="1" y2="0.25">
-      <stop class="lpk1" offset="0%"   stop-color="#3DFFDA"/>
-      <stop class="lpk2" offset="46%"  stop-color="#2BE8C8"/>
-      <stop class="lpk3" offset="100%" stop-color="#00D4FF"/>
-    </linearGradient>
-    <linearGradient id="lp-sheen" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0"/>
-      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.62"/>
-      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
-    </linearGradient>
-    <clipPath id="lp-wordclip">
-      <text x="96" y="358" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
-            font-size="122" font-weight="800" letter-spacing="-4.3">loopify</text>
-    </clipPath>
   </defs>
-
   <style>
     .disp { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
     .mono { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace; }
-    .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: 4.5px; fill: #3DFFDA; }
-    .head    { font-size: 38px; font-weight: 700; fill: #F2F6FF; letter-spacing: -0.5px; }
-    .sub     { font-size: 20px; font-weight: 500; fill: #C2CDE4; }
-    .tag     { font-size: 15px; letter-spacing: 1.6px; fill: #93A2BE; }
-    .chip    { font-size: 11.5px; letter-spacing: 1.2px; fill: #C2CDE4; }
-    .chipbig { font-size: 17px; letter-spacing: 1px; fill: #C2CDE4; }
-    .tagsm { font-size: 12.5px; letter-spacing: 1.6px; fill: #93A2BE; }
-    .eyebrow { font-size: 17px; letter-spacing: 5px; }
-            .lpcomet { stroke-dasharray: 200 800; }
-    /* led 200/1000 ahead of the dash head, so the dot sits exactly on the comet tip */
-    .lphead { transform: translate(47.9px, 104.6px); }
-    @media (prefers-reduced-motion: reduce) { * { } }
+    .word  { font-size: 30px; font-weight: 700; fill: #2BE8C8; letter-spacing: -0.3px; }
+    .head  { font-size: 66px; font-weight: 800; fill: #F2F6FF; letter-spacing: -1.4px; }
+    .chip  { font-size: 24px; font-weight: 650; fill: #E9FFFA; }
+    .term  { font-size: 26px; fill: #F2F6FF; }
+    .works { font-size: 20px; font-weight: 500; fill: #A9B6CF; }
+    .count { font-size: 46px; font-weight: 700; fill: #F2F6FF; }
+    .countsub { font-size: 18px; font-weight: 600; letter-spacing: 3px; fill: #A9B6CF; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
   </style>
-
   <rect width="1280" height="640" fill="url(#lp-ground)"/>
   <g class="lpbloom">
     <rect width="1280" height="640" fill="url(#lp-bloomA)"/>
     <rect width="1280" height="640" fill="url(#lp-bloomB)"/>
-    <rect width="1280" height="640" fill="url(#lp-bloomC)"/>
   </g>
-  <g clip-path="url(#lp-frame)">
-    <g transform="translate(0,320)">
-      <ellipse class="lpwash" cx="0" cy="0" rx="520" ry="380" fill="url(#lp-wash)"/>
-    </g>
+  <text class="mono word" x="80" y="92">loopify</text>
+  <text class="disp head" x="80" y="186">Your loop, in one line</text>
+  <rect x="80" y="226" width="234" height="50" rx="25" fill="#2BE8C8" fill-opacity="0.10" stroke="#2BE8C8" stroke-width="2"/>
+  <text class="disp chip" x="197" y="259" text-anchor="middle">No babysitting</text>
+  <rect x="330" y="226" width="275" height="50" rx="25" fill="#2BE8C8" fill-opacity="0.10" stroke="#2BE8C8" stroke-width="2"/>
+  <text class="disp chip" x="468" y="259" text-anchor="middle">Fewer stuck ticks</text>
+  <rect x="621" y="226" width="248" height="50" rx="25" fill="#2BE8C8" fill-opacity="0.10" stroke="#2BE8C8" stroke-width="2"/>
+  <text class="disp chip" x="745" y="259" text-anchor="middle">Stops by itself</text>
+  <g>
+    <circle cx="1062.0" cy="78.0" r="9" fill="#2BE8C8"/>
+    <circle cx="1086.5" cy="80.6" r="9" fill="#2BE8C8"/>
+    <circle cx="1110.0" cy="88.2" r="9" fill="#2BE8C8"/>
+    <circle cx="1131.4" cy="100.5" r="9" fill="#2BE8C8"/>
+    <circle cx="1149.7" cy="117.0" r="9" fill="#2BE8C8"/>
+    <circle cx="1164.2" cy="137.0" r="9" fill="#2BE8C8"/>
+    <circle cx="1174.2" cy="159.5" r="16" fill="#FFB020" fill-opacity="0.22" class="lpnow"/>
+    <circle cx="1174.2" cy="159.5" r="10" fill="#FFB020"/>
+    <circle cx="1179.4" cy="183.7" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="1179.4" cy="208.3" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="1174.2" cy="232.5" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="1164.2" cy="255.0" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="1149.7" cy="275.0" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="1131.4" cy="291.5" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="1110.0" cy="303.8" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="1086.5" cy="311.4" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="1062.0" cy="314.0" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="1037.5" cy="311.4" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="1014.0" cy="303.8" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="992.6" cy="291.5" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="974.3" cy="275.0" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="959.8" cy="255.0" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="949.8" cy="232.5" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="944.6" cy="208.3" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="944.6" cy="183.7" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="949.8" cy="159.5" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="959.8" cy="137.0" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="974.3" cy="117.0" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="992.6" cy="100.5" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="1014.0" cy="88.2" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
+    <circle cx="1037.5" cy="80.6" r="7.5" fill="none" stroke="#3B4C69" stroke-width="2.5"/>
   </g>
-  <g transform="translate(872,126) scale(1.2188)">
-  <path d="M128 128 C114 106 100 90 80 90 C56 90 40 107 40 128 C40 149 56 166 80 166 C100 166 114 150 128 128 C142 106 156 90 176 90 C200 90 216 107 216 128 C216 149 200 166 176 166 C156 166 142 150 128 128 Z" pathLength="1000" fill="none" stroke="#2BE8C8"
-        stroke-opacity="0.32" stroke-width="15" stroke-linecap="round"/>
-  <g filter="url(#lp-glow)">
-    <path class="lpcomet" d="M128 128 C114 106 100 90 80 90 C56 90 40 107 40 128 C40 149 56 166 80 166 C100 166 114 150 128 128 C142 106 156 90 176 90 C200 90 216 107 216 128 C216 149 200 166 176 166 C156 166 142 150 128 128 Z" pathLength="1000" fill="none"
-          stroke="url(#lp-ink)" stroke-width="15" stroke-linecap="round"/>
-  </g>
-  <g class="lphead" filter="url(#lp-glow-sm)"><circle r="8" fill="#FFFFFF"/></g>
-  </g>
-  <g filter="url(#lp-glow)">
-    <text class="disp" x="96" y="358" font-size="122" font-weight="800"
-          letter-spacing="-4.3" fill="url(#lp-word)">loopify</text>
-  </g>
-  <g clip-path="url(#lp-wordclip)">
-    <g transform="skewX(-18)">
-      <rect class="lpsheen" x="-38" y="236" width="56"
-            height="165" fill="url(#lp-sheen)" opacity="0.45"/>
-    </g>
-  </g>
-  <text class="mono eyebrow" x="96" y="258">CLAUDE CODE SKILL</text>
-  <text class="disp head" x="96" y="416">Stop babysitting your loop.</text>
-  <text class="disp sub" x="96" y="458">A log entry per tick. One status line says if it needs you.</text>
-  <text class="mono tag" x="96" y="604">/loopify keep our release PR healthy  ·  github.com/Aboudjem/loopify</text>
+  <text class="mono count" x="1062" y="206" text-anchor="middle">7/30</text>
+  <text class="disp countsub" x="1062" y="238" text-anchor="middle">TICKS</text>
+  <rect x="80" y="372" width="1120" height="164" rx="18" fill="#050912" fill-opacity="0.72" stroke="#2BE8C8" stroke-opacity="0.45" stroke-width="2"/>
+  <text class="mono term" x="116" y="436"><tspan fill="#2BE8C8">$ </tspan>npx skills add Aboudjem/loopify -g -a claude-code</text>
+  <text class="mono term" x="116" y="494"><tspan font-weight="700">STATUS: </tspan><tspan fill="#FFB020" font-weight="700">NEEDS YOU</tspan><tspan fill="#C2CDE4"> · tick 7/30 · last tick 2026-09-01T09:40</tspan></text>
+  <text class="disp works" x="80" y="590">Claude Code /loop  ·  Agent skills  ·  Install tested: Codex, Cursor, Copilot, Gemini CLI, OpenCode</text>
 </svg>

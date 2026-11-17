@@ -1,6 +1,6 @@
 # loopify
 
-> Hand Claude a job that repeats. Come back to a log of what every tick did, not a loop you have to babysit.
+> Check a repeating agent job in one line. loopify writes the `/loop` line and the brief, and one status command reads the tick log and says OK, NEEDS YOU or STALE.
 >
 > loopify is a Claude Code skill (an Agent Skill) that turns a job that repeats into two handoff
 > artifacts, and stops there. The **brief** is a standing Markdown file at an absolute path holding
@@ -21,7 +21,7 @@ command re-invoked forever, with no cap, no record and no way to tell whether th
 anything useful. loopify writes the standing brief and the one line that starts it. Two phases:
 PREPARE (now: read the project, scope one cycle, research, one question batch, author both artifacts,
 lint the line, hand off) and RUN (later: the user pastes the line; each tick re-reads the brief, runs
-exactly one cycle, logs it, then schedules the next tick or stops). For a job that FINISHES, use
+exactly one cycle, is told to log it, then schedules the next tick or stops). For a job that FINISHES, use
 goalify and `/goal`. For work wanted right now in this session, use autopilot, ultrawork or ralph.
 
 The brief is hardened with the things an unattended loop needs and a hand-written prompt never has: a
@@ -75,7 +75,7 @@ yourself with Claude Code's built-in `/loop` (checked on Claude Code 2.1.326,
 https://code.claude.com/docs/en/scheduled-tasks).
 
 - Plugin (recommended): `claude plugin marketplace add Aboudjem/10x` then `claude plugin install loopify@10x`.
-- Skills CLI: `npx skills add Aboudjem/loopify`.
+- Skills CLI, for all your projects: `npx skills add Aboudjem/loopify -g -a <agent>` (drop `-g` for this project only).
 - Manual / skill-only: `git clone https://github.com/Aboudjem/loopify`, then copy `skills/loopify` into `~/.claude/skills/`. Then say "loopify this: \<the job that repeats\>" in Claude Code.
 
 ## Skill

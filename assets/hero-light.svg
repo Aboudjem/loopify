@@ -1,112 +1,87 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" fill="none" role="img"
-     aria-label="loopify, recurring runs that are logged: a loop you do not babysit">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" fill="none" role="img"
+     aria-label="loopify. Your loop, in one line. Chips: No babysitting, Fewer stuck ticks, Stops by itself. A ring of 30 tick dots with 7 done, the 7th amber. The install command and the status line STATUS: NEEDS YOU, tick 7/30.">
   <title>loopify</title>
   <defs>
     <linearGradient id="lp-ground" x1="0" y1="0" x2="0.4" y2="1">
-      <stop offset="0%" stop-color="#FFFFFF"/>
-      <stop offset="55%" stop-color="#F7F8FB"/>
-      <stop offset="100%" stop-color="#EEF1F7"/>
+      <stop offset="0%" stop-color="#F7F8FB"/>
+      <stop offset="55%" stop-color="#F2F5F9"/>
+      <stop offset="100%" stop-color="#EDF2F7"/>
     </linearGradient>
-    <radialGradient id="lp-bloomA" cx="0.15" cy="0.13" r="0.44">
-      <stop offset="0%" stop-color="#0B6D5D" stop-opacity="0.10"/>
-      <stop offset="100%" stop-color="#0B6D5D" stop-opacity="0"/>
+    <radialGradient id="lp-bloomA" cx="0.12" cy="0.10" r="0.48">
+      <stop offset="0%" stop-color="#2BE8C8" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#2BE8C8" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="lp-bloomB" cx="0.88" cy="0.85" r="0.50">
-      <stop offset="0%" stop-color="#006A80" stop-opacity="0.09"/>
-      <stop offset="100%" stop-color="#006A80" stop-opacity="0"/>
+    <radialGradient id="lp-bloomB" cx="0.85" cy="0.30" r="0.42">
+      <stop offset="0%" stop-color="#00D4FF" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#00D4FF" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="lp-bloomC" cx="0.52" cy="0.04" r="0.36">
-      <stop offset="0%" stop-color="#0959D1" stop-opacity="0.06"/>
-      <stop offset="100%" stop-color="#0959D1" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="lp-wash" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0%"   stop-color="#0B6D5D" stop-opacity="0.07"/>
-      <stop offset="42%"  stop-color="#006A80" stop-opacity="0.043"/>
-      <stop offset="76%"  stop-color="#0959D1" stop-opacity="0.016"/>
-      <stop offset="100%" stop-color="#0959D1" stop-opacity="0"/>
-    </radialGradient>
-    <clipPath id="lp-frame"><rect width="1200" height="400"/></clipPath>
-    <linearGradient id="lp-rule" gradientUnits="userSpaceOnUse" x1="500" y1="100" x2="500" y2="300">
-      <stop offset="0%"   stop-color="#0B6D5D" stop-opacity="0"/>
-      <stop offset="45%"  stop-color="#0B6D5D" stop-opacity="0.8"/>
-      <stop offset="100%" stop-color="#006A80" stop-opacity="0"/>
-    </linearGradient>
-    <linearGradient id="lp-ink" gradientUnits="userSpaceOnUse" x1="36" y1="170" x2="220" y2="86">
-      <stop class="lpk1" offset="0%"   stop-color="#0B6D5D"/>
-      <stop class="lpk2" offset="52%"  stop-color="#0B6D5D"/>
-      <stop class="lpk3" offset="100%" stop-color="#006A80"/>
-    </linearGradient>
-    <linearGradient id="lp-word" x1="0" y1="0" x2="1" y2="0.25">
-      <stop class="lpk1" offset="0%"   stop-color="#0B6D5D"/>
-      <stop class="lpk2" offset="46%"  stop-color="#0B6D5D"/>
-      <stop class="lpk3" offset="100%" stop-color="#006A80"/>
-    </linearGradient>
   </defs>
-
   <style>
     .disp { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
     .mono { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace; }
-    .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: 4.5px; fill: #0B6D5D; }
-    .head    { font-size: 34px; font-weight: 700; fill: #1A2233; letter-spacing: -0.5px; }
-    .sub     { font-size: 16.5px; font-weight: 500; fill: #48546B; }
-    .tag     { font-size: 11.5px; letter-spacing: 1.6px; fill: #48546B; }
-    .chip    { font-size: 11.5px; letter-spacing: 1.2px; fill: #48546B; }
-    @keyframes lp-breathe { 0%,100% { opacity:0.72; } 50% { opacity:1; } }
+    .word  { font-size: 30px; font-weight: 700; fill: #0B6D5D; letter-spacing: -0.3px; }
+    .head  { font-size: 66px; font-weight: 800; fill: #1A2233; letter-spacing: -1.4px; }
+    .chip  { font-size: 24px; font-weight: 650; fill: #0B4F44; }
+    .term  { font-size: 26px; fill: #F2F6FF; }
+    .works { font-size: 20px; font-weight: 500; fill: #48546B; }
+    .count { font-size: 46px; font-weight: 700; fill: #1A2233; }
+    .countsub { font-size: 18px; font-weight: 600; letter-spacing: 3px; fill: #48546B; }
+    @keyframes lp-breathe { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
     .lpbloom { animation: lp-breathe 11s ease-in-out infinite; }
-    @keyframes lp-sweep { 0% { transform: translateX(-360px); } 100% { transform: translateX(1560px); } }
-    .lpwash { animation: lp-sweep 17s cubic-bezier(.5,0,.5,1) infinite; }
-    @keyframes lp-pip { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
-    .lpp1 { animation: lp-pip 5s ease-in-out infinite 0.0s; }
-    .lpp2 { animation: lp-pip 5s ease-in-out infinite 0.35s; }
-    .lpp3 { animation: lp-pip 5s ease-in-out infinite 0.7s; }
-    .lpp4 { animation: lp-pip 5s ease-in-out infinite 1.05s; }
-    .lpp5 { animation: lp-pip 5s ease-in-out infinite 1.4s; }
-    .lpp6 { animation: lp-pip 5s ease-in-out infinite 1.75s; }
-    @keyframes lp-flow { to { stroke-dashoffset: -1000; } }
-    @keyframes lp-ride{0%{transform:translate(47.9px,104.6px)}4%{transform:translate(40.2px,123.8px)}8%{transform:translate(43.5px,144.3px)}13%{transform:translate(57.2px,159.8px)}17%{transform:translate(77.0px,165.9px)}21%{transform:translate(97.2px,161.6px)}25%{transform:translate(113.2px,148.3px)}29%{transform:translate(125.7px,131.5px)}33%{transform:translate(137.5px,114.2px)}38%{transform:translate(151.8px,99.0px)}42%{transform:translate(170.7px,90.4px)}46%{transform:translate(191.3px,92.6px)}50%{transform:translate(208.1px,104.6px)}54%{transform:translate(215.8px,123.8px)}58%{transform:translate(212.5px,144.3px)}63%{transform:translate(198.8px,159.8px)}67%{transform:translate(179.0px,165.9px)}71%{transform:translate(158.8px,161.6px)}75%{transform:translate(142.8px,148.3px)}79%{transform:translate(130.3px,131.5px)}83%{transform:translate(118.5px,114.2px)}88%{transform:translate(104.2px,99.0px)}92%{transform:translate(85.3px,90.4px)}96%{transform:translate(64.7px,92.6px)}100%{transform:translate(47.9px,104.6px)}}
-    .lpcomet { stroke-dasharray: 200 800; animation: lp-flow 6s linear infinite; }
-    /* led 200/1000 ahead of the dash head, so the dot sits exactly on the comet tip */
-    .lphead { transform: translate(47.9px, 104.6px); animation: lp-ride 6s linear infinite; }
-    @keyframes lp-k1 { 0%,100% { stop-color:#0B6D5D; } 50% { stop-color:#0B6D5D; } }
-    @keyframes lp-k2 { 0%,100% { stop-color:#0B6D5D; } 50% { stop-color:#006A80; } }
-    @keyframes lp-k3 { 0%,100% { stop-color:#006A80; } 50% { stop-color:#0959D1; } }
-    .lpk1 { animation: lp-k1 12s ease-in-out infinite; }
-    .lpk2 { animation: lp-k2 12s ease-in-out infinite; }
-    .lpk3 { animation: lp-k3 12s ease-in-out infinite; }
+    @keyframes lp-now { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+    .lpnow { animation: lp-now 1.6s ease-in-out infinite; }
     @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
   </style>
-
-  <rect width="1200" height="400" fill="url(#lp-ground)"/>
+  <rect width="1280" height="640" fill="url(#lp-ground)"/>
   <g class="lpbloom">
-    <rect width="1200" height="400" fill="url(#lp-bloomA)"/>
-    <rect width="1200" height="400" fill="url(#lp-bloomB)"/>
-    <rect width="1200" height="400" fill="url(#lp-bloomC)"/>
+    <rect width="1280" height="640" fill="url(#lp-bloomA)"/>
+    <rect width="1280" height="640" fill="url(#lp-bloomB)"/>
   </g>
-  <g clip-path="url(#lp-frame)">
-    <g transform="translate(0,196)">
-      <ellipse class="lpwash" cx="0" cy="0" rx="430" ry="300" fill="url(#lp-wash)"/>
-    </g>
-  </g>
-  <g transform="translate(66,56) scale(0.5781)">
-  <path d="M128 128 C114 106 100 90 80 90 C56 90 40 107 40 128 C40 149 56 166 80 166 C100 166 114 150 128 128 C142 106 156 90 176 90 C200 90 216 107 216 128 C216 149 200 166 176 166 C156 166 142 150 128 128 Z" pathLength="1000" fill="none" stroke="#0B6D5D"
-        stroke-opacity="0.26" stroke-width="15" stroke-linecap="round"/>
+  <text class="mono word" x="80" y="92">loopify</text>
+  <text class="disp head" x="80" y="186">Your loop, in one line</text>
+  <rect x="80" y="226" width="234" height="50" rx="25" fill="#0B6D5D" fill-opacity="0.08" stroke="#0B6D5D" stroke-width="2"/>
+  <text class="disp chip" x="197" y="259" text-anchor="middle">No babysitting</text>
+  <rect x="330" y="226" width="275" height="50" rx="25" fill="#0B6D5D" fill-opacity="0.08" stroke="#0B6D5D" stroke-width="2"/>
+  <text class="disp chip" x="468" y="259" text-anchor="middle">Fewer stuck ticks</text>
+  <rect x="621" y="226" width="248" height="50" rx="25" fill="#0B6D5D" fill-opacity="0.08" stroke="#0B6D5D" stroke-width="2"/>
+  <text class="disp chip" x="745" y="259" text-anchor="middle">Stops by itself</text>
   <g>
-    <path class="lpcomet" d="M128 128 C114 106 100 90 80 90 C56 90 40 107 40 128 C40 149 56 166 80 166 C100 166 114 150 128 128 C142 106 156 90 176 90 C200 90 216 107 216 128 C216 149 200 166 176 166 C156 166 142 150 128 128 Z" pathLength="1000" fill="none"
-          stroke="url(#lp-ink)" stroke-width="15" stroke-linecap="round"/>
+    <circle cx="1062.0" cy="78.0" r="9" fill="#0B6D5D"/>
+    <circle cx="1086.5" cy="80.6" r="9" fill="#0B6D5D"/>
+    <circle cx="1110.0" cy="88.2" r="9" fill="#0B6D5D"/>
+    <circle cx="1131.4" cy="100.5" r="9" fill="#0B6D5D"/>
+    <circle cx="1149.7" cy="117.0" r="9" fill="#0B6D5D"/>
+    <circle cx="1164.2" cy="137.0" r="9" fill="#0B6D5D"/>
+    <circle cx="1174.2" cy="159.5" r="16" fill="#A44A00" fill-opacity="0.22" class="lpnow"/>
+    <circle cx="1174.2" cy="159.5" r="10" fill="#A44A00"/>
+    <circle cx="1179.4" cy="183.7" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="1179.4" cy="208.3" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="1174.2" cy="232.5" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="1164.2" cy="255.0" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="1149.7" cy="275.0" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="1131.4" cy="291.5" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="1110.0" cy="303.8" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="1086.5" cy="311.4" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="1062.0" cy="314.0" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="1037.5" cy="311.4" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="1014.0" cy="303.8" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="992.6" cy="291.5" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="974.3" cy="275.0" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="959.8" cy="255.0" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="949.8" cy="232.5" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="944.6" cy="208.3" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="944.6" cy="183.7" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="949.8" cy="159.5" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="959.8" cy="137.0" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="974.3" cy="117.0" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="992.6" cy="100.5" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="1014.0" cy="88.2" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
+    <circle cx="1037.5" cy="80.6" r="7.5" fill="none" stroke="#A9B4C7" stroke-width="2.5"/>
   </g>
-  <g class="lphead"><circle r="8" fill="#0B6D5D"/><circle r="8" fill="none" stroke="#FFFFFF" stroke-width="2.4"/></g>
-  </g>
-  <g>
-    <text class="disp" x="76" y="286" font-size="111" font-weight="800"
-          letter-spacing="-3.9" fill="url(#lp-word)">loopify</text>
-  </g>
-  <line x1="500" y1="100" x2="500" y2="300" stroke="url(#lp-rule)" stroke-width="1.5"/>
-  <g transform="translate(544,0)">
-    <text class="mono eyebrow" x="0" y="134">RECURRING RUNS, LOGGED</text>
-    <text class="disp head" x="0" y="186">A loop you do not babysit</text>
-    <text class="disp sub" x="0" y="222">Hand Claude a job that repeats.</text>
-    <text class="disp sub" x="0" y="249">Come back to a log of what every tick did.</text>
-    <g transform="translate(0,292)"><g class="lpp1"><circle cx="0" cy="0" r="4.5" fill="#0B6D5D"/></g><g class="lpp2"><circle cx="22" cy="0" r="4.5" fill="#0B6D5D"/></g><g class="lpp3"><circle cx="44" cy="0" r="4.5" fill="#0B6D5D"/></g><g class="lpp4"><circle cx="66" cy="0" r="4.5" fill="#0B6D5D"/></g><g class="lpp5"><circle cx="88" cy="0" r="4.5" fill="#0B6D5D"/></g><g class="lpp6"><circle cx="110" cy="0" r="4.5" fill="#0B6D5D"/></g><text class="mono tag" x="146" y="4">EVERY TICK LOGGED</text></g>
-  </g>
-  <text class="mono tag" x="76" y="352">the brief and the line  &#183;  every tick logged  &#183;  runs locally</text>
+  <text class="mono count" x="1062" y="206" text-anchor="middle">7/30</text>
+  <text class="disp countsub" x="1062" y="238" text-anchor="middle">TICKS</text>
+  <rect x="80" y="372" width="1120" height="164" rx="18" fill="#0D1626" fill-opacity="1" stroke="#0B6D5D" stroke-opacity="0.45" stroke-width="2"/>
+  <text class="mono term" x="116" y="436"><tspan fill="#2BE8C8">$ </tspan>npx skills add Aboudjem/loopify -g -a claude-code</text>
+  <text class="mono term" x="116" y="494"><tspan font-weight="700">STATUS: </tspan><tspan fill="#FFB020" font-weight="700">NEEDS YOU</tspan><tspan fill="#C2CDE4"> · tick 7/30 · last tick 2026-09-01T09:40</tspan></text>
+  <text class="disp works" x="80" y="590">Claude Code /loop  ·  Agent skills  ·  Install tested: Codex, Cursor, Copilot, Gemini CLI, OpenCode</text>
 </svg>

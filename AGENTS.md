@@ -34,7 +34,7 @@ on 2.1.326 (2026-11-17), except one fact (`/clear` wipes the schedule) still dat
   recurring job", "check the deploy every 10 minutes". Claude Code matches these to the skill's
   `description` and loads `SKILL.md`.
 - Install: the plugin (`claude plugin marketplace add Aboudjem/10x`, then
-  `claude plugin install loopify@10x`); the skills CLI (`npx skills add Aboudjem/loopify`); or by hand:
+  `claude plugin install loopify@10x`); the skills CLI (`npx skills add Aboudjem/loopify -g`, for all projects); or by hand:
   `git clone https://github.com/Aboudjem/loopify`, then copy `skills/loopify` into
   `~/.claude/skills/`. The runner is Claude Code's built-in `/loop`; loopify does not ship its own.
 - **This skill AUTHORS two handoff artifacts; it does not run the job.** If the user wants the work

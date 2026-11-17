@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Aboudjem/loopify/main/assets/hero-dark.svg">
-    <img src="https://raw.githubusercontent.com/Aboudjem/loopify/main/assets/hero-light.svg" alt="loopify: 見張らなくていいループ。繰り返す仕事を Claude に任せて、各 tick が何をしたかのログに戻ってくる。" width="100%">
+    <img src="https://raw.githubusercontent.com/Aboudjem/loopify/main/assets/hero-light.svg" alt="loopify のバナー: 見出し Your loop, in one line、3 つのチップ No babysitting、Fewer stuck ticks、Stops by itself、7 個が済んだ 30 個の tick の輪、インストールコマンドと状態行 STATUS: NEEDS YOU, tick 7/30。" width="100%">
   </picture>
 </p>
 
@@ -14,25 +14,30 @@
   <a href="../README.md">English</a> · <a href="zh-CN.md">简体中文</a> · <b>日本語</b> · <a href="es.md">Español</a> · <a href="fr.md">Français</a>
 </p>
 
-<p align="center">
-  <strong>ループを見張るのは、もうやめましょう。</strong>
-</p>
+<p align="center"><strong>繰り返すエージェントの仕事を、1 行で確認。</strong></p>
 
 <p align="center">
-  <a href="#使う理由">使う理由</a> · <a href="#インストール">インストール</a> · <a href="#しくみ">しくみ</a> · <a href="#得られるもの">得られるもの</a> · <a href="#対応エージェント">対応エージェント</a> · <a href="#検証">検証</a> · <a href="#faq">FAQ</a> · <a href="#制限">制限</a>
+  <a href="#インストール">インストール</a> · <a href="#しくみ">しくみ</a> · <a href="#得られるもの">得られるもの</a> · <a href="#対応エージェント">対応エージェント</a> · <a href="#検証">検証</a> · <a href="#faq">FAQ</a> · <a href="#制限">制限</a>
 </p>
 
 <p align="center"><sub>この翻訳は英語の原文より古い場合があります。<!-- may-lag --></sub></p>
 
-繰り返す仕事を Claude に任せましょう。戻ってきたら、見張るべきループではなく、各 tick が何をしたかのログがあります。
+loopify は `/loop` の line と brief を書きます。あとは 1 つのコマンドがログを読みます。
+
+| 見張らなくていい | 止まる tick が減る | 自分で止まる |
+|:--|:--|:--|
+| `loop_status.py` は 6 つの判定のどれかと、やることを最大 3 つ出します。 | loopify は `gh pr view` など、先に許可するコマンドを出します。 | line には停止ルールが入っています。どの `/loop` も 7 日で終わります。 |
+
+tick は、繰り返す仕事の 1 回分の実行です。`make test` がすべての判定と終了コードを確認します。
+
+**対応:** Claude Code の `/loop`。skill は、skill を読むどのエージェントにもインストールできます。インストールを確認済み: Claude Code、Codex、Cursor、Gemini CLI、GitHub Copilot、OpenCode。特定のモデルに依存しません。中身は Markdown と 3 つのシンプルな Python スクリプトです。
 
 ```bash
-claude plugin marketplace add Aboudjem/10x
-claude plugin install loopify@10x
+npx skills add Aboudjem/loopify -g -a claude-code
+# then, in Claude Code: /loopify keep our release PR healthy, every 20 minutes
 ```
 
-あとは Claude Code で `/loopify` と入力し、何を繰り返すかを伝えます。ループの状態は 1 つのコマンドでわかります。
-ここではこのリポジトリ同梱のサンプルで実行しています。
+このリポジトリにある例で状態コマンドを実行した結果:
 
 ```bash
 python3 skills/loopify/scripts/loop_status.py examples/loop-state/pr-babysitter --now 2026-09-01T09:50
@@ -44,63 +49,85 @@ Do next:
 1. QUEUE.md, tick 4: Post the drafted reply on the `fetchAll` rename thread of PR #412
 ```
 
-`--now` で時刻を固定しているので、サンプルは毎回 `NEEDS YOU` を出します。全文は[得られるもの](#得られるもの)にあります。
+`--now` で時計を固定しているので、この例はいつも `NEEDS YOU` を出します。
 
-終わらない仕事があります。リリースの pull request は午後じゅう見張る必要があり、バグ報告は夜のうちにたまります。
-`/loop` を始めて 2 時間後、何かしたのかどうかわかりません。loopify は `/loop` が毎 tick 読み直す brief を書き、
-ステータスコマンドがログを 1 行で読みます。
+**何か:** Claude Code の `/loop` 用に brief と line を書く skill です。
+**いつ使うか:** 午後ずっと pull request を見守るような、繰り返す仕事に。
+**得られるもの:** ループがあなたを必要としているかを示す 1 行の状態。
 
-ループは開いているセッションの中だけで動き、7 日で終わります。チェックする仕組みはないので、ログが唯一の証拠です。
-
-## 使う理由
-
-- **ひと目でわかる。** 1 行のステータスが `OK`、`NEEDS YOU`、`STALE`、`STOPPED`、`NOT STARTED`、
-  `BROKEN LOG` のどれかと、次にやることを示します。証拠: 上のサンプル。`make test` がすべての判定と終了コードを確認します。
-- **すべての tick が見える。** 各 tick は `TICKS.md` に 1 件ずつ書きます。間隔が分かっていれば、書かれなかった tick は `STALE` として表れます。
-  loopify が 1 行を保存し、ステータスコマンドはそこから間隔を読みます。
-  証拠: 新しい記録がないまま 2 間隔を超えると `loop_status.py` が `STALE` と出します。
-- **終わりがある。** 停止ルールが 1 行に入り、どのループも 7 日で期限切れになります。
-  証拠: loopify は出力前に 8 つのルールで 1 行を検査します (`loop_line_lint.py`)。
-- **止まる tick が減る。** loopify は事前に許可すべきコマンド (例: `gh pr view`) を表示します。
-  証拠: loopify が出す引き継ぎのステップ 1。[skill](https://github.com/Aboudjem/loopify/blob/main/skills/loopify/SKILL.md) にあります。
+ループは開いているセッションの中で動き、7 日で終わります。
 
 ## インストール
 
-Claude Code では、次の 2 つのコマンドをターミナルで実行します (Claude のセッション内ではありません)。
+**エージェントを選んでください。** どのコマンドも、すべてのプロジェクト向けに loopify をインストールします。
+
+<p align="center">
+  <a href="#install-claude-code"><img src="https://img.shields.io/badge/Claude_Code-D97757?style=for-the-badge&logo=claude&logoColor=white" alt="Claude Code"></a>
+  <a href="#install-codex"><img src="https://img.shields.io/badge/Codex-000000?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyBmaWxsPSJ3aGl0ZSIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgMjQgMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI%2BPHRpdGxlPk9wZW5BSTwvdGl0bGU%2BPHBhdGggZD0iTTIyLjI4MTkgOS44MjExYTUuOTg0NyA1Ljk4NDcgMCAwIDAtLjUxNTctNC45MTA4IDYuMDQ2MiA2LjA0NjIgMCAwIDAtNi41MDk4LTIuOUE2LjA2NTEgNi4wNjUxIDAgMCAwIDQuOTgwNyA0LjE4MThhNS45ODQ3IDUuOTg0NyAwIDAgMC0zLjk5NzcgMi45IDYuMDQ2MiA2LjA0NjIgMCAwIDAgLjc0MjcgNy4wOTY2IDUuOTggNS45OCAwIDAgMCAuNTExIDQuOTEwNyA2LjA1MSA2LjA1MSAwIDAgMCA2LjUxNDYgMi45MDAxQTUuOTg0NyA1Ljk4NDcgMCAwIDAgMTMuMjU5OSAyNGE2LjA1NTcgNi4wNTU3IDAgMCAwIDUuNzcxOC00LjIwNTggNS45ODk0IDUuOTg5NCAwIDAgMCAzLjk5NzctMi45MDAxIDYuMDU1NyA2LjA1NTcgMCAwIDAtLjc0NzUtNy4wNzI5em0tOS4wMjIgMTIuNjA4MWE0LjQ3NTUgNC40NzU1IDAgMCAxLTIuODc2NC0xLjA0MDhsLjE0MTktLjA4MDQgNC43NzgzLTIuNzU4MmEuNzk0OC43OTQ4IDAgMCAwIC4zOTI3LS42ODEzdi02LjczNjlsMi4wMiAxLjE2ODZhLjA3MS4wNzEgMCAwIDEgLjAzOC4wNTJ2NS41ODI2YTQuNTA0IDQuNTA0IDAgMCAxLTQuNDk0NSA0LjQ5NDR6bS05LjY2MDctNC4xMjU0YTQuNDcwOCA0LjQ3MDggMCAwIDEtLjUzNDYtMy4wMTM3bC4xNDIuMDg1MiA0Ljc4MyAyLjc1ODJhLjc3MTIuNzcxMiAwIDAgMCAuNzgwNiAwbDUuODQyOC0zLjM2ODV2Mi4zMzI0YS4wODA0LjA4MDQgMCAwIDEtLjAzMzIuMDYxNUw5Ljc0IDE5Ljk1MDJhNC40OTkyIDQuNDk5MiAwIDAgMS02LjE0MDgtMS42NDY0ek0yLjM0MDggNy44OTU2YTQuNDg1IDQuNDg1IDAgMCAxIDIuMzY1NS0xLjk3MjhWMTEuNmEuNzY2NC43NjY0IDAgMCAwIC4zODc5LjY3NjVsNS44MTQ0IDMuMzU0My0yLjAyMDEgMS4xNjg1YS4wNzU3LjA3NTcgMCAwIDEtLjA3MSAwbC00LjgzMDMtMi43ODY1QTQuNTA0IDQuNTA0IDAgMCAxIDIuMzQwOCA3Ljg3MnptMTYuNTk2MyAzLjg1NThMMTMuMTAzOCA4LjM2NCAxNS4xMTkyIDcuMmEuMDc1Ny4wNzU3IDAgMCAxIC4wNzEgMGw0LjgzMDMgMi43OTEzYTQuNDk0NCA0LjQ5NDQgMCAwIDEtLjY3NjUgOC4xMDQydi01LjY3NzJhLjc5Ljc5IDAgMCAwLS40MDctLjY2N3ptMi4wMTA3LTMuMDIzMWwtLjE0Mi0uMDg1Mi00Ljc3MzUtMi43ODE4YS43NzU5Ljc3NTkgMCAwIDAtLjc4NTQgMEw5LjQwOSA5LjIyOTdWNi44OTc0YS4wNjYyLjA2NjIgMCAwIDEgLjAyODQtLjA2MTVsNC44MzAzLTIuNzg2NmE0LjQ5OTIgNC40OTkyIDAgMCAxIDYuNjgwMiA0LjY2ek04LjMwNjUgMTIuODYzbC0yLjAyLTEuMTYzOGEuMDgwNC4wODA0IDAgMCAxLS4wMzgtLjA1NjdWNi4wNzQyYTQuNDk5MiA0LjQ5OTIgMCAwIDEgNy4zNzU3LTMuNDUzN2wtLjE0Mi4wODA1TDguNzA0IDUuNDU5YS43OTQ4Ljc5NDggMCAwIDAtLjM5MjcuNjgxM3ptMS4wOTc2LTIuMzY1NGwyLjYwMi0xLjQ5OTggMi42MDY5IDEuNDk5OHYyLjk5OTRsLTIuNTk3NCAxLjQ5OTctMi42MDY3LTEuNDk5N1oiLz48L3N2Zz4%3D" alt="Codex"></a>
+  <a href="#install-cursor"><img src="https://img.shields.io/badge/Cursor-3B3B3B?style=for-the-badge&logo=cursor&logoColor=white" alt="Cursor"></a>
+  <a href="#install-gemini-cli"><img src="https://img.shields.io/badge/Gemini_CLI-1A73E8?style=for-the-badge&logo=googlegemini&logoColor=white" alt="Gemini CLI"></a>
+  <a href="#install-github-copilot"><img src="https://img.shields.io/badge/GitHub_Copilot-24292F?style=for-the-badge&logo=githubcopilot&logoColor=white" alt="GitHub Copilot"></a>
+  <a href="#install-opencode"><img src="https://img.shields.io/badge/OpenCode-4A4A4A?style=for-the-badge&logo=opencode&logoColor=white" alt="OpenCode"></a>
+</p>
+
+<a id="install-claude-code"></a>**Claude Code**、インストール確認済み。`/loop` が動くのはここです:
 
 ```bash
-claude plugin marketplace add Aboudjem/10x
-claude plugin install loopify@10x
+claude plugin marketplace add Aboudjem/10x && claude plugin install loopify@10x
 ```
 
-他のエージェントは [skills CLI](https://github.com/vercel-labs/skills) で同じ skill を 1 行で入れられます。`-a` でエージェントを指定します (例: `cursor`)。
+Claude のセッションの中ではなく、ターミナルで実行します。skills CLI でも入ります: `npx skills add Aboudjem/loopify -g -a claude-code`。
+
+<a id="install-codex"></a>**Codex**、インストール確認済み:
 
 ```bash
-npx skills add Aboudjem/loopify -a cursor
+npx skills add Aboudjem/loopify -g -a codex
 ```
 
-`-a` を省くと、CLI はマシン上で検出したすべてのエージェントに入れます。
+<a id="install-cursor"></a>**Cursor**、インストール確認済み:
+
+```bash
+npx skills add Aboudjem/loopify -g -a cursor
+```
+
+<a id="install-gemini-cli"></a>**Gemini CLI**、インストール確認済み:
+
+```bash
+npx skills add Aboudjem/loopify -g -a gemini-cli
+```
+
+<a id="install-github-copilot"></a>**GitHub Copilot**、インストール確認済み:
+
+```bash
+npx skills add Aboudjem/loopify -g -a github-copilot
+```
+
+<a id="install-opencode"></a>**OpenCode**、インストール確認済み:
+
+```bash
+npx skills add Aboudjem/loopify -g -a opencode
+```
+
+このプロジェクトだけに入れるなら `-g` を外します。ほかのエージェントの `-a` コードは [docs/editors.md](https://github.com/Aboudjem/loopify/blob/main/docs/editors.md) にあります。
 
 ビルドは不要です。skill は 1 つのフォルダで、標準ライブラリだけの Python スクリプトが 3 つ入っています。
+`/loop` は Claude Code のコマンドです。ほかのエージェントでは、cron などの外部スケジューラーが各 tick を起動します。
 
 ## しくみ
 
-Claude Code にはすでに `/loop` があり、セッションが開いている間プロンプトを繰り返し実行します。
-ただし、プロンプトは書いてくれません。
+Claude Code にはもともと `/loop` があります。セッションが開いている間、同じプロンプトを何度も実行します。
+プロンプトは書いてくれません。loopify が 2 つのものを書きます:
 
-loopify がそれを書きます。プロジェクトを読み、大事な判断だけを尋ね、2 つのものを書きます。
+- **brief（ファイル）。** 仕事の 1 回分: 何を読むか、何を変えてよいか、決してしないこと、いつ止まるか。
+  ループは毎回これを開き直すので、動いている間も編集できます。
+- **line（1 本の文字列）。** `/loop` に貼り付けます。brief のパスと停止ルールが入っています。
 
-- **brief(ファイル)。** 仕事 1 回分です。何を読むか、何を変えてよいか、絶対にしないこと、いつ止まるか。
-  ループは毎回これを開き直すので、実行中でも編集できます。
-- **line(1 本の文字列)。** `/loop` に貼り付けます。brief のパスと停止ルールが入っています。
-
-1 回の実行を **tick** と呼びます。毎 tick、Claude は brief を読み直し、1 回分の仕事をして、結果を
-`TICKS.md` に書きます。
+line は各 tick に、brief を読み、1 回分を実行し、起きたことを `TICKS.md` に記録するよう指示します。
 
 ### 1. 仕事を説明する
 
-Claude Code で `/loopify` と入力し、繰り返したいことを伝えます。loopify は README、最近のコミット、
-開いている pull request を読みます。それから短い質問をまとめて 1 回します。
+Claude Code で `/loopify` と入力し、何を繰り返すかを伝えます。loopify は README、最近のコミット、
+開いている pull request を読みます。それから短い質問をまとめて 1 回だけします。
 
 ```text
 /loopify keep our release PR healthy, check it every 20 minutes
@@ -109,7 +136,7 @@ Claude Code で `/loopify` と入力し、繰り返したいことを伝えま�
     line       144 chars                                  one string, you paste it below
 ```
 
-`/Users/you/acme/` はあなたのプロジェクトの代わりです。loopify は実際のパスを表示します。
+`/Users/you/acme/` はあなたのプロジェクトの代わりです。loopify は実際のパスを出します。
 
 ### 2. line を貼り付ける
 
@@ -117,8 +144,8 @@ Claude Code で `/loopify` と入力し、繰り返したいことを伝えま�
 /loop 20m Run one cycle of /Users/you/acme/.loop/pr-babysitter.md · read it first, obey its stop rule (30 ticks or the PR merges), log the tick.
 ```
 
-Claude はすぐに 1 回実行し、その後はそのセッションで 20 分ごとに実行します。PR がマージされるか、
-30 tick に達するか、早いほうで止まります。よくある間違いは次の 2 つです。
+Claude はすぐに 1 回実行し、そのセッションで 20 分ごとに続けます。PR がマージされるか 30 tick に
+達した時点で、早いほうで止まります。よくある 2 つの間違い:
 
 ```text loop-antipattern
 # not this: "every morning" can make /loop offer a cloud schedule instead, and nothing says when to stop
@@ -130,7 +157,7 @@ Claude はすぐに 1 回実行し、その後はそのセッションで 20 分
 
 ### 3. ログを読む、または状態を聞く
 
-`TICKS.md` には tick ごとに 1 エントリがあり、先頭にカウンターがあります。
+`TICKS.md` には、記録した tick ごとに 1 つのエントリがあり、先頭にカウンターがあります:
 
 ```text
 tick: 7/30
@@ -140,12 +167,12 @@ tick: 7/30
 - reviews: 1 new thread answered (rename), reply drafted in QUEUE.md
 ```
 
-ループが安全にできなかったことは `QUEUE.md` で待っています。1 つのコマンドで 3 つのファイルを読み、
-次にすることを教えてくれます。次の節を見てください。
+ループが安全にできなかったことは `QUEUE.md` であなたを待っています。状態コマンドが 3 つのファイルを読み、
+次にやることを教えます。
 
 ## 得られるもの
 
-これはこのリポジトリのサンプル状態フォルダに対する、状態レポートの実際の出力です。
+状態レポートです。このリポジトリの例の状態フォルダで実行した、実際の出力です:
 
 ```bash
 python3 skills/loopify/scripts/loop_status.py examples/loop-state/pr-babysitter --now 2026-09-01T09:50
@@ -169,128 +196,139 @@ Detail:
   state dir     examples/loop-state/pr-babysitter
 ```
 
-`--now` は時計を固定し、サンプルが毎回同じになるようにします。実際のループでは付けません。
+`--now` で時計を固定しているので、例はいつも同じに出ます。本物のループでは付けないでください。
 
-1 行目は常に判定です: `OK`、`NEEDS YOU`、`STALE`、`STOPPED`、`NOT STARTED`、`BROKEN LOG`。
-次に最大 3 つのすること、その後に詳細が続きます。`lessons` は `LESSONS.md` のエントリ数です。
+1. 1 行目は判定です: `OK`、`NEEDS YOU`、`STALE`、`STOPPED`、`NOT STARTED`、`BROKEN LOG`。
+2. 次に、やることが最大 3 つ。
+3. 次に詳細。`lessons` は `LESSONS.md` のエントリ数です。
 
-終了コードが判定を表すので、スクリプトや cron から使えます。
+tick が記録しないと、2 間隔を超えたところで状態は `STALE` になります。tick の間隔は、保存した line か
+`--interval` から読みます。
+
+終了コードが判定を表すので、スクリプトや cron から使えます:
 
 | 終了コード | 判定 | 意味 |
 | ---------- | ---- | ---- |
-| `0` | `OK`、`STOPPED`、`NOT STARTED` | 対応不要 |
-| `1` | `NEEDS YOU`、`STALE`、`BROKEN LOG` | ループを確認する |
-| `2` | なし | 使い方の誤り、または状態ディレクトリがない |
+| `0` | `OK`, `STOPPED`, `NOT STARTED` | 対応は不要 |
+| `1` | `NEEDS YOU`, `STALE`, `BROKEN LOG` | ループを確認する |
+| `2` | なし | 使い方の誤り、または状態フォルダがない |
 
-`loop_status.py --help` も同じ表を表示します。
+`loop_status.py --help` も同じ表を出します。
 
-loopify が書く brief には、さらに次のものが入っています。
+loopify が書く brief には、ほかにも次のものが入ります:
 
-- **line の中の停止ルールと tick 上限。** 仕事を終えたループは止まります。上限に達したループも止まります。
-- **無人実行のためのガードレール。** アカウント操作、支払い、push や投稿は、許可がない限りしません。
+- **line の中の停止ルールと tick 上限。** 仕事を終えたループは止まります。上限に達したループも
+  止まります。loopify は先に 8 つのルールで line を確認します（`loop_line_lint.py`）。
+- **始める前に許可するコマンド。** 最後のメッセージが、`gh pr view` など tick が実行するものを
+  並べます。tick が許可の確認で待たされないようにするためです。
+- **無人で動くための安全柵。** アカウント、支払い、push や投稿は、あなたが許可しない限りしません。
   PR のコメントなどループが読むものはデータであり、指示ではありません。
-- **繰り返しても安全な条項。** brief は、tick が動く前に確認するマーカーを指定します。2 回動いた tick は、
-  仕事が済んでいることに気づけます。
-- **形が決まったログ。** 各エントリは `## tick <n> · <ISO timestamp> · changed |
-noop | stopped` で始まります。`ticks_lint.py` で検査できます。
-- **学ぶループ。** `LESSONS.md` は、うまくいったことと時間の無駄だったことを残します。
+- **繰り返しに強い条項。** brief は、tick が動く前に探す目印を決めています。2 回動いた tick も、
+  仕事が済んでいることがわかります。
+- **形の決まったログ。** 各エントリは `## tick <n> · <ISO timestamp> · changed |
+noop | stopped` で始まります。`ticks_lint.py` が確認します。
+- **学ぶループ。** `LESSONS.md` は、うまくいったことと時間を無駄にしたことを残します。brief は各 tick に
+  これを読むよう指示します。
 
 ## 対応エージェント
 
-下の各行は、2026-11-17 に空の一時フォルダで実際に行ったインストールです。
+各行は、2026-11-17 に空のホームフォルダへ行ったグローバルインストール（`-g`）です。
 
-| エージェント             | インストールコマンド                                                    | テスト日                                |
-| ------------------------ | ----------------------------------------------------------------------- | --------------------------------------- |
-| Claude Code 2.1.326      | リポジトリの marketplace から `claude plugin install`、クリーンな設定で | 2026-11-17、plugin 有効、スクリプトあり |
-| Claude Code (skills CLI) | `npx skills add Aboudjem/loopify -a claude-code`                        | 2026-11-17、`.claude/skills/` にコピー  |
-| Cursor                   | `npx skills add Aboudjem/loopify -a cursor`                             | 2026-11-17、`.agents/skills/` に配置    |
-| Codex                    | `npx skills add Aboudjem/loopify -a codex`                              | 2026-11-17、`.agents/skills/` に配置    |
-| GitHub Copilot           | `npx skills add Aboudjem/loopify -a github-copilot`                     | 2026-11-17、`.agents/skills/` に配置    |
-| Gemini CLI               | `npx skills add Aboudjem/loopify -a gemini-cli`                         | 2026-11-17、`.agents/skills/` に配置    |
+| エージェント             | インストールコマンド                                      | 確認                                         |
+| ------------------------ | --------------------------------------------------------- | -------------------------------------------- |
+| Claude Code 2.1.326      | `claude plugin install loopify@10x`、まっさらな設定       | 2026-11-17、ユーザー範囲でプラグイン有効     |
+| Claude Code（skills CLI）| `npx skills add Aboudjem/loopify -g -a claude-code`       | 2026-11-17、skill は `~/.claude/skills/`     |
+| Codex                    | `npx skills add Aboudjem/loopify -g -a codex`             | 2026-11-17、skill は `~/.agents/skills/`     |
+| Cursor                   | `npx skills add Aboudjem/loopify -g -a cursor`            | 2026-11-17、skill は `~/.agents/skills/`     |
+| Gemini CLI               | `npx skills add Aboudjem/loopify -g -a gemini-cli`        | 2026-11-17、skill は `~/.agents/skills/`     |
+| GitHub Copilot           | `npx skills add Aboudjem/loopify -g -a github-copilot`    | 2026-11-17、skill は `~/.agents/skills/`     |
+| OpenCode                 | `npx skills add Aboudjem/loopify -g -a opencode`          | 2026-11-17、skill は `~/.agents/skills/`     |
 
-「テスト」とは、ファイルが配置され、インストールされたコピーから 3 つのスクリプトが動いたことを指します。
+「確認」とは、ファイルが入り、インストールしたコピーから 3 つのスクリプトが動いたという意味です。
 そのエージェントの中でループを動かしたという意味ではありません。
 
-文書化のみ(テストなし): OpenCode、Windsurf、Zed、Kimi Code CLI、`skills/loopify/` の手動コピー。
-[docs/editors.md](https://github.com/Aboudjem/loopify/blob/main/docs/editors.md) を参照してください。
+文書のみで未確認: Windsurf、Zed、Kimi Code CLI、`skills/loopify/` の手動コピー。
+[docs/editors.md](https://github.com/Aboudjem/loopify/blob/main/docs/editors.md) を見てください。
 
-brief は持ち運べますが、line はできません。line は Claude Code の `/loop` 用です。他の環境では brief が
+brief はどこでも使えます。line は違います。Claude Code の `/loop` 用の line です。ほかの環境では、brief が
 1 回分を実行して記録し、終了します。次の tick は外部のスケジューラーが起動します。
-[docs/other-agents.md](https://github.com/Aboudjem/loopify/blob/main/docs/other-agents.md) は Kimi、
-Copilot CLI、Cursor、Goose、cron を扱います。
+[docs/other-agents.md](https://github.com/Aboudjem/loopify/blob/main/docs/other-agents.md) に Kimi、Copilot CLI、Cursor、Goose、cron の説明があります。
 
 ## 検証
 
-下の数字はすべて `make test` が表示します。CI は push と pull request のたびにこれを実行します。
+`make test` が、ここにあるすべての数字を出します。CI は push と pull request のたびに実行します。
 
 ```bash
 make test
 ```
 
-| スイート                    | 検査内容                                                                    | 結果    |
-| --------------------------- | --------------------------------------------------------------------------- | ------- |
-| `evals/check_skill.py`      | skill の契約をアサーションで                                                | 161/161 |
-| `tests/test_manifests.py`   | マニフェスト、バージョン、サンプル brief、翻訳、SVG、秘密情報、長いダッシュ | 170/170 |
-| `tests/test_ticks_lint.py`  | tick ログの形式                                                             | 13/13   |
-| `tests/test_loop_status.py` | 各判定、終了コード、この README のサンプルのバイト一致                       | 62/62   |
-| `tests/test_no_network.py`  | 同梱スクリプトがネットワークモジュールを読み込まず curl や wget を呼ばない   | 18/18   |
-| `tests/test_dated_facts.py` | 古いバージョンで確認した `/loop` の事実は、書かれた場所すべてでそのバージョンを明記する | 5/5 |
-| `evals/loop_line_lint.py`   | 正規の line が 8 つのルールを通る                                           | PASS    |
+| スイート                    | 確認すること                                                               | 今日の結果 |
+| --------------------------- | -------------------------------------------------------------------------- | ---------- |
+| `evals/check_skill.py`      | skill の約束事を assertion で                                              | 161/161    |
+| `tests/test_manifests.py`   | マニフェスト、バージョン、例の brief、翻訳、SVG、秘密情報、長いダッシュ    | 170/170    |
+| `tests/test_ticks_lint.py`  | tick ログの形式                                                            | 13/13      |
+| `tests/test_loop_status.py` | 各判定、終了コード、この README のサンプルのバイト一致                     | 62/62      |
+| `tests/test_no_network.py`  | 同梱スクリプトがネットワークモジュールを読み込まず、curl も wget も呼ばない | 18/18      |
+| `tests/test_dated_facts.py` | 古いバージョンで確認した `/loop` の事実は、どこでもそのバージョンを書く    | 5/5        |
+| `evals/loop_line_lint.py`   | 正規の line が 8 つのルールを通る                                          | PASS       |
 
-CI は固定版の Claude Code で `claude plugin validate . --strict` も実行し、
+CI は固定した Claude Code で `claude plugin validate . --strict` も実行し、
 `npx skills@1.9.0 add . --list` が skill を見つけることも確認します。
 
-`/loop` に関する事実は、2026-11-17 に Claude Code 2.1.326 とそのドキュメントで確認しました。1 つの事実
-（`/clear` でスケジュールが消えること）は 2.1.326 で再確認できず、2.1.252 (2026-09-01) の日付のままです。事実ごとの表は
-[docs/limits.md](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md#which-version-each-fact-was-checked-on) にあります。
+`/loop` の事実は 2026-11-17 に Claude Code 2.1.326 とそのドキュメントで確認しました。1 つだけ 2.1.326 で
+確認し直せなかった事実があります: `/clear` が予定を消すことです。これは 2.1.252（2026-09-01）の日付のままです。
+事実ごとの表は [docs/limits.md](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md#which-version-each-fact-was-checked-on) にあります。
 
 ## FAQ
 
-**loopify がループを開始してくれますか?**
-いいえ。brief を書き、line を表示して止まります。始めたいときに line を貼り付けてください。
+**loopify はループを始めてくれますか?**
+いいえ。brief を書き、line を出して止まります。始めたいときに、あなたが line を貼り付けます。
 
-**なぜ 1 つのプロンプトではなく、ファイルと文字列の 2 つなのですか?**
-tick には詳細が必要です。パス、コマンド、詰まったときの対処などです。`/loop` には毎 tick 送り直す短い
+**なぜ 1 つのプロンプトではなく、ファイルと文字列なのですか?**
+tick には詳細が必要です: パス、コマンド、行き詰まったときの対応。`/loop` には、tick ごとに送り直す短い
 プロンプトが必要です。brief が詳細を持ち、line がそのパスを運びます。
 
-**ループがまだ動いているか、どうやって分かりますか?**
-状態フォルダに `loop_status.py` を実行します。2 インターバルを超えて tick がなければ `STALE` と表示します。
+**ループがまだ動いているかは、どうわかりますか?**
+状態フォルダに対して `loop_status.py` を実行します。2 間隔を超えて tick の記録がないと `STALE` と出ます。
 Claude に "what scheduled tasks do I have?" と聞くこともできます。
 
-**何がループを止めるのですか?**
-brief の停止ルール、tick 上限、7 日の期限、またはあなたです。全リストは
+**ループを止めるものは何ですか?**
+brief の停止ルール、tick の上限、7 日の上限、またはあなたです。全体の一覧は
 [docs/faq.md](https://github.com/Aboudjem/loopify/blob/main/docs/faq.md) にあります。
 
 **コードがどこかに送られますか?**
-いいえ。loopify のスクリプトはネットワーク通信をしません。ネットワークモジュールの読み込みや curl、wget の
-呼び出しがあると `tests/test_no_network.py` が失敗します。tick は brief が許すことだけをします。
+いいえ。loopify のスクリプトはネットワークを使いません。ネットワークモジュールを読み込むか curl や wget を
+呼ぶと `tests/test_no_network.py` が失敗します。tick がすることは、brief が許すことだけです。
 
 ## 制限
 
 > [!IMPORTANT]
-> ループが動いていても、正しいことをしている証拠にはなりません。`/loop` の後ろに評価者はいません。
-> tick ログと状態レポートだけが証拠です。
+> ループが動いていることは、正しいことをしている証拠ではありません。`/loop` を確認する評価役はいません。
+> tick のログと状態レポートだけが証拠です。
 
-- **ループは貼り付けたセッションの中で生きます。** ターミナルを閉じると止まります。2.1.252 では `/clear` でもスケジュールが消えました。"what scheduled tasks do I have?" と聞いて確認してください。
-- **すべてのループは 7 日で終わります。** 1 セッションのスケジュール済みタスクは最大 50 です。どちらも Claude Code
-  の制限です。続けるには line を貼り直します。
-- **tick が実行するコマンドを事前に許可してください。** 許可の確認で止まった tick は、答えを待ち続けます。
-  loopify は `gh pr view` や `git commit` など、許可すべきコマンドを表示します。
-- **状態レポートにはインターバルが必要です。** 生きたループと止まったループを区別するためです。保存された line か
-  `--interval` から読みます。
+- **ループは、貼り付けたセッションの中で動きます。** ターミナルを閉じると止まります。2.1.252 では
+  `/clear` も予定を消しました。"what scheduled tasks do I have?" と聞いて確認してください。
+- **どのループも 7 日で終わります。** 1 つのセッションで予定できるタスクは最大 50 個です。どちらも
+  Claude Code の制限です。続けるには line をもう一度貼り付けます。
+- **tick に記録を強制するものはありません。** line がそう指示するだけです。記録を飛ばした tick は、
+  間隔がわかっていれば `STALE` として現れます。
+- **tick が実行するものは、始める前に許可してください。** 許可の確認に当たった tick は、そこで答えを
+  待ちます。loopify は `gh pr view` や `git commit` など、許可するコマンドを出します。
+- **状態レポートには間隔が必要です。** 生きているループと止まったループを見分けるためです。保存した
+  line か `--interval` から読みます。
 
-出典付きの全リスト: [docs/limits.md](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md)。
+出典つきの全一覧: [docs/limits.md](https://github.com/Aboudjem/loopify/blob/main/docs/limits.md)。
 
 ## さらに詳しく
 
 - [クイックスタート](https://github.com/Aboudjem/loopify/blob/main/docs/quickstart.md): 最初のループを一歩ずつ
-- [エディターへのインストール](https://github.com/Aboudjem/loopify/blob/main/docs/editors.md): エージェントコードと 2 つの方法
-- [完全な例](https://github.com/Aboudjem/loopify/blob/main/examples/sample-loop-brief.md): 末尾に line が付いた brief 全体
-- [他のエージェント](https://github.com/Aboudjem/loopify/blob/main/docs/other-agents.md): Kimi、Cursor、Goose、cron での同じ brief
+- [エディターへのインストール](https://github.com/Aboudjem/loopify/blob/main/docs/editors.md): エージェントのコードと 2 つのインストール方法
+- [完全な例](https://github.com/Aboudjem/loopify/blob/main/examples/sample-loop-brief.md): 最後に line がある brief 全体
+- [ほかのエージェント](https://github.com/Aboudjem/loopify/blob/main/docs/other-agents.md): Kimi、Cursor、Goose、cron での同じ brief
 - [FAQ](https://github.com/Aboudjem/loopify/blob/main/docs/faq.md) · [`loop.md` ポインター](https://github.com/Aboudjem/loopify/blob/main/docs/loop-md.md) · [Changelog](https://github.com/Aboudjem/loopify/blob/main/CHANGELOG.md) · [コントリビュート](https://github.com/Aboudjem/loopify/blob/main/CONTRIBUTING.md) · [skill 本体](https://github.com/Aboudjem/loopify/blob/main/skills/loopify/SKILL.md)
 
-[goalify](https://github.com/Aboudjem/goalify) を使ったことがあれば、なじみやすいはずです。goalify は終わる仕事のため、
-loopify は繰り返す仕事のためのものです。
+[goalify](https://github.com/Aboudjem/goalify) を使ったことがあれば、なじみがあるはずです。goalify は
+終わる仕事のため、loopify は繰り返す仕事のためのものです。
 
 ---
 

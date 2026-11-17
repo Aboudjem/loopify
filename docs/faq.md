@@ -187,7 +187,7 @@ ships no conformance run against a non-Claude agent.
 **Is there a plugin?**
 Yes. loopify ships as a Claude Code plugin in the
 [**10x** marketplace](https://github.com/Aboudjem/10x): `claude plugin install loopify@10x`. The skill
-also installs on its own, with `npx skills add Aboudjem/loopify`.
+also installs on its own, for all your projects, with `npx skills add Aboudjem/loopify -g`.
 
 **Does anything in my repo change when I run `/loopify`?**
 Only `.loop/`. It gains the brief, the state directory with its three seeded files, and a copy of the

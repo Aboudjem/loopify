@@ -4,6 +4,32 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project uses
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.4] - 2026-11-17
+
+A shorter first screen, an install row for each agent, and new images. No change to the skill's behaviour, the brief or the line.
+
+### Changed
+
+- **New one-liner.** "Check a repeating agent job in one line." It replaces "Stop babysitting your
+  loop." and the old story, which said "a log of what every tick did". Nothing forces a tick to log,
+  so that phrase is gone from the README, the listing and the GitHub description.
+- **The first screen, in order.** The one-liner, one sentence, three chips (No babysitting, Fewer
+  stuck ticks, Stops by itself), the works-with line, one install command, the real status sample,
+  three short answers (what it is, when to use it, what you get) and the one limit.
+- **Pick your agent.** `## Install` opens with a row of agent badges. Each one links to that agent's
+  single command. Every command installs for all your projects (`-g`), and drop `-g` for one project.
+- **Install tested again, globally.** Each command in the README ran on 2026-11-17 into an empty home
+  folder: Claude Code (plugin and skills CLI), Codex, Cursor, Gemini CLI, GitHub Copilot and, new,
+  OpenCode. The table records where the files landed.
+- **New listing description.** The plugin manifests now say what you get first: one line that says
+  OK, NEEDS YOU or STALE.
+- **New hero and social preview.** The headline "Your loop, in one line", the three chips, a ring of
+  30 tick dots with 7 done, the install command and the real status line.
+- **Plain English across the README.** Shorter sentences, numbered steps, and the limits now say that
+  nothing forces a tick to log. The four translations mirror every change.
+- **docs/editors.md global paths.** The global path for Cursor, Codex, GitHub Copilot, Gemini CLI and
+  OpenCode is `~/.agents/skills/`, which is where `skills@1.9.0` put the files.
+
 ## [1.2.3] - 2026-11-17
 
 A clearer first screen and truer wording. No change to the skill's behaviour, the brief or the line.

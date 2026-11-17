@@ -1,7 +1,7 @@
 # Install loopify in your editor
 
 loopify is one Agent Skill: a `SKILL.md` with `name` and `description` frontmatter, Markdown
-underneath, with two standard-library Python scripts beside it. There is no server to run and nothing
+underneath, with three standard-library Python scripts beside it. There is no server to run and nothing
 to compile. Claude Code has a first-party path; every other agent installs the same directory
 through the skills CLI.
 
@@ -17,8 +17,10 @@ Then say "loopify this: `<your recurring job>`" or run `/loopify <job>`.
 ## Any other agent, in one line
 
 ```bash
-npx skills add Aboudjem/loopify -a <agent>
+npx skills add Aboudjem/loopify -g -a <agent>
 ```
+
+`-g` installs for all your projects. Only this project: drop `-g`.
 
 The agent codes below were read from the supported-agents table in
 [vercel-labs/skills](https://github.com/vercel-labs/skills#supported-agents) on 2026-09-02, along
@@ -28,11 +30,11 @@ is almost certainly in the table.
 | Agent | `-a` code | Project path | Global path |
 | --- | --- | --- | --- |
 | Claude Code | `claude-code` | `.claude/skills/` | `~/.claude/skills/` |
-| Cursor | `cursor` | `.agents/skills/` | `~/.cursor/skills/` |
-| Codex | `codex` | `.agents/skills/` | `~/.codex/skills/` |
-| GitHub Copilot | `github-copilot` | `.agents/skills/` | `~/.copilot/skills/` |
-| Gemini CLI | `gemini-cli` | `.agents/skills/` | `~/.gemini/skills/` |
-| OpenCode | `opencode` | `.agents/skills/` | `~/.config/opencode/skills/` |
+| Cursor | `cursor` | `.agents/skills/` | `~/.agents/skills/` |
+| Codex | `codex` | `.agents/skills/` | `~/.agents/skills/` |
+| GitHub Copilot | `github-copilot` | `.agents/skills/` | `~/.agents/skills/` |
+| Gemini CLI | `gemini-cli` | `.agents/skills/` | `~/.agents/skills/` |
+| OpenCode | `opencode` | `.agents/skills/` | `~/.agents/skills/` |
 | Windsurf | `windsurf` | `.windsurf/skills/` | `~/.codeium/windsurf/skills/` |
 | Zed | `zed` | `.agents/skills/` | `~/.agents/skills/` |
 | Kimi Code CLI | `kimi-code-cli` | `.agents/skills/` | `~/.agents/skills/` |
@@ -40,12 +42,14 @@ is almost certainly in the table.
 So, for Cursor:
 
 ```bash
-npx skills add Aboudjem/loopify -a cursor
+npx skills add Aboudjem/loopify -g -a cursor
 ```
 
 Three flags worth knowing:
 
-- `-g` installs to the global path in the table instead of the project one.
+- `-g` installs to the global path in the table instead of the project one. The global paths for
+  Claude Code, Cursor, Codex, GitHub Copilot, Gemini CLI and OpenCode are where `skills@1.9.0` put the
+  files on 2026-11-17, in an empty home folder.
 - `-y` skips the confirmation prompts, which is what you want in a script.
 - `--list` prints what a repository offers and installs nothing. For this repo it reports one skill.
 
