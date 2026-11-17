@@ -15,17 +15,28 @@
 </p>
 
 <p align="center">
-  <strong>Confiez à Claude une tâche qui se répète. Revenez à un journal de ce que chaque tick a fait, pas à une boucle qu'il faut surveiller.</strong>
+  <strong>Arrêtez de surveiller votre boucle.</strong>
 </p>
 
 <p align="center">
-  <a href="#installation">Installation</a> · <a href="#comment-ça-marche">Comment ça marche</a> · <a href="#ce-que-vous-obtenez">Ce que vous obtenez</a> · <a href="#compatibilité">Compatibilité</a> · <a href="#preuves">Preuves</a> · <a href="#faq">FAQ</a> · <a href="#limites">Limites</a>
+  <a href="#pourquoi-lutiliser">Pourquoi l'utiliser</a> · <a href="#installation">Installation</a> · <a href="#comment-ça-marche">Comment ça marche</a> · <a href="#ce-que-vous-obtenez">Ce que vous obtenez</a> · <a href="#compatibilité">Compatibilité</a> · <a href="#preuves">Preuves</a> · <a href="#faq">FAQ</a> · <a href="#limites">Limites</a>
 </p>
 
 <p align="center"><sub>Cette traduction peut avoir du retard sur l'original en anglais.<!-- may-lag --></sub></p>
 
-loopify écrit le prompt du `/loop` de Claude Code. Vous décrivez une tâche qui se répète. Vous
-obtenez un brief que la boucle relit à chaque tick, et un journal de ce que chaque tick a fait.
+Confiez à Claude une tâche qui se répète. Revenez à un journal de ce que chaque tick a fait, pas à une boucle qu'il faut surveiller.
+
+```bash
+claude plugin marketplace add Aboudjem/10x
+claude plugin install loopify@10x
+```
+
+Tapez ensuite `/loopify` dans Claude Code et dites ce qui doit se répéter. Une commande vous dit où en est la boucle.
+Ici, elle tourne sur l'exemple fourni avec ce dépôt :
+
+```bash
+python3 skills/loopify/scripts/loop_status.py examples/loop-state/pr-babysitter --now 2026-09-01T09:50
+```
 
 ```text
 STATUS: NEEDS YOU · tick 7/30 · last tick 2026-09-01T09:40 (changed, 10 min ago) · 2 queued
@@ -33,8 +44,28 @@ Do next:
 1. QUEUE.md, tick 4: Post the drafted reply on the `fetchAll` rename thread of PR #412
 ```
 
-Ce sont les premières lignes de `loop_status.py` sur l'exemple fourni. Le rapport complet est plus
-bas, dans [Ce que vous obtenez](#ce-que-vous-obtenez).
+`--now` fige l'horloge, donc l'exemple affiche `NEEDS YOU` à chaque fois. Le rapport complet est dans
+[Ce que vous obtenez](#ce-que-vous-obtenez).
+
+Certaines tâches ne finissent jamais. Une pull request de release se surveille tout l'après-midi, et
+les bugs s'empilent la nuit. Vous lancez `/loop`, et deux heures plus tard vous ne savez pas s'il a fait
+quelque chose. loopify écrit le brief que `/loop` relit à chaque tick, et la commande de statut lit le
+journal en une ligne.
+
+La boucle vit dans votre session ouverte et s'arrête au bout de 7 jours. Aucun évaluateur ne la
+vérifie : le journal est la seule preuve.
+
+## Pourquoi l'utiliser
+
+- **Savoir d'un coup d'œil.** Une ligne de statut dit `OK`, `NEEDS YOU`, `STALE`, `STOPPED`,
+  `NOT STARTED` ou `BROKEN LOG`, puis quoi faire. Preuve : l'exemple ci-dessus, et `make test` vérifie
+  chaque verdict et chaque code de sortie.
+- **Voir chaque tick.** Chaque tick écrit une entrée dans `TICKS.md`, et une entrée manquante
+  apparaît comme `STALE`. Preuve : `loop_status.py` dit `STALE` après deux intervalles sans entrée.
+- **Elle a une fin.** Une règle d'arrêt voyage dans la ligne, et chaque boucle expire au bout de
+  7 jours. Preuve : loopify vérifie votre ligne contre huit règles avant de l'afficher (`loop_line_lint.py`).
+- **Moins de ticks bloqués.** loopify affiche les commandes à pré-approuver, comme `gh pr view`.
+  Preuve : l'étape 1 du message qu'il affiche, dans [le skill](https://github.com/Aboudjem/loopify/blob/main/skills/loopify/SKILL.md).
 
 ## Installation
 
@@ -58,9 +89,8 @@ Rien à compiler. Le skill est un dossier avec trois scripts Python, bibliothèq
 
 ## Comment ça marche
 
-Certaines tâches ne finissent jamais. Une pull request de release se surveille tout l'après-midi.
-Les nouveaux bugs s'empilent la nuit. Claude Code a déjà `/loop` : il relance un prompt tant que
-votre session est ouverte. Il n'écrit pas le prompt à votre place.
+Claude Code a déjà `/loop` : il relance un prompt tant que votre session est ouverte. Il n'écrit pas
+le prompt à votre place.
 
 loopify l'écrit. Il lit votre projet, pose les quelques décisions qui comptent, et écrit deux choses.
 

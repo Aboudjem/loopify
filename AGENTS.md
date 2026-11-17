@@ -131,7 +131,8 @@ well-formed XML with no `<script>` and no external reference. All relative Markd
 Install loopify, then say "loopify this: \<the job that repeats\>". It reads the project, asks you the
 few real decisions, writes a standing brief to an absolute path under `.loop/`, seeds the state
 directory next to it, and prints one line to paste into `/loop`. Each tick re-reads the brief, runs
-exactly one cycle, and appends what it did to `TICKS.md`.
+exactly one cycle, and is told to append what it did to `TICKS.md`. A tick that never lands shows
+as `STALE` in `loop_status.py`.
 
 **Does it run the loop itself?**
 No. loopify only authors the brief and the line. You paste the line; the loop runs in your session.

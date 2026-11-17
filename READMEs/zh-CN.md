@@ -15,17 +15,28 @@
 </p>
 
 <p align="center">
-  <strong>把一个重复的任务交给 Claude。回来时看到的是每个 tick 做了什么的日志，而不是一个需要你盯着的循环。</strong>
+  <strong>别再盯着你的循环了。</strong>
 </p>
 
 <p align="center">
-  <a href="#安装">安装</a> · <a href="#工作原理">工作原理</a> · <a href="#你会得到什么">你会得到什么</a> · <a href="#支持的智能体">支持的智能体</a> · <a href="#验证">验证</a> · <a href="#常见问题">常见问题</a> · <a href="#限制">限制</a>
+  <a href="#为什么用它">为什么用它</a> · <a href="#安装">安装</a> · <a href="#工作原理">工作原理</a> · <a href="#你会得到什么">你会得到什么</a> · <a href="#支持的智能体">支持的智能体</a> · <a href="#验证">验证</a> · <a href="#常见问题">常见问题</a> · <a href="#限制">限制</a>
 </p>
 
 <p align="center"><sub>本翻译可能落后于英文原文。<!-- may-lag --></sub></p>
 
-loopify 为 Claude Code 的 `/loop` 编写提示词。你描述一个重复的任务，就会得到一份循环每个 tick 都会重读的
-brief，以及每个 tick 做了什么的日志。
+把一个重复的任务交给 Claude。回来时看到的是每个 tick 做了什么的日志，而不是一个需要你盯着的循环。
+
+```bash
+claude plugin marketplace add Aboudjem/10x
+claude plugin install loopify@10x
+```
+
+然后在 Claude Code 里输入 `/loopify`，说出要重复的任务。一条命令就能告诉你循环现在的状态。
+这里它运行在本仓库自带的示例上：
+
+```bash
+python3 skills/loopify/scripts/loop_status.py examples/loop-state/pr-babysitter --now 2026-09-01T09:50
+```
 
 ```text
 STATUS: NEEDS YOU · tick 7/30 · last tick 2026-09-01T09:40 (changed, 10 min ago) · 2 queued
@@ -33,7 +44,23 @@ Do next:
 1. QUEUE.md, tick 4: Post the drafted reply on the `fetchAll` rename thread of PR #412
 ```
 
-这是 `loop_status.py` 在仓库自带示例上输出的前几行。完整报告见[你会得到什么](#你会得到什么)。
+`--now` 固定了时钟，所以示例每次都输出 `NEEDS YOU`。完整报告见[你会得到什么](#你会得到什么)。
+
+有些任务永远不会结束。发布用的 pull request 需要盯一整个下午，bug 报告会在夜里堆积。你启动了 `/loop`，
+两小时后却说不清它到底做了没有。loopify 写出 `/loop` 每个 tick 都会重读的 brief，状态命令用一行读出日志。
+
+循环只活在你打开的会话里，7 天后结束。没有评估器检查它，所以日志是唯一的证据。
+
+## 为什么用它
+
+- **一眼看清。** 一行状态给出 `OK`、`NEEDS YOU`、`STALE`、`STOPPED`、`NOT STARTED` 或 `BROKEN LOG`，
+  再告诉你下一步做什么。证据：上面的示例，`make test` 会检查每个判定和退出码。
+- **每个 tick 都看得到。** 每个 tick 往 `TICKS.md` 写一条记录，缺失的那条会显示为 `STALE`。
+  证据：两个间隔都没有新记录时，`loop_status.py` 会输出 `STALE`。
+- **它有终点。** 停止规则就写在那一行里，而且每个循环 7 天后到期。
+  证据：loopify 在输出这一行之前，会用八条规则检查它（`loop_line_lint.py`）。
+- **更少卡住的 tick。** loopify 会列出需要预先批准的命令，例如 `gh pr view`。
+  证据：它输出的交接说明第 1 步，见 [skill](https://github.com/Aboudjem/loopify/blob/main/skills/loopify/SKILL.md)。
 
 ## 安装
 
@@ -56,8 +83,7 @@ npx skills add Aboudjem/loopify -a cursor
 
 ## 工作原理
 
-有些任务永远不会结束。发布用的 pull request 需要盯一整个下午。新的 bug 报告会在夜里堆积。Claude Code
-已经有 `/loop`：只要会话开着，它就会反复运行一个提示词。但它不会替你写这个提示词。
+Claude Code 已经有 `/loop`：只要会话开着，它就会反复运行一个提示词。但它不会替你写这个提示词。
 
 loopify 来写。它读取你的项目，只问几个真正重要的决定，然后写出两样东西。
 

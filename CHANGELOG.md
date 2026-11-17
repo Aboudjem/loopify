@@ -4,6 +4,25 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project uses
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.3] - 2026-11-17
+
+A clearer first screen and truer wording. No change to the skill's behaviour, the brief or the line.
+
+### Changed
+
+- **The README opens with the problem.** Under the tagline "Stop babysitting your loop." you get the
+  install, the status command with `--now` next to its sample, then the situation it solves.
+- **A `Why use it` block.** Four benefits, each with its proof: the one-line verdict, the tick log
+  and `STALE`, the stop rule and the 7-day expiry, and the commands loopify tells you to pre-approve.
+- **The honest limit sits next to the promise.** The loop lives in your open session, ends at 7 days,
+  and the log is the only proof.
+- **New listing description.** The plugin manifests now say what loopify writes and what the status
+  command reports.
+- **True wording.** Nothing forces a tick to log, so the docs now say a tick is told to log, and a
+  missing entry shows as `STALE`.
+- **New social preview.** `assets/social-preview.png` carries the new headline, sub-line and the
+  `/loopify` command. The four translations mirror every README change.
+
 ## [1.2.2] - 2026-11-17
 
 Three `/loop` facts re-checked on Claude Code 2.1.326. One of them was wrong, and the skill now says the right thing.

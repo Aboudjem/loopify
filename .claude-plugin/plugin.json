@@ -1,7 +1,7 @@
 {
   "name": "loopify",
-  "version": "1.2.2",
-  "description": "Hand Claude a job that repeats. Come back to a log of what every tick did, not a loop you have to babysit.",
+  "version": "1.2.3",
+  "description": "Writes the brief and the one line for Claude Code's /loop. One status command reads the tick log and says OK, NEEDS YOU or STALE.",
   "author": {
     "name": "Adam Boudjemaa",
     "email": "boudjemaa.adam@gmail.com"

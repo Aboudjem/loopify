@@ -4,14 +4,14 @@
     "name": "Adam Boudjemaa"
   },
   "metadata": {
-    "description": "Hand Claude a job that repeats. Come back to a log of what every tick did, not a loop you have to babysit."
+    "description": "Writes the brief and the one line for Claude Code's /loop. One status command reads the tick log and says OK, NEEDS YOU or STALE."
   },
   "plugins": [
     {
       "name": "loopify",
       "source": "./",
-      "description": "Hand Claude a job that repeats. Come back to a log of what every tick did, not a loop you have to babysit.",
-      "version": "1.2.2"
+      "description": "Writes the brief and the one line for Claude Code's /loop. One status command reads the tick log and says OK, NEEDS YOU or STALE.",
+      "version": "1.2.3"
     }
   ]
 }

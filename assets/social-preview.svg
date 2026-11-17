@@ -103,7 +103,7 @@
     </g>
   </g>
   <text class="mono eyebrow" x="96" y="258">CLAUDE CODE SKILL</text>
-  <text class="disp head" x="96" y="416">Hand Claude a job that repeats.</text>
-  <text class="disp sub" x="96" y="458">Come back to a log of what every tick did.</text>
-  <text class="mono tag" x="96" y="604">github.com/Aboudjem/loopify</text>
+  <text class="disp head" x="96" y="416">Stop babysitting your loop.</text>
+  <text class="disp sub" x="96" y="458">A log entry per tick. One status line says if it needs you.</text>
+  <text class="mono tag" x="96" y="604">/loopify keep our release PR healthy  ·  github.com/Aboudjem/loopify</text>
 </svg>

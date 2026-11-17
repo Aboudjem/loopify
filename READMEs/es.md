@@ -15,17 +15,28 @@
 </p>
 
 <p align="center">
-  <strong>Dale a Claude un trabajo que se repite. Vuelve a un registro de lo que hizo cada tick, no a un bucle que tienes que vigilar.</strong>
+  <strong>Deja de vigilar tu bucle.</strong>
 </p>
 
 <p align="center">
-  <a href="#instalación">Instalación</a> · <a href="#cómo-funciona">Cómo funciona</a> · <a href="#qué-obtienes">Qué obtienes</a> · <a href="#compatibilidad">Compatibilidad</a> · <a href="#pruebas">Pruebas</a> · <a href="#preguntas-frecuentes">Preguntas frecuentes</a> · <a href="#límites">Límites</a>
+  <a href="#por-qué-usarlo">Por qué usarlo</a> · <a href="#instalación">Instalación</a> · <a href="#cómo-funciona">Cómo funciona</a> · <a href="#qué-obtienes">Qué obtienes</a> · <a href="#compatibilidad">Compatibilidad</a> · <a href="#pruebas">Pruebas</a> · <a href="#preguntas-frecuentes">Preguntas frecuentes</a> · <a href="#límites">Límites</a>
 </p>
 
 <p align="center"><sub>Esta traducción puede ir por detrás del original en inglés.<!-- may-lag --></sub></p>
 
-loopify escribe el prompt para el `/loop` de Claude Code. Describes un trabajo que se repite.
-Obtienes un brief que el bucle relee en cada tick, y un registro de lo que hizo cada tick.
+Dale a Claude un trabajo que se repite. Vuelve a un registro de lo que hizo cada tick, no a un bucle que tienes que vigilar.
+
+```bash
+claude plugin marketplace add Aboudjem/10x
+claude plugin install loopify@10x
+```
+
+Luego escribe `/loopify` en Claude Code y di qué debe repetirse. Un comando te dice cómo va el bucle.
+Aquí corre sobre el ejemplo incluido en este repo:
+
+```bash
+python3 skills/loopify/scripts/loop_status.py examples/loop-state/pr-babysitter --now 2026-09-01T09:50
+```
 
 ```text
 STATUS: NEEDS YOU · tick 7/30 · last tick 2026-09-01T09:40 (changed, 10 min ago) · 2 queued
@@ -33,8 +44,27 @@ Do next:
 1. QUEUE.md, tick 4: Post the drafted reply on the `fetchAll` rename thread of PR #412
 ```
 
-Son las primeras líneas de `loop_status.py` sobre el ejemplo incluido. El informe completo está en
+`--now` fija el reloj, así que el ejemplo imprime `NEEDS YOU` siempre. El informe completo está en
 [Qué obtienes](#qué-obtienes).
+
+Algunos trabajos no terminan nunca. Un pull request de release hay que vigilarlo toda la tarde, y los
+bugs se acumulan de noche. Lanzas `/loop`, y dos horas después no sabes si hizo algo. loopify escribe
+el brief que `/loop` relee en cada tick, y el comando de estado lee el registro en una línea.
+
+El bucle vive en tu sesión abierta y termina a los 7 días. Ningún evaluador lo revisa, así que el
+registro es la única prueba.
+
+## Por qué usarlo
+
+- **Sabes de un vistazo.** Una línea de estado dice `OK`, `NEEDS YOU`, `STALE`, `STOPPED`,
+  `NOT STARTED` o `BROKEN LOG`, y luego qué hacer. Prueba: el ejemplo de arriba, y `make test`
+  comprueba cada veredicto y cada código de salida.
+- **Ves cada tick.** Cada tick escribe una entrada en `TICKS.md`, y una que falta aparece como
+  `STALE`. Prueba: `loop_status.py` dice `STALE` tras dos intervalos sin entrada nueva.
+- **Tiene un final.** Una regla de parada viaja en la línea, y cada bucle expira a los 7 días.
+  Prueba: loopify revisa tu línea con ocho reglas antes de imprimirla (`loop_line_lint.py`).
+- **Menos ticks atascados.** loopify imprime los comandos que conviene aprobar antes, como
+  `gh pr view`. Prueba: el paso 1 del mensaje que imprime, en [el skill](https://github.com/Aboudjem/loopify/blob/main/skills/loopify/SKILL.md).
 
 ## Instalación
 
@@ -58,9 +88,8 @@ No hay nada que compilar. El skill es una carpeta con tres scripts de Python de 
 
 ## Cómo funciona
 
-Algunos trabajos no terminan nunca. Un pull request de release hay que vigilarlo toda la tarde.
-Los bugs nuevos se acumulan de noche. Claude Code ya tiene `/loop`: repite un prompt mientras la
-sesión sigue abierta. No escribe el prompt por ti.
+Claude Code ya tiene `/loop`: repite un prompt mientras la sesión sigue abierta. No escribe el prompt
+por ti.
 
 loopify lo escribe. Lee tu proyecto, pregunta las pocas decisiones que importan y escribe dos cosas.
 

@@ -15,15 +15,26 @@
 </p>
 
 <p align="center">
-  <strong>Hand Claude a job that repeats. Come back to a log of what every tick did, not a loop you have to babysit.</strong>
+  <strong>Stop babysitting your loop.</strong>
 </p>
 
 <p align="center">
-  <a href="#install">Install</a> · <a href="#how-it-works">How it works</a> · <a href="#what-you-get">What you get</a> · <a href="#works-with">Works with</a> · <a href="#proof">Proof</a> · <a href="#faq">FAQ</a> · <a href="#limits">Limits</a>
+  <a href="#why-use-it">Why use it</a> · <a href="#install">Install</a> · <a href="#how-it-works">How it works</a> · <a href="#what-you-get">What you get</a> · <a href="#works-with">Works with</a> · <a href="#proof">Proof</a> · <a href="#faq">FAQ</a> · <a href="#limits">Limits</a>
 </p>
 
-loopify writes the prompt for Claude Code's `/loop`. You describe a job that repeats. You get a
-brief the loop re-reads every tick, and a log of what each tick did.
+Hand Claude a job that repeats. Come back to a log of what every tick did, not a loop you have to babysit.
+
+```bash
+claude plugin marketplace add Aboudjem/10x
+claude plugin install loopify@10x
+```
+
+Then type `/loopify` in Claude Code and say what should repeat. One command tells you where the loop
+stands. Here it runs on the example that ships in this repo:
+
+```bash
+python3 skills/loopify/scripts/loop_status.py examples/loop-state/pr-babysitter --now 2026-09-01T09:50
+```
 
 ```text
 STATUS: NEEDS YOU · tick 7/30 · last tick 2026-09-01T09:40 (changed, 10 min ago) · 2 queued
@@ -31,8 +42,27 @@ Do next:
 1. QUEUE.md, tick 4: Post the drafted reply on the `fetchAll` rename thread of PR #412
 ```
 
-Those are the first lines of `loop_status.py` on the shipped example. The full report is under
+`--now` pins the clock, so the example prints `NEEDS YOU` every time. The full report is under
 [What you get](#what-you-get).
+
+Some jobs never finish. A release pull request needs watching all afternoon, and bug reports pile up
+overnight. You start `/loop`, and two hours later you cannot tell if it did anything. loopify writes
+the brief `/loop` re-reads every tick, and the status command reads the log in one line.
+
+The loop lives in your open session and ends at 7 days. No evaluator checks it, so the log is the
+only proof.
+
+## Why use it
+
+- **Know at a glance.** One status line says `OK`, `NEEDS YOU`, `STALE`, `STOPPED`, `NOT STARTED`
+  or `BROKEN LOG`, then what to do next. Proof: the sample above, and `make test` checks every
+  verdict and exit code.
+- **See every tick.** Each tick writes one entry to `TICKS.md`, and a missing one shows as `STALE`.
+  Proof: `loop_status.py` says `STALE` after two intervals with no new entry.
+- **It has an end.** A stop rule rides in the line, and every loop expires at 7 days. Proof:
+  loopify lints your line against eight rules before printing it (`loop_line_lint.py`).
+- **Fewer stuck ticks.** loopify prints the commands to pre-approve, such as `gh pr view`. Proof:
+  step 1 of the handoff it prints, in [the skill](skills/loopify/SKILL.md).
 
 ## Install
 
@@ -56,9 +86,8 @@ There is nothing to build. The skill is one folder with three standard-library P
 
 ## How it works
 
-Some jobs never finish. A release pull request needs watching all afternoon. New bug reports pile
-up overnight. Claude Code already has `/loop`: it runs a prompt again and again while your session
-is open. It does not write the prompt for you.
+Claude Code already has `/loop`: it runs a prompt again and again while your session is open. It
+does not write the prompt for you.
 
 loopify writes it. It reads your project, asks the few decisions that matter, and writes two things.
 

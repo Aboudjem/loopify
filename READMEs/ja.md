@@ -15,17 +15,28 @@
 </p>
 
 <p align="center">
-  <strong>繰り返す仕事を Claude に任せましょう。戻ってきたら、見張るべきループではなく、各 tick が何をしたかのログがあります。</strong>
+  <strong>ループを見張るのは、もうやめましょう。</strong>
 </p>
 
 <p align="center">
-  <a href="#インストール">インストール</a> · <a href="#しくみ">しくみ</a> · <a href="#得られるもの">得られるもの</a> · <a href="#対応エージェント">対応エージェント</a> · <a href="#検証">検証</a> · <a href="#faq">FAQ</a> · <a href="#制限">制限</a>
+  <a href="#使う理由">使う理由</a> · <a href="#インストール">インストール</a> · <a href="#しくみ">しくみ</a> · <a href="#得られるもの">得られるもの</a> · <a href="#対応エージェント">対応エージェント</a> · <a href="#検証">検証</a> · <a href="#faq">FAQ</a> · <a href="#制限">制限</a>
 </p>
 
 <p align="center"><sub>この翻訳は英語の原文より古い場合があります。<!-- may-lag --></sub></p>
 
-loopify は Claude Code の `/loop` に渡すプロンプトを書きます。繰り返す仕事を説明すると、ループが毎 tick
-読み直す brief と、各 tick の記録が手に入ります。
+繰り返す仕事を Claude に任せましょう。戻ってきたら、見張るべきループではなく、各 tick が何をしたかのログがあります。
+
+```bash
+claude plugin marketplace add Aboudjem/10x
+claude plugin install loopify@10x
+```
+
+あとは Claude Code で `/loopify` と入力し、何を繰り返すかを伝えます。ループの状態は 1 つのコマンドでわかります。
+ここではこのリポジトリ同梱のサンプルで実行しています。
+
+```bash
+python3 skills/loopify/scripts/loop_status.py examples/loop-state/pr-babysitter --now 2026-09-01T09:50
+```
 
 ```text
 STATUS: NEEDS YOU · tick 7/30 · last tick 2026-09-01T09:40 (changed, 10 min ago) · 2 queued
@@ -33,7 +44,24 @@ Do next:
 1. QUEUE.md, tick 4: Post the drafted reply on the `fetchAll` rename thread of PR #412
 ```
 
-これは同梱のサンプルに `loop_status.py` を実行した出力の先頭です。全文は[得られるもの](#得られるもの)にあります。
+`--now` で時刻を固定しているので、サンプルは毎回 `NEEDS YOU` を出します。全文は[得られるもの](#得られるもの)にあります。
+
+終わらない仕事があります。リリースの pull request は午後じゅう見張る必要があり、バグ報告は夜のうちにたまります。
+`/loop` を始めて 2 時間後、何かしたのかどうかわかりません。loopify は `/loop` が毎 tick 読み直す brief を書き、
+ステータスコマンドがログを 1 行で読みます。
+
+ループは開いているセッションの中だけで動き、7 日で終わります。チェックする仕組みはないので、ログが唯一の証拠です。
+
+## 使う理由
+
+- **ひと目でわかる。** 1 行のステータスが `OK`、`NEEDS YOU`、`STALE`、`STOPPED`、`NOT STARTED`、
+  `BROKEN LOG` のどれかと、次にやることを示します。証拠: 上のサンプル。`make test` がすべての判定と終了コードを確認します。
+- **すべての tick が見える。** 各 tick は `TICKS.md` に 1 件ずつ書き、書かれなかった tick は `STALE` として表れます。
+  証拠: 新しい記録がないまま 2 間隔が過ぎると `loop_status.py` が `STALE` と出します。
+- **終わりがある。** 停止ルールが 1 行に入り、どのループも 7 日で期限切れになります。
+  証拠: loopify は出力前に 8 つのルールで 1 行を検査します (`loop_line_lint.py`)。
+- **止まる tick が減る。** loopify は事前に許可すべきコマンド (例: `gh pr view`) を表示します。
+  証拠: loopify が出す引き継ぎのステップ 1。[skill](https://github.com/Aboudjem/loopify/blob/main/skills/loopify/SKILL.md) にあります。
 
 ## インストール
 
@@ -56,8 +84,7 @@ npx skills add Aboudjem/loopify -a cursor
 
 ## しくみ
 
-終わらない仕事があります。リリースの pull request は午後じゅう見張る必要があります。新しいバグ報告は夜のうちに
-たまります。Claude Code にはすでに `/loop` があり、セッションが開いている間プロンプトを繰り返し実行します。
+Claude Code にはすでに `/loop` があり、セッションが開いている間プロンプトを繰り返し実行します。
 ただし、プロンプトは書いてくれません。
 
 loopify がそれを書きます。プロジェクトを読み、大事な判断だけを尋ね、2 つのものを書きます。
