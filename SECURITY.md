@@ -87,7 +87,7 @@ Please report any of the following:
 
 **Please do not open a public issue for a security problem.**
 
-Email **boudjemaa.adam@gmail.com** with:
+Report it privately through GitHub at https://github.com/Aboudjem/loopify/security/advisories/new with:
 
 - A description of the issue and its impact.
 - Steps to reproduce.

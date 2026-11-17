@@ -4,7 +4,7 @@
   "description": "Writes the brief and the one line for Claude Code's /loop. One status command reads the tick log and says OK, NEEDS YOU or STALE.",
   "author": {
     "name": "Adam Boudjemaa",
-    "email": "boudjemaa.adam@gmail.com"
+    "url": "https://github.com/Aboudjem"
   },
   "homepage": "https://github.com/Aboudjem/loopify",
   "repository": "https://github.com/Aboudjem/loopify",
