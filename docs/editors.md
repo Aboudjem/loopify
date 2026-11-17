@@ -5,7 +5,29 @@ underneath, with three standard-library Python scripts beside it. There is no se
 to compile. Claude Code has a first-party path; every other agent installs the same directory
 through the skills CLI.
 
-## Claude Code
+## Recommended: the skills CLI
+
+`npx skills` is Vercel's open installer for agent skills.
+
+```bash
+npx skills add Aboudjem/loopify -g
+```
+
+Works in more than 70 agents: pick yours in the menu
+([supported agents](https://github.com/vercel-labs/skills#supported-agents)). In a terminal it shows
+the agent menu. In a script it installs into every agent folder, so add `-a <agent>` there.
+`-g` installs for all your projects. Only this project: drop `-g`. Page:
+[skills.sh/aboudjem/loopify](https://skills.sh/aboudjem/loopify).
+
+## One agent, in one line
+
+```bash
+npx skills add Aboudjem/loopify -g -a <agent>
+```
+
+## Claude Code plugin
+
+The same skill, plus updates through the 10x marketplace. `/loop` itself only exists in Claude Code.
 
 ```bash
 claude plugin marketplace add Aboudjem/10x
@@ -13,14 +35,6 @@ claude plugin install loopify@10x
 ```
 
 Then say "loopify this: `<your recurring job>`" or run `/loopify <job>`.
-
-## Any other agent, in one line
-
-```bash
-npx skills add Aboudjem/loopify -g -a <agent>
-```
-
-`-g` installs for all your projects. Only this project: drop `-g`.
 
 The agent codes below were read from the supported-agents table in
 [vercel-labs/skills](https://github.com/vercel-labs/skills#supported-agents) on 2026-09-02, along

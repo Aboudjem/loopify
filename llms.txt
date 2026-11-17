@@ -74,8 +74,9 @@ drop-in skill. Either way you get `/loopify`, which authors the brief and the li
 yourself with Claude Code's built-in `/loop` (checked on Claude Code 2.1.326,
 https://code.claude.com/docs/en/scheduled-tasks).
 
-- Plugin (recommended): `claude plugin marketplace add Aboudjem/10x` then `claude plugin install loopify@10x`.
-- Skills CLI, for all your projects: `npx skills add Aboudjem/loopify -g -a <agent>` (drop `-g` for this project only).
+- Skills CLI (recommended, Vercel's open installer for agent skills): `npx skills add Aboudjem/loopify -g`. Works in more than 70 agents; pick yours in the menu (https://github.com/vercel-labs/skills#supported-agents). In a terminal it shows the agent menu. In a script it installs into every agent folder, so add `-a <agent>` there. Drop `-g` for this project only. Page: https://skills.sh/aboudjem/loopify
+- One agent: `npx skills add Aboudjem/loopify -g -a <agent>`, for example `-a claude-code` (`/loop` itself only exists in Claude Code).
+- Claude Code plugin (same skill, plus updates through the 10x marketplace): `claude plugin marketplace add Aboudjem/10x` then `claude plugin install loopify@10x`.
 - Manual / skill-only: `git clone https://github.com/Aboudjem/loopify`, then copy `skills/loopify` into `~/.claude/skills/`. Then say "loopify this: \<the job that repeats\>" in Claude Code.
 
 ## Skill

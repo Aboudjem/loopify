@@ -34,14 +34,7 @@ every 20 minutes, tick 1 is the 09:00 check and tick 2 is the 09:20 check.
 
 ## 1. How to install loopify
 
-**The plugin is the shortest route:**
-
-```shell
-claude plugin marketplace add Aboudjem/10x
-claude plugin install loopify@10x
-```
-
-**Or with the skills CLI**, which knows where each agent keeps its skills:
+**With the skills CLI (recommended)**, Vercel's open installer for agent skills. It knows where each agent keeps its skills:
 
 ```shell
 npx skills add Aboudjem/loopify -g -a claude-code
@@ -51,6 +44,13 @@ That drops the skill into `~/.claude/skills/`, for all your projects. Drop `-g` 
 this project only (`.claude/skills/`). Pass `-a` to install it into another
 agent's skills folder as well, useful if you also run the brief somewhere else
 ([other agents](other-agents.md)).
+
+**Or the Claude Code plugin**, the same skill plus updates through the 10x marketplace:
+
+```shell
+claude plugin marketplace add Aboudjem/10x
+claude plugin install loopify@10x
+```
 
 **Or copy it in by hand:**
 
