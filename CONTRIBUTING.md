@@ -125,9 +125,10 @@ These mirror the skill's rules in `AGENTS.md` / `SKILL.md`. Don't look for looph
   the same PR, with a lint self-test covering the new behavior. `tests/test_manifests.py` runs the code
   form against the shipped example line.
 - **No hallucination, anywhere.** No invented flags, behaviors, metrics or "works with X" claims
-  without a primary source. Every `/loop` fact in this repo is re-derived from the shipped Claude Code
-  2.1.252 binary and https://code.claude.com/docs/en/scheduled-tasks; where the docs and the binary
-  disagree (jitter), cite the docs and footnote the binary. Don't bake unverified third-party star or
+  without a primary source. Every `/loop` fact in this repo is checked against the shipped Claude Code
+  binary and https://code.claude.com/docs/en/scheduled-tasks, with the version and date in the table
+  at the end of docs/limits.md. A fact you cannot re-check keeps its old version and date; where the
+  docs and the binary disagree, cite the docs and footnote the binary. Don't bake unverified third-party star or
   usage numbers into docs.
 - **Keep the SVGs GitHub-safe.** No `<script>`, no external references, well-formed XML, and a
   `prefers-reduced-motion` guard in every animated one. CI enforces all four.

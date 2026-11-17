@@ -59,7 +59,7 @@ remove the job by hand.** Each recipe below says how.
 
 | Harness | Native recurring primitive | How to run one loopify tick | What does NOT carry over | Confidence |
 |---|---|---|---|---|
-| **Claude Code** (baseline) | `/loop` → `CronCreate`/`CronList`/`CronDelete` + `ScheduleWakeup` | the line loopify printed | none | confirmed (docs + the shipped 2.1.252 binary) |
+| **Claude Code** (baseline) | `/loop` → `CronCreate`/`CronList`/`CronDelete` + `ScheduleWakeup` | the line loopify printed | none | confirmed (docs + the shipped binary, re-checked on 2.1.326) |
 | **Kimi CLI** (`kimi`) | `CronCreate` / `CronList` / `CronDelete`, invoked by the model; there is no command to type | ask in plain language for the cycle, every 20 minutes | self-pacing (no `ScheduleWakeup` equivalent); the loop dies with the session, and does not reach a new one | confirmed (local binary strings + official docs) |
 | **GitHub Copilot CLI** (`copilot`) | `/every` and `/after`, behind an experimental flag | `/every 20m Run one cycle of …` | `/every` fires only while that session runs; no self-pacing | confirmed (GitHub Docs, fetched) |
 | **Cursor CLI** (`cursor-agent`) | `/loop`, Cursor 3.5 and newer | `/loop 20m Run one cycle of …` | a local schedule, so do not count on it outliving the session; cron granularity is not documented | confirmed (Cursor changelog, 2026-05-20) |
@@ -310,7 +310,8 @@ Four things to know about running it this way:
    `QUEUE.md` holds what it could not do safely. This is branch (c) of the mode check, and the brief
    already tells the tick to run one cycle, log it, and exit.
 2. **Permissions have to be pre-approved on the command line.** `--permission-mode acceptEdits`
-   auto-accepts file edits, a few filesystem commands (`mkdir`, `touch`, `mv`, `cp`) and read-only commands, and nothing else; every shell command the cycle runs needs naming in
+   auto-accepts file edits, seven filesystem commands (`mkdir`, `touch`, `rm`, `rmdir`, `mv`, `cp`, `sed`)
+   on paths inside the working directory, and read-only commands, and nothing else; every shell command the cycle runs needs naming in
    `--allowedTools`. loopify probes those commands during PREPARE and prints the list, so copy it
    from the handoff. A tick that hits a prompt with nobody there to answer sits until the process is
    killed.

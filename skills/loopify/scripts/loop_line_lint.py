@@ -16,8 +16,8 @@ import sys
 
 MAX_CHARS = 220
 INTERVAL_RE = re.compile(r"^(\d+)([smhd])$")
-# The five phrasings the shipped /loop skill treats as daily cadence (Claude Code 2.1.252,
-# "Offer cloud first" block). With daily phrasing and no parsed interval, "This session only"
+# The five phrasings the shipped /loop skill treats as daily cadence (Claude Code 2.1.326,
+# "Offer cloud first" block, re-checked 2026-11-17). With daily phrasing and no parsed interval, "This session only"
 # makes /loop refuse to schedule locally: the user ends with nothing scheduled.
 DAILY_PHRASES = ("every morning", "daily", "every day", "each night", "every weekday")
 # A recurring loop expires 7 days after it is created, in both modes (docs/limits.md,
